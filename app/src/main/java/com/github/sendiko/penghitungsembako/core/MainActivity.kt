@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako
+package com.github.sendiko.penghitungsembako.core
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
