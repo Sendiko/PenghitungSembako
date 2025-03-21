@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">PenghitungSembako</string>
-    <string name="sembako_harga">%1$.2f/%2$s</string>
+    <string name="sembako_harga">Rp. %1$.2f/%2$s</string>
 </resources>
