@@ -2,6 +2,7 @@ package com.github.sendiko.penghitungsembako.core.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -25,6 +26,7 @@ fun CustomTextField(
     message: String? = null,
 ) {
     Column(
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
@@ -32,16 +34,16 @@ fun CustomTextField(
             style = MaterialTheme.typography.labelMedium
         )
         OutlinedTextField(
-            modifier = modifier,
+            modifier = Modifier.fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             singleLine = singleLine,
             maxLines = maxLines,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.secondary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.secondaryContainer,
-                focusedContainerColor = MaterialTheme.colorScheme.secondary,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer
+                focusedBorderColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant,
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
             ),
             placeholder = {
                 hint?.let {
