@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.compose.rememberNavController
+import com.github.sendiko.penghitungsembako.core.navigation.NavGraph
 import com.github.sendiko.penghitungsembali.ui.theme.PenghitungSembakoTheme
 
 class MainActivity : ComponentActivity() {
@@ -12,7 +14,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PenghitungSembakoTheme {
-
+                val navController = rememberNavController()
+                NavGraph(
+                    navController = navController
+                )
             }
         }
     }

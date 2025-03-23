@@ -15,17 +15,25 @@ class DashboardViewModel: ViewModel() {
         _state.update {
             it.copy(
                 selectedSembako = null,
-                quantity = 0.0,
+                quantity = "",
                 totalPrice = 0.0
             )
         }
     }
 
     fun onCalculateClick() {
-        _state.update {
-            it.copy(
-                totalPrice = it.selectedSembako?.pricePerUnit?.times(it.quantity) ?: 0.0
-            )
+        if (state.value.quantity.isNotBlank()) {
+            _state.update {
+                it.copy(
+                    totalPrice = it.selectedSembako?.pricePerUnit?.times(it.quantity.toDouble()) ?: 0.0
+                )
+            }
+            return
+        }
+        if (state.value.quantity.isBlank()) {
+            _state.update {
+                it.copy(message = "Masukkan jumlah barang yang ingin dibeli")
+            }
         }
     }
 
@@ -35,7 +43,7 @@ class DashboardViewModel: ViewModel() {
         }
     }
 
-    fun changeQuantity(quantity: Double) {
+    fun changeQuantity(quantity: String) {
         _state.update { it.copy(quantity = quantity) }
     }
 

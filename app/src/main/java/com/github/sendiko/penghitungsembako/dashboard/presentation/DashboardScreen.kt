@@ -25,16 +25,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.github.sendiko.penghitungsembako.R
+import com.github.sendiko.penghitungsembako.core.navigation.AboutDestination
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
 import com.github.sendiko.penghitungsembako.dashboard.presentation.component.SembakoCard
 
 @Composable
-fun DashboardScreenRoot() {
+fun DashboardScreenRoot(
+    navController: NavHostController,
+) {
 
     val viewModel = viewModel { DashboardViewModel() }
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -42,7 +47,9 @@ fun DashboardScreenRoot() {
     DashboardScreen(
         state = state,
         onEvent = viewModel::onEvent,
-        onNavigate = { }
+        onNavigate = {
+            navController.navigate(it)
+        }
     )
 
 }
@@ -62,7 +69,7 @@ fun DashboardScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = { onNavigate("") }
+                        onClick = { onNavigate(AboutDestination) }
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Info,
@@ -86,33 +93,48 @@ fun DashboardScreen(
                 ) {
                     state.selectedSembako?.let {
                         Row(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .padding(horizontal = 16.dp),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
                                 text = it.name,
-                                style = MaterialTheme.typography.titleMedium
+                                style = MaterialTheme.typography.titleLarge
                             )
                             Text(
-                                text = stringResource(R.string.sembako_harga, it.pricePerUnit.toString(), it.unit),
-                                style = MaterialTheme.typography.titleMedium
+                                text = stringResource(R.string.sembako_harga, it.pricePerUnit, it.unit),
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold
                             )
                         }
                     }
                     CustomTextField(
-                        value = state.quantity.toString(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        value = state.quantity,
                         onValueChange = {
-                            onEvent(DashboardEvent.OnQuantityChange(it.toDouble()))
+                            onEvent(DashboardEvent.OnQuantityChange(it))
                         },
                         label = stringResource(R.string.quantity),
+                        trailingIcon = {
+                            Text(
+                                text = stringResource(R.string.kg),
+                                fontWeight = FontWeight.Black
+                            )
+                        },
+                        message = state.message
                     )
                     Text(
-                        text = stringResource(R.string.total_price, state.totalPrice.toString()),
-                        style = MaterialTheme.typography.titleMedium
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        text = stringResource(R.string.total_price, state.totalPrice),
+                        style = MaterialTheme.typography.headlineMedium
                     )
                     Button(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
                         onClick = {
                             onEvent(DashboardEvent.OnCalculateClick)
                         }
