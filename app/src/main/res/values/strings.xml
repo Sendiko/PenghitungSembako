@@ -13,4 +13,7 @@
     <string name="contact_me">Kontak</string>
     <string name="github">Github</string>
     <string name="kg">Kg</string>
+    <string name="using_ons">Hitung gunakan ons</string>
+    <string name="ons">ons</string>
+    <string name="share">%1$s: Rp. %2$.2f x %3$.2f = Rp. %4$.2f</string>
 </resources>
