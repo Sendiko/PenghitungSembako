@@ -1,5 +1,7 @@
 package com.github.sendiko.penghitungsembako.dashboard.presentation
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,8 +13,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,12 +24,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -61,6 +70,7 @@ fun DashboardScreen(
     onEvent: (DashboardEvent) -> Unit,
     onNavigate: (Any) -> Unit,
 ) {
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             MediumTopAppBar(
@@ -120,17 +130,63 @@ fun DashboardScreen(
                         label = stringResource(R.string.quantity),
                         trailingIcon = {
                             Text(
-                                text = stringResource(R.string.kg),
+                                text = if (state.usingOns)
+                                    stringResource(R.string.ons)
+                                else state.selectedSembako?.unit ?: "",
                                 fontWeight = FontWeight.Black
                             )
                         },
-                        message = state.message
+                        message = state.message,
+                        keyboardType = KeyboardType.Number
                     )
-                    Text(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        text = stringResource(R.string.total_price, state.totalPrice),
-                        style = MaterialTheme.typography.headlineMedium
-                    )
+                    Surface(
+                        onClick = {
+                            onEvent(DashboardEvent.OnUnitChange(!state.usingOns))
+                        },
+                        color = Color.Transparent
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = state.usingOns,
+                                onCheckedChange = { onEvent(DashboardEvent.OnUnitChange(!state.usingOns)) }
+                            )
+                            Text(
+                                text = stringResource(R.string.using_ons)
+                            )
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .weight(1f),
+                            text = stringResource(R.string.total_price, state.totalPrice),
+                            style = MaterialTheme.typography.headlineMedium
+                        )
+                        IconButton(
+                            onClick = {
+                                shareData(
+                                    context = context,
+                                    message = context.getString(
+                                        R.string.share,
+                                        state.selectedSembako?.name ?: "",
+                                        state.selectedSembako?.pricePerUnit ?: 0.0,
+                                        state.quantity.toDoubleOrNull() ?: 0.0,
+                                        state.totalPrice
+                                    )
+                                )
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Share,
+                                contentDescription = null
+                            )
+                        }
+                    }
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -165,6 +221,16 @@ fun DashboardScreen(
                 )
             }
         }
+    }
+}
+
+private fun shareData(context: Context, message: String) {
+    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, message)
+    }
+    if (shareIntent.resolveActivity(context.packageManager) != null) {
+        context.startActivity(shareIntent)
     }
 }
 

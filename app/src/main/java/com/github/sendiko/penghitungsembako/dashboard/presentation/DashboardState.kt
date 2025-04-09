@@ -5,8 +5,9 @@ import com.github.sendiko.penghitungsembako.dashboard.data.listSembako
 
 data class DashboardState(
     val sembako: List<Sembako> = listSembako,
-    var selectedSembako: Sembako? = null,
-    var quantity: String = "",
-    var totalPrice: Double = 0.0,
+    val selectedSembako: Sembako? = null,
+    val usingOns: Boolean = false,
+    val quantity: String = "",
+    val totalPrice: Double = 0.0,
     val message: String = "",
 )

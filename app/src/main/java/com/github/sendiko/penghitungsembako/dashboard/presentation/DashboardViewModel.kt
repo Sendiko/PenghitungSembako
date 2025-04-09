@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class DashboardViewModel: ViewModel() {
+class DashboardViewModel : ViewModel() {
 
     private val _state = MutableStateFlow(DashboardState())
     val state = _state.asStateFlow()
@@ -22,11 +22,15 @@ class DashboardViewModel: ViewModel() {
     }
 
     fun onCalculateClick() {
-        if (state.value.quantity.isNotBlank()) {
+        if (state.value.quantity.toIntOrNull() == null) {
             _state.update {
-                it.copy(
-                    totalPrice = it.selectedSembako?.pricePerUnit?.times(it.quantity.toDouble()) ?: 0.0
-                )
+                it.copy(message = "Masukkan jumlah barang yang valid")
+            }
+            return
+        }
+        if (state.value.quantity.toInt() < 0) {
+            _state.update {
+                it.copy(message = "Masukkan jumlah barang yang valid")
             }
             return
         }
@@ -34,6 +38,24 @@ class DashboardViewModel: ViewModel() {
             _state.update {
                 it.copy(message = "Masukkan jumlah barang yang ingin dibeli")
             }
+        }
+        if (state.value.quantity.isNotBlank()) {
+            if (!state.value.usingOns) {
+                _state.update {
+                    it.copy(
+                        totalPrice = it.selectedSembako?.pricePerUnit?.times(it.quantity.toDouble())
+                            ?: 0.0
+                    )
+                }
+            } else {
+                _state.update {
+                    it.copy(
+                        totalPrice = it.selectedSembako?.pricePerUnit?.times(it.quantity.toDouble())?.div(10)
+                            ?: 0.0
+                    )
+                }
+            }
+            return
         }
     }
 
@@ -47,12 +69,17 @@ class DashboardViewModel: ViewModel() {
         _state.update { it.copy(quantity = quantity) }
     }
 
+    private fun changeUnit(usingOns: Boolean) {
+        _state.update { it.copy(usingOns = usingOns) }
+    }
+
     fun onEvent(event: DashboardEvent) {
         when (event) {
             is DashboardEvent.OnQuantityChange -> changeQuantity(event.quantity)
             is DashboardEvent.OnSembakoClick -> onSembakoClick(event.sembako)
             DashboardEvent.OnCalculateClick -> onCalculateClick()
             DashboardEvent.OnDismiss -> dismissBottomSheet()
+            is DashboardEvent.OnUnitChange -> changeUnit(event.unit)
         }
     }
 }
