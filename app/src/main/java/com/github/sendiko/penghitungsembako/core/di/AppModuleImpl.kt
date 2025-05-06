@@ -1,0 +1,19 @@
+package com.github.sendiko.penghitungsembako.core.di
+
+import android.content.Context
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.github.sendiko.penghitungsembako.core.database.AppDatabase
+import com.github.sendiko.penghitungsembako.sembako.core.data.SembakoDao
+import com.github.sendiko.penghitungsembako.sembako.dashboard.presentation.DashboardViewModel
+
+class AppModuleImpl(
+    val context: Context
+): AppModule {
+    override val database: AppDatabase
+        get() = Room
+            .databaseBuilder(context, AppDatabase::class.java, "sembako.db")
+            .build()
+    override val sembakoDao: SembakoDao
+        get() = database.sembakoDao
+}

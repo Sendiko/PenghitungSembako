@@ -41,6 +41,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.github.sendiko.penghitungsembako.R
+import com.github.sendiko.penghitungsembako.core.di.SembakoApplication
+import com.github.sendiko.penghitungsembako.core.di.viewModelFactory
 import com.github.sendiko.penghitungsembako.core.navigation.AboutDestination
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
 import com.github.sendiko.penghitungsembako.sembako.core.presentation.SembakoCard
@@ -50,7 +52,11 @@ fun DashboardScreenRoot(
     navController: NavHostController,
 ) {
 
-    val viewModel = viewModel { DashboardViewModel() }
+    val viewModel = viewModel<DashboardViewModel>(
+        factory = viewModelFactory {
+            DashboardViewModel(SembakoApplication().module.sembakoDao)
+        }
+    )
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     DashboardScreen(
@@ -226,7 +232,7 @@ fun DashboardScreen(
 
 private fun shareData(context: Context, message: String) {
     val shareIntent = Intent(Intent.ACTION_SEND).apply {
-        Intent.setType = "text/plain"
+        type = "text/plain"
         putExtra(Intent.EXTRA_TEXT, message)
     }
     if (shareIntent.resolveActivity(context.packageManager) != null) {

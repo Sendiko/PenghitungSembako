@@ -2,11 +2,12 @@ package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
 
 import androidx.lifecycle.ViewModel
 import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
+import com.github.sendiko.penghitungsembako.sembako.core.data.SembakoDao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class DashboardViewModel : ViewModel() {
+class DashboardViewModel(private val dao: SembakoDao) : ViewModel() {
 
     private val _state = MutableStateFlow(DashboardState())
     val state = _state.asStateFlow()
