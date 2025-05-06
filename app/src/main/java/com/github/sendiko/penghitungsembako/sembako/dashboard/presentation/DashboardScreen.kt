@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.dashboard.presentation
+package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -43,7 +43,7 @@ import androidx.navigation.NavHostController
 import com.github.sendiko.penghitungsembako.R
 import com.github.sendiko.penghitungsembako.core.navigation.AboutDestination
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
-import com.github.sendiko.penghitungsembako.dashboard.presentation.component.SembakoCard
+import com.github.sendiko.penghitungsembako.sembako.core.presentation.SembakoCard
 
 @Composable
 fun DashboardScreenRoot(
@@ -226,7 +226,7 @@ fun DashboardScreen(
 
 private fun shareData(context: Context, message: String) {
     val shareIntent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
+        Intent.setType = "text/plain"
         putExtra(Intent.EXTRA_TEXT, message)
     }
     if (shareIntent.resolveActivity(context.packageManager) != null) {

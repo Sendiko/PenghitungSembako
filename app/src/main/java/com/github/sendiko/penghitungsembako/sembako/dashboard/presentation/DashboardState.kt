@@ -1,7 +1,7 @@
-package com.github.sendiko.penghitungsembako.dashboard.presentation
+package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
 
-import com.github.sendiko.penghitungsembako.core.data.Sembako
-import com.github.sendiko.penghitungsembako.dashboard.data.listSembako
+import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
+import com.github.sendiko.penghitungsembako.sembako.core.data.listSembako
 
 data class DashboardState(
     val sembako: List<Sembako> = listSembako,
