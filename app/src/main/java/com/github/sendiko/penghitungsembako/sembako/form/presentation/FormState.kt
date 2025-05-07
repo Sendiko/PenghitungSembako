@@ -9,4 +9,5 @@ data class FormState(
     val pricePerUnit: String = "",
     val message: String = "",
     val isSaved: Boolean = false,
+    val isDeleted: Boolean = false,
 )

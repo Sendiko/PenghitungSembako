@@ -23,6 +23,14 @@ class FormViewModel(
             is FormEvent.OnPricePerUnitChanged -> updatePricePerUnit(event.pricePerUnit)
             is FormEvent.OnUnitChanged -> updateUnit(event.unit)
             FormEvent.OnSave -> saveSembako()
+            FormEvent.OnDelete -> deleteSembako()
+        }
+    }
+
+    private fun deleteSembako() = viewModelScope.launch {
+        state.value.id?.let { id ->
+            dao.delete(id)
+            _state.update { it.copy(isDeleted = true) }
         }
     }
 

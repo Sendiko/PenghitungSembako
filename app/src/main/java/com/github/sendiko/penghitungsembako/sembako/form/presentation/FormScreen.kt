@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -65,8 +66,8 @@ fun FormScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    LaunchedEffect(state.isSaved) {
-        if (state.isSaved)
+    LaunchedEffect(key1 = state.isSaved, key2 = state.isDeleted) {
+        if (state.isSaved || state.isDeleted)
             onNavigateBack()
     }
 
@@ -98,6 +99,16 @@ fun FormScreen(
                             imageVector = Icons.Filled.Check,
                             contentDescription = stringResource(R.string.create)
                         )
+                    }
+                    if (state.id != null) {
+                        IconButton(
+                            onClick = { onEvent(FormEvent.OnDelete) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = stringResource(R.string.delete)
+                            )
+                        }
                     }
                 },
                 scrollBehavior = scrollBehavior

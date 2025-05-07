@@ -5,4 +5,5 @@ sealed interface FormEvent {
     data class OnUnitChanged(val unit: String): FormEvent
     data class OnPricePerUnitChanged(val pricePerUnit: String): FormEvent
     object OnSave: FormEvent
+    object OnDelete: FormEvent
 }

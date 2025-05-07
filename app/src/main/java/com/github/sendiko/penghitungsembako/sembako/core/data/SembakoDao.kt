@@ -20,8 +20,8 @@ interface SembakoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(sembako: Sembako)
 
-    @Delete
-    suspend fun delete(sembako: Sembako)
+    @Query("DELETE FROM sembako WHERE id = :id")
+    suspend fun delete(id: Int)
 
     @Update
     suspend fun update(sembako: Sembako)

@@ -25,4 +25,5 @@
     <string name="edit">Edit Sembako</string>
     <string name="list">Tampilan List</string>
     <string name="grid">Tampilan Grid</string>
+    <string name="delete">Hapus</string>
 </resources>
