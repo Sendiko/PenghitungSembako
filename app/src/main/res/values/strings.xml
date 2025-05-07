@@ -23,4 +23,6 @@
     <string name="price">Rp.</string>
     <string name="empty">Kosong.</string>
     <string name="edit">Edit Sembako</string>
+    <string name="list">Tampilan List</string>
+    <string name="grid">Tampilan Grid</string>
 </resources>
