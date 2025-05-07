@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -45,7 +44,9 @@ fun FormScreenRoot(
             FormViewModel(SembakoApplication.module.sembakoDao)
         }
     )
-    viewModel.setId(id)
+    LaunchedEffect(true) {
+        viewModel.setId(id)
+    }
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     FormScreen(
@@ -73,7 +74,11 @@ fun FormScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(text = stringResource(R.string.create))
+                    Text(
+                        text = if (state.id == null)
+                            stringResource(R.string.create)
+                        else stringResource(R.string.edit)
+                    )
                 },
                 navigationIcon = {
                     IconButton(
@@ -164,8 +169,8 @@ private fun FormScreenPrev() {
     MaterialTheme {
         FormScreen(
             state = FormState(),
-            onEvent = {  },
-            onNavigateBack = {  }
+            onEvent = { },
+            onNavigateBack = { }
         )
     }
 }

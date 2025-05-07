@@ -252,6 +252,9 @@ fun DashboardScreen(
                         sembako = sembako,
                         onClick = {
                             onEvent(DashboardEvent.OnSembakoClick(sembako))
+                        },
+                        onEdit = {
+                            onNavigate(FormDestination(sembako.id))
                         }
                     )
                 }

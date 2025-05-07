@@ -3,9 +3,14 @@ package com.github.sendiko.penghitungsembako.sembako.core.presentation
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,6 +31,7 @@ fun SembakoCard(
     modifier: Modifier = Modifier,
     sembako: Sembako,
     onClick: () ->  Unit,
+    onEdit: () -> Unit,
 ) {
     Surface(
         modifier = modifier,
@@ -38,17 +44,29 @@ fun SembakoCard(
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = sembako.name,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth()
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = sembako.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.weight(1f)
+                )
+                IconButton(
+                    onClick = onEdit
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = stringResource(R.string.edit)
+                    )
+                }
+            }
             Text(
                 text = stringResource(R.string.sembako_harga, sembako.pricePerUnit, sembako.unit),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.End
+                textAlign = TextAlign.Start
             )
         }
     }
@@ -58,6 +76,9 @@ fun SembakoCard(
 @Composable
 private fun SembakoCardPrev() {
     Surface {
-        SembakoCard(sembako = listSembako.first(), onClick = {})
+        SembakoCard(
+            sembako = listSembako.first(), onClick = {},
+            onEdit = {  }
+        )
     }
 }

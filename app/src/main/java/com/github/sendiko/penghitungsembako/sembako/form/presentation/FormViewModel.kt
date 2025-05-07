@@ -1,5 +1,6 @@
 package com.github.sendiko.penghitungsembako.sembako.form.presentation
 
+import android.R.attr.name
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
@@ -80,12 +81,16 @@ class FormViewModel(
         }
         parseCurrencyString(state.value.pricePerUnit)?.let {
             val sembako = Sembako(
+                id = state.value.id?:0,
                 name = state.value.name,
                 pricePerUnit = it,
                 unit = state.value.unit
             )
             viewModelScope.launch {
-                dao.insert(sembako)
+                if (state.value.id != null)
+                    dao.update(sembako)
+                else
+                    dao.insert(sembako)
             }
             _state.update { it.copy(isSaved = true) }
             return

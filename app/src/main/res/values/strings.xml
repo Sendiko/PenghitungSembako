@@ -22,4 +22,5 @@
     <string name="price_per_unit">Harga per-satuan</string>
     <string name="price">Rp.</string>
     <string name="empty">Kosong.</string>
+    <string name="edit">Edit Sembako</string>
 </resources>
