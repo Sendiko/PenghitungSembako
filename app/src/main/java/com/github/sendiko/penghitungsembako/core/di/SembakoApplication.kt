@@ -4,7 +4,9 @@ import android.app.Application
 
 class SembakoApplication: Application() {
 
-    lateinit var module: AppModule
+    companion object {
+        lateinit var module: AppModule
+    }
 
     override fun onCreate() {
         super.onCreate()
