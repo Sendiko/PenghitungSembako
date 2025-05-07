@@ -1,5 +1,6 @@
 package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
 
+import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
 
 sealed interface DashboardEvent {
@@ -8,4 +9,5 @@ sealed interface DashboardEvent {
     data class OnUnitChange(val unit: Boolean) : DashboardEvent
     data object OnCalculateClick : DashboardEvent
     data object OnDismiss : DashboardEvent
+    data class SetPreference(val uiMode: UiMode) : DashboardEvent
 }

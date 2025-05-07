@@ -15,15 +15,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ViewList
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -34,15 +34,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -58,6 +60,7 @@ import com.github.sendiko.penghitungsembako.core.di.SembakoApplication
 import com.github.sendiko.penghitungsembako.core.di.viewModelFactory
 import com.github.sendiko.penghitungsembako.core.navigation.AboutDestination
 import com.github.sendiko.penghitungsembako.core.navigation.FormDestination
+import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
 import com.github.sendiko.penghitungsembako.sembako.core.presentation.SembakoCard
 
@@ -68,7 +71,10 @@ fun DashboardScreenRoot(
 
     val viewModel = viewModel<DashboardViewModel>(
         factory = viewModelFactory {
-            DashboardViewModel(SembakoApplication.module.sembakoDao)
+            DashboardViewModel(
+                dao = SembakoApplication.module.sembakoDao,
+                prefs = SembakoApplication.module.userPreferences
+            )
         }
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -90,14 +96,36 @@ fun DashboardScreen(
     onEvent: (DashboardEvent) -> Unit,
     onNavigate: (Any) -> Unit,
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val context = LocalContext.current
     Scaffold(
         topBar = {
             MediumTopAppBar(
+                scrollBehavior = scrollBehavior,
                 title = {
                     Text(text = stringResource(R.string.app_name))
                 },
                 actions = {
+                    IconButton(
+                        onClick = {
+                            onEvent(
+                                DashboardEvent.SetPreference(
+                                    if (state.uiMode == UiMode.GRID)
+                                        UiMode.LIST
+                                    else UiMode.GRID
+                                )
+                            )
+                        }
+                    ) {
+                        Icon(
+                            imageVector = if (state.uiMode == UiMode.LIST)
+                                Icons.AutoMirrored.Outlined.ViewList
+                            else Icons.Outlined.GridView,
+                            contentDescription = if (state.uiMode == UiMode.LIST)
+                                stringResource(R.string.list)
+                            else stringResource(R.string.grid)
+                        )
+                    }
                     IconButton(
                         onClick = { onNavigate(AboutDestination) }
                     ) {
@@ -143,7 +171,11 @@ fun DashboardScreen(
                                 style = MaterialTheme.typography.titleLarge
                             )
                             Text(
-                                text = stringResource(R.string.sembako_harga, it.pricePerUnit, it.unit),
+                                text = stringResource(
+                                    R.string.sembako_harga,
+                                    it.pricePerUnit,
+                                    it.unit
+                                ),
                                 style = MaterialTheme.typography.bodyLarge,
                                 fontWeight = FontWeight.Bold
                             )
@@ -238,6 +270,7 @@ fun DashboardScreen(
             exit = fadeOut()
         ) {
             LazyVerticalStaggeredGrid(
+                modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                 columns = StaggeredGridCells.Fixed(2),
                 contentPadding = PaddingValues(
                     top = paddingValues.calculateTopPadding(),
@@ -247,7 +280,14 @@ fun DashboardScreen(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalItemSpacing = 16.dp
             ) {
-                items(state.sembako) { sembako ->
+                items(
+                    items = state.sembako,
+                    span = {
+                        if (state.uiMode == UiMode.LIST)
+                            StaggeredGridItemSpan.FullLine
+                        else StaggeredGridItemSpan.SingleLane
+                    }
+                ) { sembako ->
                     SembakoCard(
                         sembako = sembako,
                         onClick = {

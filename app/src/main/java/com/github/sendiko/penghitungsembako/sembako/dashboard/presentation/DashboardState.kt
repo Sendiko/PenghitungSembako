@@ -1,5 +1,6 @@
 package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
 
+import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
 import com.github.sendiko.penghitungsembako.sembako.core.data.listSembako
 
@@ -10,4 +11,5 @@ data class DashboardState(
     val quantity: String = "",
     val totalPrice: Double = 0.0,
     val message: String = "",
+    val uiMode: UiMode = UiMode.GRID
 )

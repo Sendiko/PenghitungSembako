@@ -2,21 +2,27 @@ package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.sendiko.penghitungsembako.core.preferences.UiMode
+import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
 import com.github.sendiko.penghitungsembako.sembako.core.data.SembakoDao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class DashboardViewModel(private val dao: SembakoDao) : ViewModel() {
+class DashboardViewModel(
+    private val prefs: UserPreferences,
+    dao: SembakoDao
+) : ViewModel() {
 
     private val _sembako = dao.getAll()
+    private val _uiMode = prefs.getUiMode()
     private val _state = MutableStateFlow(DashboardState())
-    val state = combine(_sembako, _state) { sembako, state ->
-        state.copy(sembako = sembako)
+    val state = combine(_sembako, _uiMode, _state) { sembako, uiMode, state ->
+        state.copy(sembako = sembako, uiMode = uiMode)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardState())
 
     fun dismissBottomSheet() {
@@ -88,6 +94,11 @@ class DashboardViewModel(private val dao: SembakoDao) : ViewModel() {
             DashboardEvent.OnCalculateClick -> onCalculateClick()
             DashboardEvent.OnDismiss -> dismissBottomSheet()
             is DashboardEvent.OnUnitChange -> changeUnit(event.unit)
+            is DashboardEvent.SetPreference -> setPreference(event.uiMode)
         }
+    }
+
+    private fun setPreference(uiMode: UiMode) = viewModelScope.launch {
+        prefs.setUiMode(uiMode)
     }
 }
