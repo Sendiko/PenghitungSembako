@@ -26,7 +26,7 @@ fun CustomTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
     message: String? = null,
-    keyboardType: KeyboardType
+    keyboardType: KeyboardType = KeyboardType.Text
 ) {
     Column(
         modifier = modifier,
