@@ -7,3 +7,8 @@ object DashboardDestination
 
 @Serializable
 object AboutDestination
+
+@Serializable
+data class FormDestination(
+    val id: Int? = null
+)
