@@ -3,26 +3,38 @@ package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -44,6 +57,7 @@ import com.github.sendiko.penghitungsembako.R
 import com.github.sendiko.penghitungsembako.core.di.SembakoApplication
 import com.github.sendiko.penghitungsembako.core.di.viewModelFactory
 import com.github.sendiko.penghitungsembako.core.navigation.AboutDestination
+import com.github.sendiko.penghitungsembako.core.navigation.FormDestination
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
 import com.github.sendiko.penghitungsembako.sembako.core.presentation.SembakoCard
 
@@ -54,7 +68,7 @@ fun DashboardScreenRoot(
 
     val viewModel = viewModel<DashboardViewModel>(
         factory = viewModelFactory {
-            DashboardViewModel(SembakoApplication().module.sembakoDao)
+            DashboardViewModel(SembakoApplication.module.sembakoDao)
         }
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -94,6 +108,16 @@ fun DashboardScreen(
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { onNavigate(FormDestination(null)) }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.create)
+                )
+            }
         }
     ) { paddingValues ->
         AnimatedVisibility(
@@ -208,22 +232,45 @@ fun DashboardScreen(
                 }
             }
         }
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(
-                top = paddingValues.calculateTopPadding(),
-                start = 16.dp,
-                end = 16.dp
-            ),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        AnimatedVisibility(
+            visible = state.sembako.isNotEmpty(),
+            enter = fadeIn(),
+            exit = fadeOut()
         ) {
-            items(state.sembako) { sembako ->
-                SembakoCard(
-                    sembako = sembako,
-                    onClick = {
-                        onEvent(DashboardEvent.OnSembakoClick(sembako))
-                    }
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(2),
+                contentPadding = PaddingValues(
+                    top = paddingValues.calculateTopPadding(),
+                    start = 16.dp,
+                    end = 16.dp
+                ),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalItemSpacing = 16.dp
+            ) {
+                items(state.sembako) { sembako ->
+                    SembakoCard(
+                        sembako = sembako,
+                        onClick = {
+                            onEvent(DashboardEvent.OnSembakoClick(sembako))
+                        }
+                    )
+                }
+            }
+        }
+        AnimatedVisibility(
+            visible = state.sembako.isEmpty(),
+            modifier = Modifier.padding(paddingValues),
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    modifier = Modifier.size(256.dp),
+                    painter = painterResource(R.drawable.empty),
+                    contentDescription = stringResource(R.string.empty)
                 )
             }
         }
