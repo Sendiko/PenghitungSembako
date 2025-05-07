@@ -6,8 +6,7 @@
     <string name="total_price">Harga akhir: Rp. %1$.2f</string>
     <string name="about">Tentang aplikasi</string>
     <string name="description">Aplikasi Penghitung Sembako ini dibuat untuk Assessement Mata Kuliah Pemgrograman untuk Perangkat Bergerak 1.
-        \n\nAplikasi ini dibuat untuk memudahkan penghitungan harga sembako seperti Telur, Minyak, Gula, dan Beras
-        Fitur penambahan Sembako akan hadir di versi aplikasi selanjutnya.
+        \n\nAplikasi ini dibuat untuk memudahkan penghitungan harga sembako seperti Telur, Minyak, Gula, dan Beras.
         \n\nCopyright © Rizky Sendiko 2025
     </string>
     <string name="contact_me">Kontak</string>
@@ -16,4 +15,11 @@
     <string name="using_ons">Hitung gunakan ons</string>
     <string name="ons">ons</string>
     <string name="share">%1$s: Rp. %2$.2f x %3$.2f = Rp. %4$.2f</string>
+    <string name="create">Tambah Sembako</string>
+    <string name="back">Kembali</string>
+    <string name="name">Nama sembako</string>
+    <string name="unit">Satuan</string>
+    <string name="price_per_unit">Harga per-satuan</string>
+    <string name="price">Rp.</string>
+    <string name="empty">Kosong.</string>
 </resources>
