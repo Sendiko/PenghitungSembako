@@ -1,16 +1,23 @@
 package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
 import com.github.sendiko.penghitungsembako.sembako.core.data.SembakoDao
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class DashboardViewModel(private val dao: SembakoDao) : ViewModel() {
 
+    private val _sembako = dao.getAll()
     private val _state = MutableStateFlow(DashboardState())
-    val state = _state.asStateFlow()
+    val state = combine(_sembako, _state) { sembako, state ->
+        state.copy(sembako = sembako)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardState())
 
     fun dismissBottomSheet() {
         _state.update {
