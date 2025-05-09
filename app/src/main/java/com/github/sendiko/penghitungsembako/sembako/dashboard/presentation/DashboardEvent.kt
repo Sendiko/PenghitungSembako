@@ -10,4 +10,6 @@ sealed interface DashboardEvent {
     data object OnCalculateClick : DashboardEvent
     data object OnDismiss : DashboardEvent
     data class SetPreference(val uiMode: UiMode) : DashboardEvent
+    data object ClearState: DashboardEvent
+    data object LoadData: DashboardEvent
 }

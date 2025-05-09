@@ -1,11 +1,13 @@
 package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
 import com.github.sendiko.penghitungsembako.sembako.core.data.SembakoDao
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -15,15 +17,19 @@ import kotlinx.coroutines.launch
 
 class DashboardViewModel(
     private val prefs: UserPreferences,
-    dao: SembakoDao
+    private val dao: SembakoDao
 ) : ViewModel() {
 
-    private val _sembako = dao.getAll()
     private val _uiMode = prefs.getUiMode()
     private val _state = MutableStateFlow(DashboardState())
-    val state = combine(_sembako, _uiMode, _state) { sembako, uiMode, state ->
-        state.copy(sembako = sembako, uiMode = uiMode)
+    val state = combine(_uiMode, _state) { uiMode, state ->
+        state.copy(uiMode = uiMode)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardState())
+
+    override fun onCleared() {
+        Log.i("VM", "onCleared: DashboardViewModel Cleared")
+        super.onCleared()
+    }
 
     fun dismissBottomSheet() {
         _state.update {
@@ -95,6 +101,22 @@ class DashboardViewModel(
             DashboardEvent.OnDismiss -> dismissBottomSheet()
             is DashboardEvent.OnUnitChange -> changeUnit(event.unit)
             is DashboardEvent.SetPreference -> setPreference(event.uiMode)
+            DashboardEvent.ClearState -> clearState()
+            DashboardEvent.LoadData -> loadData()
+        }
+    }
+
+    private fun clearState() {
+        _state.update { it.copy(sembako = emptyList()) }
+    }
+
+    private fun loadData() {
+        viewModelScope.launch {
+            dao.getAll().collect {
+                _state.update { state ->
+                    state.copy(sembako = it)
+                }
+            }
         }
     }
 

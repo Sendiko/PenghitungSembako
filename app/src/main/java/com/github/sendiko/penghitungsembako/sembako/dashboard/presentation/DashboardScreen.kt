@@ -37,10 +37,10 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,42 +52,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.github.sendiko.penghitungsembako.R
-import com.github.sendiko.penghitungsembako.core.di.SembakoApplication
-import com.github.sendiko.penghitungsembako.core.di.viewModelFactory
 import com.github.sendiko.penghitungsembako.core.navigation.AboutDestination
 import com.github.sendiko.penghitungsembako.core.navigation.FormDestination
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
 import com.github.sendiko.penghitungsembako.sembako.core.presentation.SembakoCard
-
-@Composable
-fun DashboardScreenRoot(
-    navController: NavHostController,
-) {
-
-    val viewModel = viewModel<DashboardViewModel>(
-        factory = viewModelFactory {
-            DashboardViewModel(
-                dao = SembakoApplication.module.sembakoDao,
-                prefs = SembakoApplication.module.userPreferences
-            )
-        }
-    )
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
-    DashboardScreen(
-        state = state,
-        onEvent = viewModel::onEvent,
-        onNavigate = {
-            navController.navigate(it)
-        }
-    )
-
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -96,6 +66,18 @@ fun DashboardScreen(
     onEvent: (DashboardEvent) -> Unit,
     onNavigate: (Any) -> Unit,
 ) {
+
+    LaunchedEffect(state.sembako) {
+        if (state.sembako.isEmpty())
+            onEvent(DashboardEvent.LoadData)
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            onEvent(DashboardEvent.ClearState)
+        }
+    }
+
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val context = LocalContext.current
     Scaffold(
