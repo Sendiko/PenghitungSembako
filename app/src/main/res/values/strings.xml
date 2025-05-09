@@ -26,4 +26,7 @@
     <string name="list">Tampilan List</string>
     <string name="grid">Tampilan Grid</string>
     <string name="delete">Hapus</string>
+    <string name="cancel">Batal</string>
+    <string name="delete_title">Hapus sembako ini?</string>
+    <string name="delete_message">Data akan hilang selamanya.</string>
 </resources>
