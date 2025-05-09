@@ -1,6 +1,6 @@
 package com.github.sendiko.penghitungsembako.sembako.form.presentation
 
-import android.R.attr.name
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
@@ -17,14 +17,24 @@ class FormViewModel(
     private val _state = MutableStateFlow(FormState())
     val state = _state.asStateFlow()
 
+    override fun onCleared() {
+        Log.i("VM", "onCleared: FormViewModel Cleared")
+        super.onCleared()
+    }
+
     fun onEvent(event: FormEvent) {
         when (event) {
             is FormEvent.OnNameChanged -> updateName(event.name)
             is FormEvent.OnPricePerUnitChanged -> updatePricePerUnit(event.pricePerUnit)
             is FormEvent.OnUnitChanged -> updateUnit(event.unit)
+            is FormEvent.OnDeleteClicked -> updateDeleting(event.isDeleting)
             FormEvent.OnSave -> saveSembako()
             FormEvent.OnDelete -> deleteSembako()
         }
+    }
+
+    private fun updateDeleting(isDeleting: Boolean) {
+        _state.update { it.copy(isDeleting = isDeleting) }
     }
 
     private fun deleteSembako() = viewModelScope.launch {

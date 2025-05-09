@@ -10,4 +10,5 @@ data class FormState(
     val message: String = "",
     val isSaved: Boolean = false,
     val isDeleted: Boolean = false,
+    val isDeleting: Boolean = false,
 )
