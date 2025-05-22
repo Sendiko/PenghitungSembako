@@ -99,7 +99,7 @@ class FormViewModel(
         }
         parseCurrencyString(state.value.pricePerUnit)?.let {
             val sembako = Sembako(
-                id = state.value.id?:0,
+                id = state.value.id ?: 0,
                 name = state.value.name,
                 pricePerUnit = it,
                 unit = state.value.unit
@@ -123,7 +123,7 @@ class FormViewModel(
             val cleaned = input
                 .replace(".", "")
             cleaned.toDouble()
-        } catch (e: NumberFormatException) {
+        } catch (_: NumberFormatException) {
             null
         }
     }

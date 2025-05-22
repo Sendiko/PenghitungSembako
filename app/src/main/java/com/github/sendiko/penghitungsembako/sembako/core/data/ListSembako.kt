@@ -1,8 +1,5 @@
 package com.github.sendiko.penghitungsembako.sembako.core.data
 
-import com.github.sendiko.penghitungsembako.R
-import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
-
 val listSembako = listOf(
     Sembako(
         name = "Telur",

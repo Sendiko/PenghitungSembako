@@ -2,12 +2,10 @@ package com.github.sendiko.penghitungsembako.core.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.github.sendiko.penghitungsembako.core.database.AppDatabase
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.core.preferences.dataStore
 import com.github.sendiko.penghitungsembako.sembako.core.data.SembakoDao
-import com.github.sendiko.penghitungsembako.sembako.dashboard.presentation.DashboardViewModel
 
 class AppModuleImpl(
     val context: Context

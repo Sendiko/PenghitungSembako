@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembali.ui.theme
+package com.github.sendiko.penghitungsembako.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
