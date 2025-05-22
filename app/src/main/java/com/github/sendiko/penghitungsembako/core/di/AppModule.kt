@@ -1,8 +1,11 @@
 package com.github.sendiko.penghitungsembako.core.di
 
 import com.github.sendiko.penghitungsembako.core.database.AppDatabase
+import com.github.sendiko.penghitungsembako.core.network.ApiService
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.sembako.core.data.SembakoDao
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
 
 interface AppModule {
 
@@ -11,5 +14,11 @@ interface AppModule {
     val sembakoDao: SembakoDao
 
     val userPreferences: UserPreferences
+
+    val okHttpClient: OkHttpClient
+
+    val retrofit: Retrofit
+
+    val apiService: ApiService
 
 }
