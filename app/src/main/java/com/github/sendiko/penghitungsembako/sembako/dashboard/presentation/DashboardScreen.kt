@@ -19,37 +19,37 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ViewList
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.sendiko.penghitungsembako.R
@@ -82,10 +82,34 @@ fun DashboardScreen(
     val context = LocalContext.current
     Scaffold(
         topBar = {
-            LargeTopAppBar(
+            TopAppBar(
                 scrollBehavior = scrollBehavior,
                 title = {
                     Text(text = stringResource(R.string.app_name))
+                },
+                actions = {
+                    IconButton(
+                        onClick = { onNavigate(AboutDestination) }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Info,
+                            contentDescription = null
+                        )
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            BottomAppBar(
+                floatingActionButton = {
+                    FloatingActionButton(
+                        onClick = { onNavigate(FormDestination(null)) },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(R.string.create)
+                        )
+                    }
                 },
                 actions = {
                     IconButton(
@@ -108,26 +132,8 @@ fun DashboardScreen(
                             else stringResource(R.string.grid)
                         )
                     }
-                    IconButton(
-                        onClick = { onNavigate(AboutDestination) }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Info,
-                            contentDescription = null
-                        )
-                    }
                 }
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { onNavigate(FormDestination(null)) }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.create)
-                )
-            }
         }
     ) { paddingValues ->
         AnimatedVisibility(
@@ -150,7 +156,8 @@ fun DashboardScreen(
                         ) {
                             Text(
                                 text = it.name,
-                                style = MaterialTheme.typography.titleLarge
+                                style = MaterialTheme.typography.titleLarge,
+                                modifier = Modifier.weight(1f)
                             )
                             Text(
                                 text = stringResource(
@@ -159,7 +166,9 @@ fun DashboardScreen(
                                     it.unit
                                 ),
                                 style = MaterialTheme.typography.bodyLarge,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.weight(1f),
+                                textAlign = TextAlign.End
                             )
                         }
                     }
@@ -174,35 +183,16 @@ fun DashboardScreen(
                         label = stringResource(R.string.quantity),
                         trailingIcon = {
                             Text(
-                                text = if (state.usingOns)
-                                    stringResource(R.string.ons)
-                                else state.selectedSembako?.unit ?: "",
+                                text = state.selectedSembako?.unit ?: "",
                                 fontWeight = FontWeight.Black
                             )
                         },
                         message = state.message,
                         keyboardType = KeyboardType.Number
                     )
-                    Surface(
-                        onClick = {
-                            onEvent(DashboardEvent.OnUnitChange(!state.usingOns))
-                        },
-                        color = Color.Transparent
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Checkbox(
-                                checked = state.usingOns,
-                                onCheckedChange = { onEvent(DashboardEvent.OnUnitChange(!state.usingOns)) }
-                            )
-                            Text(
-                                text = stringResource(R.string.using_ons)
-                            )
-                        }
-                    }
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             modifier = Modifier
@@ -235,12 +225,15 @@ fun DashboardScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp),
+                        shape = RoundedCornerShape(16.dp),
                         onClick = {
                             onEvent(DashboardEvent.OnCalculateClick)
-                        }
+                        },
+                        contentPadding = PaddingValues(vertical = 16.dp)
                     ) {
                         Text(
-                            text = stringResource(R.string.count)
+                            text = stringResource(R.string.count),
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }
@@ -255,9 +248,10 @@ fun DashboardScreen(
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                 columns = StaggeredGridCells.Fixed(2),
                 contentPadding = PaddingValues(
-                    top = paddingValues.calculateTopPadding(),
+                    top = paddingValues.calculateTopPadding() + 16.dp,
                     start = 16.dp,
-                    end = 16.dp
+                    end = 16.dp,
+                    bottom = paddingValues.calculateBottomPadding()+ 16.dp
                 ),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalItemSpacing = 16.dp

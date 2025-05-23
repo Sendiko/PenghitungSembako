@@ -81,7 +81,7 @@ fun LoginScreen(
                         Spacer(Modifier.height(8.dp))
                         Button(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(16.dp),
                             enabled = !state.isSigningIn,
                             contentPadding = PaddingValues(vertical = 16.dp),
                             onClick = { onEvent(LoginEvent.OnLoginClicked) }) {

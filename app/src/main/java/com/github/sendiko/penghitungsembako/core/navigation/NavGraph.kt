@@ -1,6 +1,5 @@
 package com.github.sendiko.penghitungsembako.core.navigation
 
-import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
