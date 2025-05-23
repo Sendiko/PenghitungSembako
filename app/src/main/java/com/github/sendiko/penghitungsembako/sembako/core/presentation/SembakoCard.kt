@@ -49,7 +49,7 @@ fun SembakoCard(
             ) {
                 Text(
                     text = sembako.name,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.weight(1f)
                 )
                 IconButton(
@@ -63,7 +63,6 @@ fun SembakoCard(
             }
             Text(
                 text = stringResource(R.string.sembako_harga, sembako.pricePerUnit, sembako.unit),
-                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Start
