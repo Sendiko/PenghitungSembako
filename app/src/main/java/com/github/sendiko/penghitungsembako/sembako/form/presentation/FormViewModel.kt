@@ -30,7 +30,12 @@ class FormViewModel(
             is FormEvent.OnDeleteClicked -> updateDeleting(event.isDeleting)
             FormEvent.OnSave -> saveSembako()
             FormEvent.OnDelete -> deleteSembako()
+            is FormEvent.OnDropDownChanged -> updateDropdown(event.isExpanding)
         }
+    }
+
+    private fun updateDropdown(isExpanding: Boolean) {
+        _state.update { it.copy(isExpanding = isExpanding) }
     }
 
     private fun updateDeleting(isDeleting: Boolean) {

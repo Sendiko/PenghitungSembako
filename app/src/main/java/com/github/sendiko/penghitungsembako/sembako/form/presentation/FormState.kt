@@ -9,4 +9,5 @@ data class FormState(
     val isSaved: Boolean = false,
     val isDeleted: Boolean = false,
     val isDeleting: Boolean = false,
+    val isExpanding: Boolean = false,
 )

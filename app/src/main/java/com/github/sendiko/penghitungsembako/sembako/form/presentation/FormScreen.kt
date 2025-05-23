@@ -8,10 +8,14 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -27,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.github.sendiko.penghitungsembako.R
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
 import com.github.sendiko.penghitungsembako.sembako.form.presentation.components.ConfirmationDialog
+import kotlin.Unit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +59,7 @@ fun FormScreen(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = onNavigateBack
+                        onClick = { onNavigateBack() }
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Default.ArrowBack,
@@ -124,19 +129,47 @@ fun FormScreen(
                 )
             }
             item {
-                CustomTextField(
-                    value = state.unit,
-                    onValueChange = { onEvent(FormEvent.OnUnitChanged(it)) },
-                    label = stringResource(R.string.unit),
-                    isError = state.message.isNotBlank(),
-                    message = state.message,
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(R.drawable.weight),
-                            contentDescription = stringResource(R.string.unit)
-                        )
+                ExposedDropdownMenuBox(
+                    expanded = state.isExpanding,
+                    onExpandedChange = { onEvent(FormEvent.OnDropDownChanged(it)) }
+                ) {
+                    CustomTextField(
+                        modifier =
+                            Modifier.menuAnchor(MenuAnchorType.PrimaryEditable),
+                        value = state.unit,
+                        onValueChange = { onEvent(FormEvent.OnUnitChanged(it)) },
+                        label = stringResource(R.string.unit),
+                        isError = state.message.isNotBlank(),
+                        message = state.message,
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(R.drawable.weight),
+                                contentDescription = stringResource(R.string.unit)
+                            )
+                        },
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(
+                                modifier =
+                                    Modifier.menuAnchor(MenuAnchorType.PrimaryEditable),
+                                expanded = state.isExpanding,
+                            )
+                        },
+                    )
+                    ExposedDropdownMenu(
+                        expanded = state.isExpanding,
+                        onDismissRequest = { onEvent(FormEvent.OnDropDownChanged(false)) }
+                    ) {
+                        com.github.sendiko.penghitungsembako.sembako.form.presentation.Unit.entries.forEach {
+                            DropdownMenuItem(
+                                text = { Text(it.name) },
+                                onClick = {
+                                    onEvent(FormEvent.OnUnitChanged(it.name))
+                                },
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                            )
+                        }
                     }
-                )
+                }
             }
             item {
                 CustomTextField(
@@ -150,8 +183,9 @@ fun FormScreen(
                             text = stringResource(R.string.price),
                             fontWeight = FontWeight.Bold
                         )
-                    }
+                    },
                 )
+
             }
         }
     }
