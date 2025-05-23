@@ -16,6 +16,9 @@ import com.github.sendiko.penghitungsembako.sembako.dashboard.presentation.Dashb
 import com.github.sendiko.penghitungsembako.sembako.dashboard.presentation.DashboardViewModel
 import com.github.sendiko.penghitungsembako.sembako.form.presentation.FormScreen
 import com.github.sendiko.penghitungsembako.sembako.form.presentation.FormViewModel
+import com.github.sendiko.penghitungsembako.splash.data.SplashRepositoryImpl
+import com.github.sendiko.penghitungsembako.splash.presentation.SplashScreen
+import com.github.sendiko.penghitungsembako.splash.presentation.SplashViewModel
 import com.github.sendiko.penghitungsembako.user.presentation.LoginScreen
 import com.github.sendiko.penghitungsembako.user.presentation.LoginViewModel
 
@@ -24,9 +27,29 @@ fun NavGraph(
     navController: NavHostController,
 ) {
     NavHost(
-        startDestination = LoginDestination,
+        startDestination = SplashDestination,
         navController = navController,
         builder = {
+            composable<SplashDestination> {
+                val viewModel = viewModel<SplashViewModel>(
+                    factory = viewModelFactory {
+                        val splashRepository =
+                            SplashRepositoryImpl(SembakoApplication.module.userPreferences)
+                        SplashViewModel(splashRepository)
+                    }
+                )
+
+                val state by viewModel.state.collectAsStateWithLifecycle()
+
+                SplashScreen(
+                    state = state,
+                    onNavigate = {
+                        navController.navigate(it) {
+                            popUpTo(SplashDestination)
+                        }
+                    }
+                )
+            }
             composable<LoginDestination> {
                 val viewModel = viewModel<LoginViewModel>(
                     factory = viewModelFactory {
