@@ -1,5 +1,6 @@
 package com.github.sendiko.penghitungsembako.core.di
 
+import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.github.sendiko.penghitungsembako.core.database.AppDatabase
@@ -16,18 +17,18 @@ import java.util.concurrent.TimeUnit
 import kotlin.jvm.java
 
 class AppModuleImpl(
-    val context: Context
+    private val app: Application
 ): AppModule {
     override val database: AppDatabase
         get() = Room
-            .databaseBuilder(context, AppDatabase::class.java, "sembako.db")
+            .databaseBuilder(app.applicationContext, AppDatabase::class.java, "sembako.db")
             .build()
 
     override val sembakoDao: SembakoDao
         get() = database.sembakoDao
 
     override val userPreferences: UserPreferences
-        get() = UserPreferences(context.dataStore)
+        get() = UserPreferences(app.applicationContext.dataStore)
 
     override val okHttpClient: OkHttpClient
         get() = OkHttpClient.Builder()
@@ -53,5 +54,7 @@ class AppModuleImpl(
 
     override val apiService: ApiService
         get() = retrofit.create(ApiService::class.java)
+    override val application: Application
+        get() = app
 
 }

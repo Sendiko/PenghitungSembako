@@ -1,5 +1,6 @@
 package com.github.sendiko.penghitungsembako.core.di
 
+import android.app.Application
 import com.github.sendiko.penghitungsembako.core.database.AppDatabase
 import com.github.sendiko.penghitungsembako.core.network.ApiService
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
@@ -20,5 +21,7 @@ interface AppModule {
     val retrofit: Retrofit
 
     val apiService: ApiService
+
+    val application: Application
 
 }
