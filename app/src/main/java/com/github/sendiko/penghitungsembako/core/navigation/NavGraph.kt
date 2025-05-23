@@ -1,5 +1,6 @@
 package com.github.sendiko.penghitungsembako.core.navigation
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -16,15 +17,37 @@ import com.github.sendiko.penghitungsembako.sembako.dashboard.presentation.Dashb
 import com.github.sendiko.penghitungsembako.sembako.dashboard.presentation.DashboardViewModel
 import com.github.sendiko.penghitungsembako.sembako.form.presentation.FormScreen
 import com.github.sendiko.penghitungsembako.sembako.form.presentation.FormViewModel
+import com.github.sendiko.penghitungsembako.user.presentation.LoginScreen
+import com.github.sendiko.penghitungsembako.user.presentation.LoginViewModel
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
 ) {
     NavHost(
-        startDestination = DashboardDestination,
+        startDestination = LoginDestination,
         navController = navController,
         builder = {
+            composable<LoginDestination> {
+                val viewModel = viewModel<LoginViewModel>(
+                    factory = viewModelFactory {
+                        LoginViewModel(SembakoApplication.module.application)
+                    }
+                )
+                val state by viewModel.state.collectAsStateWithLifecycle()
+
+                LoginScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    onNavigate = {
+                        navController.navigate(DashboardDestination) {
+                            popUpTo(DashboardDestination) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
+            }
             composable<DashboardDestination> {
                 val viewModel = viewModel<DashboardViewModel>(
                     factory = viewModelFactory {
