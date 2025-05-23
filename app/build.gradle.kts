@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.core.splashscreen)
     ksp(libs.androidx.room.compiler)
     implementation(libs.content.box.with.notification)
     implementation(libs.retrofit2.retrofit)
