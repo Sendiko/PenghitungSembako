@@ -2,6 +2,7 @@ package com.github.sendiko.penghitungsembako.core.preferences
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.github.sendiko.penghitungsembako.user.domain.User
@@ -16,6 +17,19 @@ class UserPreferences(
     private val nameKey = stringPreferencesKey("name")
     private val emailKey = stringPreferencesKey("email")
     private val profileUrlKey = stringPreferencesKey("profile_url")
+    private val dynamicThemeKey = booleanPreferencesKey("dynamic_theme")
+
+    suspend fun setDynamicTheme(dynamicTheme: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[dynamicThemeKey] = dynamicTheme
+        }
+    }
+
+    fun getDynamicTheme(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[dynamicThemeKey] == true
+        }
+    }
 
     suspend fun saveUser(user: User) {
         dataStore.edit { preferences ->
