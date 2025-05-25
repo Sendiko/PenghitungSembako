@@ -32,4 +32,13 @@
     <string name="hello">Halo</string>
     <string name="login_title">Login dengan Google</string>
     <string name="login">Masuk</string>
+    <string name="profile">Profil</string>
+    <string name="logout">Keluar</string>
+    <string name="total_groceries">Jumlah Sembako</string>
+    <string name="total_income">Jumlah Pemasukan</string>
+    <string name="total_transaction">Jumlah Transaksi</string>
+    <string name="statistics">Statistik</string>
+    <string name="settings">Pengaturan</string>
+    <string name="dynamic_theme">Tema Dinamis</string>
+    <string name="app_theme">Tema Aplikasi</string>
 </resources>
