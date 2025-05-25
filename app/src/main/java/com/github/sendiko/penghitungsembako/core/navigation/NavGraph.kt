@@ -3,6 +3,7 @@ package com.github.sendiko.penghitungsembako.core.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -12,6 +13,11 @@ import androidx.navigation.toRoute
 import com.github.sendiko.penghitungsembako.about.presentation.AboutScreenRoot
 import com.github.sendiko.penghitungsembako.core.di.SembakoApplication
 import com.github.sendiko.penghitungsembako.core.di.viewModelFactory
+import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
+import com.github.sendiko.penghitungsembako.core.preferences.dataStore
+import com.github.sendiko.penghitungsembako.profile.data.ProfileRepositoryImpl
+import com.github.sendiko.penghitungsembako.profile.presentation.ProfileScreen
+import com.github.sendiko.penghitungsembako.profile.presentation.ProfileViewModel
 import com.github.sendiko.penghitungsembako.sembako.dashboard.presentation.DashboardScreen
 import com.github.sendiko.penghitungsembako.sembako.dashboard.presentation.DashboardViewModel
 import com.github.sendiko.penghitungsembako.sembako.form.presentation.FormScreen
@@ -86,6 +92,32 @@ fun NavGraph(
                     onEvent = viewModel::onEvent,
                     onNavigate = {
                         navController.navigate(it)
+                    }
+                )
+            }
+            composable<ProfileDestination> {
+                val context = LocalContext.current
+                val viewModel = viewModel<ProfileViewModel>(
+                    factory = viewModelFactory {
+                        val profileRepository = ProfileRepositoryImpl(
+                            context = context,
+                            userPreferences = UserPreferences(SembakoApplication.module.application.dataStore)
+                        )
+                        ProfileViewModel(profileRepository)
+                    }
+                )
+
+                val state by viewModel.state.collectAsStateWithLifecycle()
+
+                ProfileScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    onNavigate = {
+                        if (it == null) {
+                            navController.navigateUp()
+                        } else {
+                            navController.navigate(it)
+                        }
                     }
                 )
             }

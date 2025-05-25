@@ -12,6 +12,9 @@ object LoginDestination
 object DashboardDestination
 
 @Serializable
+object ProfileDestination
+
+@Serializable
 object AboutDestination
 
 @Serializable

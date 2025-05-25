@@ -25,7 +25,7 @@ import androidx.compose.material.icons.automirrored.outlined.ViewList
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.GridView
-import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -53,8 +53,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.sendiko.penghitungsembako.R
-import com.github.sendiko.penghitungsembako.core.navigation.AboutDestination
+import com.github.sendiko.penghitungsembako.core.navigation.DashboardDestination
 import com.github.sendiko.penghitungsembako.core.navigation.FormDestination
+import com.github.sendiko.penghitungsembako.core.navigation.ProfileDestination
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
 import com.github.sendiko.penghitungsembako.sembako.core.presentation.SembakoCard
@@ -89,10 +90,10 @@ fun DashboardScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = { onNavigate(AboutDestination) }
+                        onClick = { onNavigate(ProfileDestination) }
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.Info,
+                            imageVector = Icons.Outlined.Person,
                             contentDescription = null
                         )
                     }
