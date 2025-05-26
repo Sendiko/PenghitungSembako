@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.user.presentation
+package com.github.sendiko.penghitungsembako.login.presentation
 
 data class LoginState(
     val isSigningIn: Boolean = false,

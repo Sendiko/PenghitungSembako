@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.user.data
+package com.github.sendiko.penghitungsembako.login.data
 
 import com.google.gson.annotations.SerializedName
 
