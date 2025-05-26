@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
-import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
-import com.github.sendiko.penghitungsembako.sembako.core.data.SembakoDao
+import com.github.sendiko.penghitungsembako.sembako.dashboard.data.DashboardRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -15,14 +14,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
-    private val prefs: UserPreferences,
-    private val dao: SembakoDao
+    private val repository: DashboardRepositoryImpl
 ) : ViewModel() {
 
-    private val _uiMode = prefs.getUiMode()
+    private val _user = repository.getUser()
+    private val _sembako = repository.getAllGroceries()
+    private val _uiMode = repository.getUiMode()
     private val _state = MutableStateFlow(DashboardState())
-    val state = combine(_uiMode, _state) { uiMode, state ->
-        state.copy(uiMode = uiMode)
+    val state = combine(_uiMode, _sembako, _user, _state) { uiMode, groceries, user, state ->
+        state.copy(uiMode = uiMode, sembako = groceries, user = user)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardState())
 
     override fun onCleared() {
@@ -111,7 +111,7 @@ class DashboardViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
-            dao.getAll().collect {
+            repository.getAllGroceries().collect {
                 _state.update { state ->
                     state.copy(sembako = it)
                 }
@@ -120,6 +120,6 @@ class DashboardViewModel(
     }
 
     private fun setPreference(uiMode: UiMode) = viewModelScope.launch {
-        prefs.setUiMode(uiMode)
+        repository.setUiMode(uiMode)
     }
 }
