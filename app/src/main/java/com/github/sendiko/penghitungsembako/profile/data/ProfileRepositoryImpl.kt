@@ -6,7 +6,7 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.exceptions.ClearCredentialException
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.profile.domain.ProfileRepository
-import com.github.sendiko.penghitungsembako.user.domain.User
+import com.github.sendiko.penghitungsembako.login.domain.User
 import kotlinx.coroutines.flow.Flow
 
 class ProfileRepositoryImpl(

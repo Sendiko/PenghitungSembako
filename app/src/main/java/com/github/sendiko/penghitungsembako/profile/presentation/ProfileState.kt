@@ -1,6 +1,6 @@
 package com.github.sendiko.penghitungsembako.profile.presentation
 
-import com.github.sendiko.penghitungsembako.user.domain.User
+import com.github.sendiko.penghitungsembako.login.domain.User
 
 data class ProfileState(
     val isSigningOut: Boolean = false,

@@ -12,12 +12,12 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,11 +47,13 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.github.sendiko.penghitungsembako.R
+import com.github.sendiko.penghitungsembako.core.navigation.AboutDestination
+import com.github.sendiko.penghitungsembako.core.navigation.SplashDestination
 import com.github.sendiko.penghitungsembako.core.ui.theme.AppTheme
 import com.github.sendiko.penghitungsembako.profile.presentation.component.LogoutCard
 import com.github.sendiko.penghitungsembako.profile.presentation.component.StatsCard
 import com.github.sendiko.penghitungsembako.profile.presentation.utils.formatRupiah
-import com.github.sendiko.penghitungsembako.user.domain.User
+import com.github.sendiko.penghitungsembako.login.domain.User
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,7 +64,8 @@ fun ProfileScreen(
 ) {
 
     LaunchedEffect(state.isSignOutSuccessful) {
-        
+        if (state.isSignOutSuccessful)
+            onNavigate(SplashDestination)
     }
 
     Scaffold(
@@ -211,7 +214,7 @@ fun ProfileScreen(
                             }
                         )
                         Text(
-                            text = if (state.dynamicTheme)
+                            text = if (isTrue)
                                 stringResource(R.string.dynamic_theme)
                             else stringResource(R.string.app_theme),
                             style = MaterialTheme.typography.bodyLarge,
@@ -220,8 +223,30 @@ fun ProfileScreen(
                 }
             }
             item {
+                Card(
+                    onClick = {
+                        onNavigate(AboutDestination)
+                    }
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(48.dp),
+                            imageVector = Icons.Outlined.Info,
+                            contentDescription = stringResource(R.string.about)
+                        )
+                        Text(
+                            text = stringResource(R.string.about),
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                }
+            }
+            item {
                 LogoutCard(
-                    onLogout = {  },
+                    onLogout = { onEvent(ProfileEvent.OnLogoutClicked) },
                     text = stringResource(R.string.logout),
                 ) {
                     Icon(
