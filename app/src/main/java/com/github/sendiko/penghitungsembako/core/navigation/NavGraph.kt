@@ -25,8 +25,8 @@ import com.github.sendiko.penghitungsembako.sembako.form.presentation.FormViewMo
 import com.github.sendiko.penghitungsembako.splash.data.SplashRepositoryImpl
 import com.github.sendiko.penghitungsembako.splash.presentation.SplashScreen
 import com.github.sendiko.penghitungsembako.splash.presentation.SplashViewModel
-import com.github.sendiko.penghitungsembako.user.presentation.LoginScreen
-import com.github.sendiko.penghitungsembako.user.presentation.LoginViewModel
+import com.github.sendiko.penghitungsembako.login.presentation.LoginScreen
+import com.github.sendiko.penghitungsembako.login.presentation.LoginViewModel
 
 @Composable
 fun NavGraph(
@@ -113,10 +113,12 @@ fun NavGraph(
                     state = state,
                     onEvent = viewModel::onEvent,
                     onNavigate = {
-                        if (it == null) {
-                            navController.navigateUp()
-                        } else {
-                            navController.navigate(it)
+                        when(it) {
+                            null -> navController.navigateUp()
+                            is SplashDestination -> navController.navigate(SplashDestination) {
+                                popUpTo(SplashDestination) { inclusive = true }
+                            }
+                            else -> navController.navigate(it)
                         }
                     }
                 )

@@ -5,7 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.github.sendiko.penghitungsembako.user.domain.User
+import com.github.sendiko.penghitungsembako.login.domain.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

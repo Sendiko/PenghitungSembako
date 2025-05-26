@@ -1,8 +1,8 @@
 package com.github.sendiko.penghitungsembako.core.network
 
-import com.github.sendiko.penghitungsembako.user.data.GetUserResponse
-import com.github.sendiko.penghitungsembako.user.data.SaveUserRequest
-import com.github.sendiko.penghitungsembako.user.data.SaveUserResponse
+import com.github.sendiko.penghitungsembako.login.data.GetUserResponse
+import com.github.sendiko.penghitungsembako.login.data.SaveUserRequest
+import com.github.sendiko.penghitungsembako.login.data.SaveUserResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
