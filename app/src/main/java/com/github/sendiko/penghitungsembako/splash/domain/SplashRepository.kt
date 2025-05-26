@@ -1,6 +1,6 @@
 package com.github.sendiko.penghitungsembako.splash.domain
 
-import com.github.sendiko.penghitungsembako.login.domain.User
+import com.github.sendiko.penghitungsembako.core.domain.User
 import kotlinx.coroutines.flow.Flow
 
 interface SplashRepository {

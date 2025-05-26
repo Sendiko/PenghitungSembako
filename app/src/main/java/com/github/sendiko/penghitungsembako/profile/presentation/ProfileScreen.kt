@@ -46,7 +46,7 @@ import com.github.sendiko.penghitungsembako.R
 import com.github.sendiko.penghitungsembako.core.navigation.AboutDestination
 import com.github.sendiko.penghitungsembako.core.navigation.SplashDestination
 import com.github.sendiko.penghitungsembako.core.ui.theme.AppTheme
-import com.github.sendiko.penghitungsembako.login.domain.User
+import com.github.sendiko.penghitungsembako.core.domain.User
 import com.github.sendiko.penghitungsembako.profile.presentation.component.LogoutCard
 import com.github.sendiko.penghitungsembako.profile.presentation.component.StatsCard
 import com.github.sendiko.penghitungsembako.profile.presentation.utils.formatRupiah

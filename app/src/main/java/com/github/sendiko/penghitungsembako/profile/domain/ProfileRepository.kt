@@ -1,6 +1,6 @@
 package com.github.sendiko.penghitungsembako.profile.domain
 
-import com.github.sendiko.penghitungsembako.login.domain.User
+import com.github.sendiko.penghitungsembako.core.domain.User
 import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {

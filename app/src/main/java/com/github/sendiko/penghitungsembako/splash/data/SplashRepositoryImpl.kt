@@ -2,7 +2,7 @@ package com.github.sendiko.penghitungsembako.splash.data
 
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.splash.domain.SplashRepository
-import com.github.sendiko.penghitungsembako.login.domain.User
+import com.github.sendiko.penghitungsembako.core.domain.User
 import kotlinx.coroutines.flow.Flow
 
 class SplashRepositoryImpl(

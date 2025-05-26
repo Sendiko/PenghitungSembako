@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.login.domain
+package com.github.sendiko.penghitungsembako.core.domain
 
 data class User(
     val username: String,
