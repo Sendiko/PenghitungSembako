@@ -14,10 +14,11 @@ class ProfileViewModel(
     private val repo: ProfileRepositoryImpl
 ) : ViewModel() {
 
+    private val _dynamicTheme = repo.getDynamicTheme()
     private val _user = repo.getUser()
     private val _state = MutableStateFlow(ProfileState())
-    val state = combine(_user, _state) { user, state ->
-        state.copy(user = user)
+    val state = combine(_user, _dynamicTheme, _state) { user, dynamicTheme, state ->
+        state.copy(user = user, dynamicTheme = dynamicTheme)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ProfileState())
 
     fun onEvent(event: ProfileEvent) {
@@ -49,6 +50,10 @@ class ProfileViewModel(
                     isSignOutSuccessful = false,
                     signOutError = "",
                 )
+            }
+
+            is ProfileEvent.OnThemeChanged -> viewModelScope.launch {
+                repo.setDynamicTheme(event.dynamicTheme)
             }
         }
     }

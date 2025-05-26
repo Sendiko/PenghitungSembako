@@ -31,10 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,10 +46,10 @@ import com.github.sendiko.penghitungsembako.R
 import com.github.sendiko.penghitungsembako.core.navigation.AboutDestination
 import com.github.sendiko.penghitungsembako.core.navigation.SplashDestination
 import com.github.sendiko.penghitungsembako.core.ui.theme.AppTheme
+import com.github.sendiko.penghitungsembako.login.domain.User
 import com.github.sendiko.penghitungsembako.profile.presentation.component.LogoutCard
 import com.github.sendiko.penghitungsembako.profile.presentation.component.StatsCard
 import com.github.sendiko.penghitungsembako.profile.presentation.utils.formatRupiah
-import com.github.sendiko.penghitungsembako.login.domain.User
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -182,14 +178,13 @@ fun ProfileScreen(
                 )
             }
             item {
-                var isTrue by remember { mutableStateOf(false) }
                 Card(
-                    onClick = { isTrue = !isTrue},
+                    onClick = { onEvent(ProfileEvent.OnThemeChanged(!state.dynamicTheme)) },
                     colors = CardDefaults.cardColors(
-                        containerColor = if (isTrue)
+                        containerColor = if (state.dynamicTheme)
                             MaterialTheme.colorScheme.tertiary
                         else MaterialTheme.colorScheme.surfaceContainer,
-                        contentColor = if (isTrue)
+                        contentColor = if (state.dynamicTheme)
                             MaterialTheme.colorScheme.onTertiary
                         else MaterialTheme.colorScheme.onSurface,
                     )
@@ -199,10 +194,10 @@ fun ProfileScreen(
                         horizontalAlignment = Alignment.Start
                     ) {
                         Switch(
-                            checked = isTrue,
-                            onCheckedChange = { isTrue = !isTrue },
+                            checked = state.dynamicTheme,
+                            onCheckedChange = { onEvent(ProfileEvent.OnThemeChanged(!state.dynamicTheme)) },
                             thumbContent = {
-                                if (isTrue)
+                                if (state.dynamicTheme)
                                     Icon(
                                         imageVector = Icons.Filled.Palette,
                                         contentDescription = stringResource(R.string.dynamic_theme)
@@ -214,7 +209,7 @@ fun ProfileScreen(
                             }
                         )
                         Text(
-                            text = if (isTrue)
+                            text = if (state.dynamicTheme)
                                 stringResource(R.string.dynamic_theme)
                             else stringResource(R.string.app_theme),
                             style = MaterialTheme.typography.bodyLarge,

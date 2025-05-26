@@ -9,4 +9,8 @@ interface ProfileRepository {
 
     suspend fun logout(): Result<Boolean>
 
+    fun getDynamicTheme(): Flow<Boolean>
+
+    suspend fun setDynamicTheme(dynamicTheme: Boolean)
+
 }

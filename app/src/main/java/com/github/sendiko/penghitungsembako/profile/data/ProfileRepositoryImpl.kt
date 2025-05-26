@@ -31,4 +31,12 @@ class ProfileRepositoryImpl(
             Result.failure(e)
         }
     }
+
+    override fun getDynamicTheme(): Flow<Boolean> {
+        return userPreferences.getDynamicTheme()
+    }
+
+    override suspend fun setDynamicTheme(dynamicTheme: Boolean) {
+        userPreferences.setDynamicTheme(dynamicTheme)
+    }
 }
