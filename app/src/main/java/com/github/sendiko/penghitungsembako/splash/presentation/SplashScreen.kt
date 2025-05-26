@@ -28,7 +28,7 @@ fun SplashScreen(
 
     LaunchedEffect(state.user) {
         delay(2000)
-        if (state.user == null) {
+        if (state.user.username.isBlank()) {
             onNavigate(LoginDestination)
         } else {
             onNavigate(DashboardDestination)

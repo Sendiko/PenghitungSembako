@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 class SplashViewModel(
-    private val repo: SplashRepositoryImpl
+    repo: SplashRepositoryImpl
 ): ViewModel() {
 
     private val _user = repo.getUser()
