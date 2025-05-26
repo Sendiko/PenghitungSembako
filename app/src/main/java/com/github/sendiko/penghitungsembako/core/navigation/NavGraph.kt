@@ -27,6 +27,7 @@ import com.github.sendiko.penghitungsembako.splash.presentation.SplashScreen
 import com.github.sendiko.penghitungsembako.splash.presentation.SplashViewModel
 import com.github.sendiko.penghitungsembako.login.presentation.LoginScreen
 import com.github.sendiko.penghitungsembako.login.presentation.LoginViewModel
+import com.github.sendiko.penghitungsembako.sembako.dashboard.data.DashboardRepositoryImpl
 
 @Composable
 fun NavGraph(
@@ -79,10 +80,11 @@ fun NavGraph(
             composable<DashboardDestination> {
                 val viewModel = viewModel<DashboardViewModel>(
                     factory = viewModelFactory {
-                        DashboardViewModel(
+                        val repository = DashboardRepositoryImpl(
                             dao = SembakoApplication.module.sembakoDao,
                             prefs = SembakoApplication.module.userPreferences
                         )
+                        DashboardViewModel(repository)
                     }
                 )
                 val state by viewModel.state.collectAsStateWithLifecycle()
