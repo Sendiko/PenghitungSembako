@@ -6,7 +6,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +35,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -95,22 +95,21 @@ fun DashboardScreen(
                     ))
                 },
                 actions = {
-                    AsyncImage(
-                        modifier = Modifier
-                            .padding(end = 16.dp, top = 16.dp)
-                            .clip(CircleShape)
-                            .size(48.dp)
-                            .clickable {
-                                onNavigate(ProfileDestination)
-                            },
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(state.user?.profileUrl)
-                            .crossfade(true)
-                            .build(),
-                        error = painterResource(R.drawable.baseline_broken_image_24),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = state.user?.username,
-                    )
+                    IconButton(
+                        onClick = { onNavigate(ProfileDestination) }
+                    ) {
+                        AsyncImage(
+                            modifier = Modifier
+                                .clip(CircleShape),
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(state.user?.profileUrl)
+                                .crossfade(true)
+                                .build(),
+                            error = painterResource(R.drawable.baseline_broken_image_24),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = state.user?.username,
+                        )
+                    }
                 }
             )
         },
@@ -236,20 +235,42 @@ fun DashboardScreen(
                             )
                         }
                     }
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        onClick = {
-                            onEvent(DashboardEvent.OnCalculateClick)
-                        },
-                        contentPadding = PaddingValues(vertical = 16.dp)
+                    Row(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        Text(
-                            text = stringResource(R.string.count),
-                            fontWeight = FontWeight.Bold
-                        )
+                        AnimatedVisibility(
+                            modifier = Modifier
+                                .weight(1f),
+                            visible = state.totalPrice != 0.0
+                        ) {
+                            OutlinedButton(
+                                shape = RoundedCornerShape(16.dp),
+                                onClick = {
+
+                                },
+                                contentPadding = PaddingValues(vertical = 16.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.save),
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+                        Button(
+                            modifier = Modifier
+                                .weight(1f),
+                            shape = RoundedCornerShape(16.dp),
+                            onClick = {
+                                onEvent(DashboardEvent.OnCalculateClick)
+                            },
+                            contentPadding = PaddingValues(vertical = 16.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.count),
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
             }

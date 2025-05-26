@@ -41,13 +41,13 @@ class DashboardViewModel(
     }
 
     fun onCalculateClick() {
-        if (state.value.quantity.toIntOrNull() == null) {
+        if (state.value.quantity.toDoubleOrNull() == null) {
             _state.update {
                 it.copy(message = "Masukkan jumlah barang yang valid")
             }
             return
         }
-        if (state.value.quantity.toInt() < 0) {
+        if (state.value.quantity.toDouble() < 0) {
             _state.update {
                 it.copy(message = "Masukkan jumlah barang yang valid")
             }
@@ -59,20 +59,11 @@ class DashboardViewModel(
             }
         }
         if (state.value.quantity.isNotBlank()) {
-            if (!state.value.usingOns) {
-                _state.update {
-                    it.copy(
-                        totalPrice = it.selectedSembako?.pricePerUnit?.times(it.quantity.toDouble())
-                            ?: 0.0
-                    )
-                }
-            } else {
-                _state.update {
-                    it.copy(
-                        totalPrice = it.selectedSembako?.pricePerUnit?.times(it.quantity.toDouble())?.div(10)
-                            ?: 0.0
-                    )
-                }
+            _state.update {
+                it.copy(
+                    totalPrice = it.selectedSembako?.pricePerUnit?.times(it.quantity.toDouble())
+                        ?: 0.0
+                )
             }
             return
         }
