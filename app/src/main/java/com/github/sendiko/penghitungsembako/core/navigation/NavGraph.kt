@@ -15,6 +15,7 @@ import com.github.sendiko.penghitungsembako.core.di.SembakoApplication
 import com.github.sendiko.penghitungsembako.core.di.viewModelFactory
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.core.preferences.dataStore
+import com.github.sendiko.penghitungsembako.login.data.LoginRepositoryImpl
 import com.github.sendiko.penghitungsembako.profile.data.ProfileRepositoryImpl
 import com.github.sendiko.penghitungsembako.profile.presentation.ProfileScreen
 import com.github.sendiko.penghitungsembako.profile.presentation.ProfileViewModel
@@ -60,7 +61,11 @@ fun NavGraph(
             composable<LoginDestination> {
                 val viewModel = viewModel<LoginViewModel>(
                     factory = viewModelFactory {
-                        LoginViewModel(SembakoApplication.module.application)
+                        val loginRepository = LoginRepositoryImpl(
+                            remoteDataSource = SembakoApplication.module.apiService,
+                            localDataSource = SembakoApplication.module.userPreferences
+                        )
+                        LoginViewModel(loginRepository)
                     }
                 )
                 val state by viewModel.state.collectAsStateWithLifecycle()

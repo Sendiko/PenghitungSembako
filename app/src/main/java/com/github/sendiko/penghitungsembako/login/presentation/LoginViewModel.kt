@@ -1,13 +1,13 @@
 package com.github.sendiko.penghitungsembako.login.presentation
 
-import android.app.Application
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialResponse
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.sendiko.penghitungsembako.core.domain.User
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.core.preferences.dataStore
-import com.github.sendiko.penghitungsembako.core.domain.User
+import com.github.sendiko.penghitungsembako.login.domain.LoginRepository
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,10 +16,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    app: Application
-) : AndroidViewModel(app) {
+    val repository: LoginRepository
+): ViewModel() {
 
-    private val _prefs = UserPreferences(app.applicationContext.dataStore)
     private val _state = MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
 
@@ -47,8 +46,17 @@ class LoginViewModel(
                     email = googleId.id,
                     profileUrl = googleId.profilePictureUri.toString()
                 )
-                viewModelScope.launch { _prefs.saveUser(user) }
-                _state.update { it.copy(isSignInSuccessful = true) }
+                viewModelScope.launch {
+                    repository.saveUserToLocal(user)
+                        .onSuccess {
+                            repository.saveUserToRemote(user)
+                            _state.update { it.copy(isSignInSuccessful = true) }
+                        }
+                        .onFailure {
+                            val clearUser = User("", "", "")
+                            repository.saveUserToLocal(clearUser)
+                        }
+                }
             } catch (e: GoogleIdTokenParsingException) {
                 e.printStackTrace()
                 _state.update { it.copy(signInError = e.message.toString()) }
