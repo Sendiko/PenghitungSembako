@@ -5,8 +5,6 @@ import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sendiko.penghitungsembako.core.domain.User
-import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
-import com.github.sendiko.penghitungsembako.core.preferences.dataStore
 import com.github.sendiko.penghitungsembako.login.domain.LoginRepository
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -17,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     val repository: LoginRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
@@ -41,20 +39,23 @@ class LoginViewModel(
         if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
             try {
                 val googleId = GoogleIdTokenCredential.createFrom(credential.data)
-                val user = User(
+                var user = User(
                     username = googleId.displayName ?: "",
                     email = googleId.id,
-                    profileUrl = googleId.profilePictureUri.toString()
+                    profileUrl = googleId.profilePictureUri.toString(),
+                    id = 0
                 )
                 viewModelScope.launch {
-                    repository.saveUserToLocal(user)
-                        .onSuccess {
-                            repository.saveUserToRemote(user)
-                            _state.update { it.copy(isSignInSuccessful = true) }
-                        }
-                        .onFailure {
-                            val clearUser = User("", "", "")
-                            repository.saveUserToLocal(clearUser)
+                    repository.saveUserToRemote(user)
+                        .onSuccess { result ->
+                            repository.saveUserToLocal(result)
+                                .onSuccess {
+                                    _state.update { it.copy(isSignInSuccessful = true) }
+                                }
+                                .onFailure {
+                                    val clearUser = User(0, "", "", "")
+                                    repository.saveUserToLocal(clearUser)
+                                }
                         }
                 }
             } catch (e: GoogleIdTokenParsingException) {

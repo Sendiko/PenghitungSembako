@@ -17,7 +17,7 @@ class LoginRepositoryImpl(
     val localDataSource: UserPreferences
 ): LoginRepository {
 
-    override suspend fun saveUserToRemote(user: User): Result<Boolean> {
+    override suspend fun saveUserToRemote(user: User): Result<User> {
         return suspendCoroutine { continuation ->
             val request = SaveUserRequest(
                 profileUrl = user.profileUrl,
@@ -32,8 +32,25 @@ class LoginRepositoryImpl(
                             response: Response<SaveUserResponse?>
                         ) {
                             when(response.code()) {
-                                201 -> continuation.resume(Result.success(true))
-                                400 -> continuation.resume(Result.success(true)) // meaning the user data already exists
+                                201 -> {
+                                    val result = User(
+                                        id = response.body()!!.user.id,
+                                        username = response.body()!!.user.username,
+                                        email = response.body()!!.user.email,
+                                        profileUrl = response.body()!!.user.profileUrl
+                                    )
+                                    continuation.resume(Result.success(result))
+                                }
+                                200 -> {
+                                    /* Meaning the user data already exists */
+                                    val result = User(
+                                        id = response.body()!!.user.id,
+                                        username = response.body()!!.user.username,
+                                        email = response.body()!!.user.email,
+                                        profileUrl = response.body()!!.user.profileUrl
+                                    )
+                                    continuation.resume(Result.success(result))
+                                }
                                 else -> continuation.resume(Result.failure(Exception(response.message())))
                             }
                         }
