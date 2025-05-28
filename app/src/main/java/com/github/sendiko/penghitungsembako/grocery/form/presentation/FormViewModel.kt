@@ -108,7 +108,8 @@ class FormViewModel(
                 name = state.value.name,
                 pricePerUnit = it,
                 unit = state.value.unit,
-                imageUrl = ""
+                imageUrl = "",
+                remoteId = "0"
             )
             viewModelScope.launch {
                 if (state.value.id != null)
