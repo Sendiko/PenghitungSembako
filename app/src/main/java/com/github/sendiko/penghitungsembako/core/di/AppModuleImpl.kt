@@ -7,7 +7,7 @@ import com.github.sendiko.penghitungsembako.core.network.ApiService
 import com.github.sendiko.penghitungsembako.core.network.BASE_URL
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.core.preferences.dataStore
-import com.github.sendiko.penghitungsembako.grocery.core.data.SembakoDao
+import com.github.sendiko.penghitungsembako.grocery.core.data.GroceryDao
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -23,7 +23,7 @@ class AppModuleImpl(
             .databaseBuilder(app.applicationContext, AppDatabase::class.java, "sembako.db")
             .build()
 
-    override val sembakoDao: SembakoDao
+    override val sembakoDao: GroceryDao
         get() = database.sembakoDao
 
     override val userPreferences: UserPreferences
