@@ -3,15 +3,15 @@ package com.github.sendiko.penghitungsembako.grocery.form.presentation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sendiko.penghitungsembako.grocery.core.data.Sembako
-import com.github.sendiko.penghitungsembako.grocery.core.data.SembakoDao
+import com.github.sendiko.penghitungsembako.grocery.core.data.GroceryEntity
+import com.github.sendiko.penghitungsembako.grocery.core.data.GroceryDao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class FormViewModel(
-    private val dao: SembakoDao
+    private val dao: GroceryDao
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(FormState())
@@ -103,11 +103,12 @@ class FormViewModel(
             return
         }
         parseCurrencyString(state.value.pricePerUnit)?.let {
-            val sembako = Sembako(
+            val sembako = GroceryEntity(
                 id = state.value.id ?: 0,
                 name = state.value.name,
                 pricePerUnit = it,
-                unit = state.value.unit
+                unit = state.value.unit,
+                imageUrl = ""
             )
             viewModelScope.launch {
                 if (state.value.id != null)
