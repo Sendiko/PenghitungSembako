@@ -2,14 +2,16 @@ package com.github.sendiko.penghitungsembako.grocery.dashboard.domain
 
 import com.github.sendiko.penghitungsembako.core.domain.User
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
-import com.github.sendiko.penghitungsembako.grocery.core.data.Sembako
+import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
 import kotlinx.coroutines.flow.Flow
 
 interface DashboardRepository {
 
     fun getUser(): Flow<User>
 
-    fun getAllGroceries(): Flow<List<Sembako>>
+    suspend fun getRemoteGroceries(userId: String): Result<List<Grocery>>
+
+    suspend fun getLocalGroceries(): Flow<List<Grocery>>
 
     suspend fun setUiMode(uiMode: UiMode)
 

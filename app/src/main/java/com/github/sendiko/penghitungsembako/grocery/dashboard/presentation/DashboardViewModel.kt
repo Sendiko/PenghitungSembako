@@ -1,11 +1,11 @@
 package com.github.sendiko.penghitungsembako.grocery.dashboard.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
-import com.github.sendiko.penghitungsembako.grocery.core.data.Sembako
+import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
 import com.github.sendiko.penghitungsembako.grocery.dashboard.data.DashboardRepositoryImpl
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -18,17 +18,11 @@ class DashboardViewModel(
 ) : ViewModel() {
 
     private val _user = repository.getUser()
-    private val _sembako = repository.getAllGroceries()
     private val _uiMode = repository.getUiMode()
     private val _state = MutableStateFlow(DashboardState())
-    val state = combine(_uiMode, _sembako, _user, _state) { uiMode, groceries, user, state ->
-        state.copy(uiMode = uiMode, sembako = groceries, user = user)
+    val state = combine(_uiMode, _user, _state) { uiMode, user, state ->
+        state.copy(uiMode = uiMode, user = user)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardState())
-
-    override fun onCleared() {
-        Log.i("VM", "onCleared: DashboardViewModel Cleared")
-        super.onCleared()
-    }
 
     fun dismissBottomSheet() {
         _state.update {
@@ -69,7 +63,7 @@ class DashboardViewModel(
         }
     }
 
-    fun onSembakoClick(sembako: Sembako) {
+    fun onSembakoClick(sembako: Grocery) {
         _state.update {
             it.copy(selectedSembako = sembako)
         }
@@ -101,12 +95,20 @@ class DashboardViewModel(
     }
 
     private fun loadData() {
+        _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            repository.getAllGroceries().collect {
-                _state.update { state ->
-                    state.copy(sembako = it)
+            delay(1000)
+            repository
+                .getRemoteGroceries(state.value.user!!.id.toString())
+                .onSuccess { result ->
+                    _state.update { it.copy(sembako = result, isLoading = false) }
                 }
-            }
+                .onFailure {
+                    repository.getLocalGroceries()
+                        .collect { result ->
+                            _state.update { it.copy(sembako = result, isLoading = false) }
+                        }
+                }
         }
     }
 
