@@ -13,6 +13,8 @@ interface DashboardRepository {
 
     suspend fun getLocalGroceries(): Flow<List<Grocery>>
 
+    suspend fun saveGroceries(groceries: List<Grocery>): Result<Boolean>
+
     suspend fun setUiMode(uiMode: UiMode)
 
     fun getUiMode(): Flow<UiMode>

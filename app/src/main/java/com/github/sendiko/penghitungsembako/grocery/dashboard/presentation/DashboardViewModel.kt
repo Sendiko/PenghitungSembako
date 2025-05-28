@@ -1,5 +1,6 @@
 package com.github.sendiko.penghitungsembako.grocery.dashboard.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
@@ -101,6 +102,7 @@ class DashboardViewModel(
             repository
                 .getRemoteGroceries(state.value.user!!.id.toString())
                 .onSuccess { result ->
+                    repository.saveGroceries(result)
                     _state.update { it.copy(sembako = result, isLoading = false) }
                 }
                 .onFailure {

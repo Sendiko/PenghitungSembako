@@ -5,6 +5,7 @@ import com.github.sendiko.penghitungsembako.core.network.ApiService
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.grocery.core.data.GroceryDao
+import com.github.sendiko.penghitungsembako.grocery.core.data.GroceryEntity
 import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
 import com.github.sendiko.penghitungsembako.grocery.dashboard.data.dto.GetGroceriesResponse
 import com.github.sendiko.penghitungsembako.grocery.dashboard.domain.DashboardRepository
@@ -35,7 +36,7 @@ class DashboardRepositoryImpl(
                             call: Call<GetGroceriesResponse?>,
                             response: Response<GetGroceriesResponse?>
                         ) {
-                            when(response.code()) {
+                            when (response.code()) {
                                 200 -> {
                                     val result = response.body()!!.groceries.map {
                                         Grocery(
@@ -48,6 +49,7 @@ class DashboardRepositoryImpl(
                                     }
                                     continuation.resume(Result.success(result))
                                 }
+
                                 400 -> continuation.resume(Result.failure(Exception("Bad Request")))
                                 else -> continuation.resume(Result.failure(Exception("Server error.")))
                             }
@@ -79,6 +81,25 @@ class DashboardRepositoryImpl(
         return result
     }
 
+    override suspend fun saveGroceries(groceries: List<Grocery>): Result<Boolean> {
+        return try {
+            localDataSource.deleteAll()
+
+            groceries.forEach { grocery ->
+                val item = GroceryEntity(
+                    name = grocery.name,
+                    unit = grocery.unit,
+                    pricePerUnit = grocery.pricePerUnit.toDouble(),
+                    imageUrl = grocery.imageUrl,
+                    remoteId = grocery.id.toString()
+                )
+                localDataSource.insert(item)
+            }
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
     override suspend fun setUiMode(uiMode: UiMode) {
         prefs.setUiMode(uiMode)
     }
