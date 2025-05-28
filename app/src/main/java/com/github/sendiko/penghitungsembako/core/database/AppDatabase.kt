@@ -2,15 +2,15 @@ package com.github.sendiko.penghitungsembako.core.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.github.sendiko.penghitungsembako.grocery.core.data.Sembako
-import com.github.sendiko.penghitungsembako.grocery.core.data.SembakoDao
+import com.github.sendiko.penghitungsembako.grocery.core.data.GroceryEntity
+import com.github.sendiko.penghitungsembako.grocery.core.data.GroceryDao
 
 @Database(
-    entities = [Sembako::class],
-    version = 1
+    entities = [GroceryEntity::class],
+    version = 4
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract val sembakoDao: SembakoDao
+    abstract val sembakoDao: GroceryDao
 
 }

@@ -8,21 +8,21 @@ import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface SembakoDao {
+interface GroceryDao {
 
     @Query("SELECT * FROM sembako")
-    fun getAll(): Flow<List<Sembako>>
+    fun getAll(): Flow<List<GroceryEntity>>
 
     @Query("SELECT * FROM sembako WHERE id = :id")
-    suspend fun getById(id: Int): Sembako
+    suspend fun getById(id: Int): GroceryEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(sembako: Sembako)
+    suspend fun insert(sembako: GroceryEntity)
 
     @Query("DELETE FROM sembako WHERE id = :id")
     suspend fun delete(id: Int)
 
     @Update
-    suspend fun update(sembako: Sembako)
+    suspend fun update(sembako: GroceryEntity)
 
 }

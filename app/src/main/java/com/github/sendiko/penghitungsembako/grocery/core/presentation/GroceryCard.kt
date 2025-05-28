@@ -20,16 +20,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.sendiko.penghitungsembako.R
-import com.github.sendiko.penghitungsembako.grocery.core.data.Sembako
-import com.github.sendiko.penghitungsembako.grocery.core.data.listSembako
+import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
 
 @Composable
-fun SembakoCard(
+fun GroceryCard(
     modifier: Modifier = Modifier,
-    sembako: Sembako,
+    grocery: Grocery,
     onClick: () ->  Unit,
     onEdit: () -> Unit,
 ) {
@@ -48,7 +46,7 @@ fun SembakoCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = sembako.name,
+                    text = grocery.name,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.weight(1f)
                 )
@@ -62,22 +60,11 @@ fun SembakoCard(
                 }
             }
             Text(
-                text = stringResource(R.string.sembako_harga, sembako.pricePerUnit, sembako.unit),
+                text = stringResource(R.string.sembako_harga, grocery.pricePerUnit.toDouble(), grocery.unit),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Start
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun SembakoCardPrev() {
-    Surface {
-        SembakoCard(
-            sembako = listSembako.first(), onClick = {},
-            onEdit = {  }
-        )
     }
 }
