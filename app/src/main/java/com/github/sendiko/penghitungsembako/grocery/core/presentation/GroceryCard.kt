@@ -1,5 +1,6 @@
 package com.github.sendiko.penghitungsembako.grocery.core.presentation
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,10 +18,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.github.sendiko.penghitungsembako.R
 import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
 
@@ -38,11 +44,24 @@ fun GroceryCard(
         onClick = onClick
     ) {
         Column (
-            modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            AsyncImage(
+                modifier = Modifier.fillMaxWidth(),
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(grocery.imageUrl.replace("http", "https"))
+                    .crossfade(true)
+                    .build(),
+                contentDescription = grocery.name,
+                error = painterResource(R.drawable.baseline_broken_image_24),
+                contentScale = ContentScale.Crop,
+                onError = {
+                    Log.i("IMAGE", "GroceryCard: ${it.result.throwable.message}")
+                }
+            )
             Row(
+                modifier = Modifier.padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -62,7 +81,9 @@ fun GroceryCard(
             Text(
                 text = stringResource(R.string.sembako_harga, grocery.pricePerUnit.toDouble(), grocery.unit),
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 textAlign = TextAlign.Start
             )
         }
