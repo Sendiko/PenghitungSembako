@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.sembako.form.presentation
+package com.github.sendiko.penghitungsembako.grocery.form.presentation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.sendiko.penghitungsembako.R
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
-import com.github.sendiko.penghitungsembako.sembako.form.presentation.components.ConfirmationDialog
+import com.github.sendiko.penghitungsembako.grocery.form.presentation.components.ConfirmationDialog
 import kotlin.Unit
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -159,7 +159,7 @@ fun FormScreen(
                         expanded = state.isExpanding,
                         onDismissRequest = { onEvent(FormEvent.OnDropDownChanged(false)) }
                     ) {
-                        com.github.sendiko.penghitungsembako.sembako.form.presentation.Unit.entries.forEach {
+                        com.github.sendiko.penghitungsembako.grocery.form.presentation.Unit.entries.forEach {
                             DropdownMenuItem(
                                 text = { Text(it.name) },
                                 onClick = {

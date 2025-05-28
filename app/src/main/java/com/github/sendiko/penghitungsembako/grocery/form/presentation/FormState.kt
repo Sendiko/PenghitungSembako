@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.sembako.form.presentation
+package com.github.sendiko.penghitungsembako.grocery.form.presentation
 
 data class FormState(
     val id: Int? = null,

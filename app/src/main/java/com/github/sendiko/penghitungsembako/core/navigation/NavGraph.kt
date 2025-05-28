@@ -19,16 +19,16 @@ import com.github.sendiko.penghitungsembako.login.data.LoginRepositoryImpl
 import com.github.sendiko.penghitungsembako.profile.data.ProfileRepositoryImpl
 import com.github.sendiko.penghitungsembako.profile.presentation.ProfileScreen
 import com.github.sendiko.penghitungsembako.profile.presentation.ProfileViewModel
-import com.github.sendiko.penghitungsembako.sembako.dashboard.presentation.DashboardScreen
-import com.github.sendiko.penghitungsembako.sembako.dashboard.presentation.DashboardViewModel
-import com.github.sendiko.penghitungsembako.sembako.form.presentation.FormScreen
-import com.github.sendiko.penghitungsembako.sembako.form.presentation.FormViewModel
+import com.github.sendiko.penghitungsembako.grocery.dashboard.presentation.DashboardScreen
+import com.github.sendiko.penghitungsembako.grocery.dashboard.presentation.DashboardViewModel
+import com.github.sendiko.penghitungsembako.grocery.form.presentation.FormScreen
+import com.github.sendiko.penghitungsembako.grocery.form.presentation.FormViewModel
 import com.github.sendiko.penghitungsembako.splash.data.SplashRepositoryImpl
 import com.github.sendiko.penghitungsembako.splash.presentation.SplashScreen
 import com.github.sendiko.penghitungsembako.splash.presentation.SplashViewModel
 import com.github.sendiko.penghitungsembako.login.presentation.LoginScreen
 import com.github.sendiko.penghitungsembako.login.presentation.LoginViewModel
-import com.github.sendiko.penghitungsembako.sembako.dashboard.data.DashboardRepositoryImpl
+import com.github.sendiko.penghitungsembako.grocery.dashboard.data.DashboardRepositoryImpl
 
 @Composable
 fun NavGraph(

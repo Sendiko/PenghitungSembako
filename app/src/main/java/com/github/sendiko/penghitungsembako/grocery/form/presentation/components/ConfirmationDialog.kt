@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.sembako.form.presentation.components
+package com.github.sendiko.penghitungsembako.grocery.form.presentation.components
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme

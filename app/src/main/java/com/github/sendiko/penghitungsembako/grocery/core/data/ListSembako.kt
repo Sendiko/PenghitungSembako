@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.sembako.core.data
+package com.github.sendiko.penghitungsembako.grocery.core.data
 
 val listSembako = listOf(
     Sembako(

@@ -1,11 +1,11 @@
-package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
+package com.github.sendiko.penghitungsembako.grocery.dashboard.presentation
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
-import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
-import com.github.sendiko.penghitungsembako.sembako.dashboard.data.DashboardRepositoryImpl
+import com.github.sendiko.penghitungsembako.grocery.core.data.Sembako
+import com.github.sendiko.penghitungsembako.grocery.dashboard.data.DashboardRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine

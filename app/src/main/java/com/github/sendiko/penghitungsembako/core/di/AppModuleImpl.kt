@@ -1,14 +1,13 @@
 package com.github.sendiko.penghitungsembako.core.di
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Room
 import com.github.sendiko.penghitungsembako.core.database.AppDatabase
 import com.github.sendiko.penghitungsembako.core.network.ApiService
 import com.github.sendiko.penghitungsembako.core.network.BASE_URL
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.core.preferences.dataStore
-import com.github.sendiko.penghitungsembako.sembako.core.data.SembakoDao
+import com.github.sendiko.penghitungsembako.grocery.core.data.SembakoDao
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

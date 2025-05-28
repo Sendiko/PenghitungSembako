@@ -2,8 +2,8 @@ package com.github.sendiko.penghitungsembako.core.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
-import com.github.sendiko.penghitungsembako.sembako.core.data.SembakoDao
+import com.github.sendiko.penghitungsembako.grocery.core.data.Sembako
+import com.github.sendiko.penghitungsembako.grocery.core.data.SembakoDao
 
 @Database(
     entities = [Sembako::class],

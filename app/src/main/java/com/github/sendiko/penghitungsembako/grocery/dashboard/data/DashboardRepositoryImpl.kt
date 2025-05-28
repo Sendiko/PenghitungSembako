@@ -1,11 +1,11 @@
-package com.github.sendiko.penghitungsembako.sembako.dashboard.data
+package com.github.sendiko.penghitungsembako.grocery.dashboard.data
 
 import com.github.sendiko.penghitungsembako.core.domain.User
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
-import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
-import com.github.sendiko.penghitungsembako.sembako.core.data.SembakoDao
-import com.github.sendiko.penghitungsembako.sembako.dashboard.domain.DashboardRepository
+import com.github.sendiko.penghitungsembako.grocery.core.data.Sembako
+import com.github.sendiko.penghitungsembako.grocery.core.data.SembakoDao
+import com.github.sendiko.penghitungsembako.grocery.dashboard.domain.DashboardRepository
 import kotlinx.coroutines.flow.Flow
 
 class DashboardRepositoryImpl(

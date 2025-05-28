@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
+package com.github.sendiko.penghitungsembako.grocery.dashboard.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -62,7 +62,7 @@ import com.github.sendiko.penghitungsembako.core.navigation.FormDestination
 import com.github.sendiko.penghitungsembako.core.navigation.ProfileDestination
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
-import com.github.sendiko.penghitungsembako.sembako.core.presentation.SembakoCard
+import com.github.sendiko.penghitungsembako.grocery.core.presentation.SembakoCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

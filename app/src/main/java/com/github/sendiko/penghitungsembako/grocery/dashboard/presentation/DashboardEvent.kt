@@ -1,7 +1,7 @@
-package com.github.sendiko.penghitungsembako.sembako.dashboard.presentation
+package com.github.sendiko.penghitungsembako.grocery.dashboard.presentation
 
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
-import com.github.sendiko.penghitungsembako.sembako.core.data.Sembako
+import com.github.sendiko.penghitungsembako.grocery.core.data.Sembako
 
 sealed interface DashboardEvent {
     data class OnSembakoClick(val sembako: Sembako) : DashboardEvent

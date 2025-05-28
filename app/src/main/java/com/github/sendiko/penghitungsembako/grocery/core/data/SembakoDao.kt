@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.sembako.core.data
+package com.github.sendiko.penghitungsembako.grocery.core.data
 
 import androidx.room.Dao
 import androidx.room.Insert
