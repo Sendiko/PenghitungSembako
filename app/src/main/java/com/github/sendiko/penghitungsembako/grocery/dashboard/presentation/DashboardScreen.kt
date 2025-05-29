@@ -50,6 +50,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -62,6 +63,7 @@ import com.github.sendiko.penghitungsembako.core.navigation.FormDestination
 import com.github.sendiko.penghitungsembako.core.navigation.ProfileDestination
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
+import com.github.sendiko.penghitungsembako.core.ui.theme.bodyFontFamily
 import com.github.sendiko.penghitungsembako.grocery.core.presentation.GroceryCard
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 
@@ -89,6 +91,9 @@ fun DashboardScreen(
     ContentBoxWithNotification(
         isLoading = state.isLoading,
         message = state.message,
+        textStyle = TextStyle(
+            fontFamily = bodyFontFamily
+        ),
         content = {
             Scaffold(
                 topBar = {
@@ -126,7 +131,7 @@ fun DashboardScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
-                                    contentDescription = stringResource(R.string.create)
+                                    contentDescription = stringResource(R.string.create_title)
                                 )
                             }
                         },
