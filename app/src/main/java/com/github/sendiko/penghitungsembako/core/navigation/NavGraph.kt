@@ -29,6 +29,7 @@ import com.github.sendiko.penghitungsembako.splash.presentation.SplashViewModel
 import com.github.sendiko.penghitungsembako.login.presentation.LoginScreen
 import com.github.sendiko.penghitungsembako.login.presentation.LoginViewModel
 import com.github.sendiko.penghitungsembako.grocery.dashboard.data.DashboardRepositoryImpl
+import com.github.sendiko.penghitungsembako.grocery.form.data.FormRepositoryImpl
 
 @Composable
 fun NavGraph(
@@ -139,7 +140,12 @@ fun NavGraph(
 
                 val viewModel = viewModel<FormViewModel>(
                     factory = viewModelFactory {
-                        FormViewModel(SembakoApplication.module.sembakoDao)
+                        val repository = FormRepositoryImpl(
+                            localDataSource = SembakoApplication.module.sembakoDao,
+                            remoteDataSource = SembakoApplication.module.apiService,
+                            userPreferences = SembakoApplication.module.userPreferences
+                        )
+                        FormViewModel(repository)
                     }
                 )
                 LaunchedEffect(true) {
