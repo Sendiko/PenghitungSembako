@@ -17,7 +17,9 @@
     <string name="using_ons">Hitung gunakan ons</string>
     <string name="ons">ons</string>
     <string name="share">%1$s: Rp. %2$.2f x %3$.2f = Rp. %4$.2f</string>
-    <string name="create">Tambah Sembako</string>
+    <string name="create_title">Tambah Sembako</string>
+    <string name="create_label">Simpan</string>
+    <string name="full_screen">Tampilkan Gambar Penuh</string>
     <string name="back">Kembali</string>
     <string name="name">Nama sembako</string>
     <string name="unit">Satuan</string>
@@ -43,4 +45,5 @@
     <string name="settings">Pengaturan</string>
     <string name="dynamic_theme">Tema Dinamis</string>
     <string name="app_theme">Tema Aplikasi</string>
+    <string name="add_image">Tambah Foto</string>
 </resources>
