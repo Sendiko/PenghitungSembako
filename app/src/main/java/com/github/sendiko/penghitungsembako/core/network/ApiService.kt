@@ -7,6 +7,7 @@ import com.github.sendiko.penghitungsembako.grocery.form.data.dto.PostGroceryRes
 import com.github.sendiko.penghitungsembako.grocery.form.data.dto.UpdateGroceryResponse
 import com.github.sendiko.penghitungsembako.login.data.dto.SaveUserRequest
 import com.github.sendiko.penghitungsembako.login.data.dto.SaveUserResponse
+import com.github.sendiko.penghitungsembako.profile.data.dto.GetStatisticsResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -60,5 +61,10 @@ interface ApiService {
     fun deleteGrocery(
         @Path("id") id: Int,
     ): Call<DeleteGroceryResponse>
+
+    @GET("stats/{id}")
+    fun getStatistics(
+        @Path("id") id: Int
+    ): Call<GetStatisticsResponse>
 
 }
