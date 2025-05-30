@@ -17,16 +17,12 @@ class ListViewModel(
     val repository: ListRepositoryImpl
 ) : ViewModel() {
 
+    private val _uiMode = repository.getUiMode()
     private val _user = repository.getUser()
     private val _state = MutableStateFlow(ListState())
-    val state = combine(_user, _state) { user, state ->
-        state.copy(user = user)
+    val state = combine(_user, _uiMode, _state) { user, uiMode, state ->
+        state.copy(user = user, uiMode = uiMode)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ListState())
-
-    override fun onCleared() {
-        super.onCleared()
-        _state.update { it.copy(groceries = emptyList()) }
-    }
 
     fun dismissBottomSheet() {
         _state.update {

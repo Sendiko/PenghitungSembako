@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
@@ -68,8 +69,7 @@ fun ListScreen(
     val context = LocalContext.current
 
     LaunchedEffect(state.groceries) {
-        if (state.groceries.isEmpty())
-            onEvent(ListEvent.LoadData)
+        onEvent(ListEvent.LoadData)
     }
 
     ContentBoxWithNotification(
@@ -252,11 +252,26 @@ fun ListScreen(
                             top = paddingValues.calculateTopPadding() + 16.dp,
                             start = 16.dp,
                             end = 16.dp,
-                            bottom = paddingValues.calculateBottomPadding() + 16.dp
+                            bottom = 128.dp
                         ),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalItemSpacing = 16.dp
                     ) {
+                        item(
+                            span = StaggeredGridItemSpan.FullLine
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.CenterStart
+                            ) {
+                                UiModeSelector(
+                                    modifier = Modifier.wrapContentSize(),
+                                    selectedUiMode = state.uiMode,
+                                    onUiModeChange = {
+                                        onEvent(ListEvent.SetPreference(it))
+                                    }
+                                )
+                            }
+                        }
                         items(
                             items = state.groceries,
                             span = {
