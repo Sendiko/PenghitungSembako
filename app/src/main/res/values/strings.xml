@@ -46,4 +46,6 @@
     <string name="dynamic_theme">Tema Dinamis</string>
     <string name="app_theme">Tema Aplikasi</string>
     <string name="add_image">Tambah Foto</string>
+    <string name="your_grocery">Sembako Anda</string>
+    <string name="transaction">Transaksi</string>
 </resources>
