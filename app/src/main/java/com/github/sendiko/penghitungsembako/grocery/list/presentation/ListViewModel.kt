@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class ListViewModel(
     val repository: ListRepositoryImpl
-): ViewModel() {
+) : ViewModel() {
 
     private val _user = repository.getUser()
     private val _state = MutableStateFlow(ListState())
@@ -23,10 +23,15 @@ class ListViewModel(
         state.copy(user = user)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ListState())
 
+    override fun onCleared() {
+        super.onCleared()
+        _state.update { it.copy(groceries = emptyList()) }
+    }
+
     fun dismissBottomSheet() {
         _state.update {
             it.copy(
-                selectedSembako = null,
+                grocery = null,
                 quantity = "",
                 totalPrice = 0.0
             )
@@ -54,7 +59,7 @@ class ListViewModel(
         if (state.value.quantity.isNotBlank()) {
             _state.update {
                 it.copy(
-                    totalPrice = it.selectedSembako?.pricePerUnit?.times(it.quantity.toDouble())
+                    totalPrice = it.grocery?.pricePerUnit?.times(it.quantity.toDouble())
                         ?: 0.0
                 )
             }
@@ -64,7 +69,7 @@ class ListViewModel(
 
     fun onSembakoClick(sembako: Grocery) {
         _state.update {
-            it.copy(selectedSembako = sembako)
+            it.copy(grocery = sembako)
         }
     }
 
@@ -90,7 +95,7 @@ class ListViewModel(
     }
 
     private fun clearState() {
-        _state.update { it.copy(sembako = emptyList()) }
+        _state.update { it.copy(groceries = emptyList()) }
     }
 
     private fun loadData() {
@@ -101,12 +106,12 @@ class ListViewModel(
                 .getRemoteGroceries(state.value.user!!.id.toString())
                 .onSuccess { result ->
                     repository.saveGroceries(result)
-                    _state.update { it.copy(sembako = result, isLoading = false) }
+                    _state.update { it.copy(groceries = result, isLoading = false) }
                 }
                 .onFailure {
                     repository.getLocalGroceries()
                         .collect { result ->
-                            _state.update { it.copy(sembako = result, isLoading = false) }
+                            _state.update { it.copy(groceries = result, isLoading = false) }
                         }
                 }
         }

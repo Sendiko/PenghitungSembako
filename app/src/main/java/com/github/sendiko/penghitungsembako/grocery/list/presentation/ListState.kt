@@ -5,8 +5,8 @@ import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
 
 data class ListState(
-    val sembako: List<Grocery> = emptyList(),
-    val selectedSembako: Grocery? = null,
+    val groceries: List<Grocery> = emptyList(),
+    val grocery: Grocery? = null,
     val usingOns: Boolean = false,
     val quantity: String = "",
     val totalPrice: Double = 0.0,

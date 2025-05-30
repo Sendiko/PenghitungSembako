@@ -67,8 +67,8 @@ fun ListScreen(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val context = LocalContext.current
 
-    LaunchedEffect(state.sembako) {
-        if (state.sembako.isEmpty())
+    LaunchedEffect(state.groceries) {
+        if (state.groceries.isEmpty())
             onEvent(ListEvent.LoadData)
     }
 
@@ -116,7 +116,7 @@ fun ListScreen(
                 }
             ) { paddingValues ->
                 AnimatedVisibility(
-                    visible = state.selectedSembako != null
+                    visible = state.grocery != null
                 ) {
                     ModalBottomSheet(
                         onDismissRequest = {
@@ -126,7 +126,7 @@ fun ListScreen(
                         Column(
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            state.selectedSembako?.let {
+                            state.grocery?.let {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -162,7 +162,7 @@ fun ListScreen(
                                 label = stringResource(R.string.quantity),
                                 trailingIcon = {
                                     Text(
-                                        text = state.selectedSembako?.unit ?: "",
+                                        text = state.grocery?.unit ?: "",
                                         fontWeight = FontWeight.Black
                                     )
                                 },
@@ -186,8 +186,8 @@ fun ListScreen(
                                             context = context,
                                             message = context.getString(
                                                 R.string.share,
-                                                state.selectedSembako?.name ?: "",
-                                                state.selectedSembako?.pricePerUnit ?: 0,
+                                                state.grocery?.name ?: "",
+                                                state.grocery?.pricePerUnit ?: 0,
                                                 state.quantity.toDoubleOrNull() ?: 0.0,
                                                 state.totalPrice
                                             )
@@ -241,7 +241,7 @@ fun ListScreen(
                     }
                 }
                 AnimatedVisibility(
-                    visible = state.sembako.isNotEmpty(),
+                    visible = state.groceries.isNotEmpty(),
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
@@ -258,7 +258,7 @@ fun ListScreen(
                         verticalItemSpacing = 16.dp
                     ) {
                         items(
-                            items = state.sembako,
+                            items = state.groceries,
                             span = {
                                 if (state.uiMode == UiMode.LIST)
                                     StaggeredGridItemSpan.FullLine
@@ -278,7 +278,7 @@ fun ListScreen(
                     }
                 }
                 AnimatedVisibility(
-                    visible = state.sembako.isEmpty(),
+                    visible = state.groceries.isEmpty(),
                     modifier = Modifier.padding(paddingValues),
                     enter = fadeIn(),
                     exit = fadeOut()
