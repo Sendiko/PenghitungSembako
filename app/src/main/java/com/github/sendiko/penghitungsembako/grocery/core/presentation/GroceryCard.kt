@@ -67,7 +67,7 @@ fun GroceryCard(
                 Text(
                     text = grocery.name,
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
                 IconButton(
                     onClick = onEdit
