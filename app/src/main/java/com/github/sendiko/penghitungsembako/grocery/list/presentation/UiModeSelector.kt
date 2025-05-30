@@ -34,7 +34,6 @@ fun UiModeSelector(
         shape = CircleShape
     ) {
         Row(
-            modifier = Modifier.padding(4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             UiMode.entries.forEach { uiMode ->

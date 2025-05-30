@@ -65,7 +65,7 @@ fun ListScreen(
     onEvent: (ListEvent) -> Unit,
     onNavigate: (Any?) -> Unit,
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val context = LocalContext.current
 
     LaunchedEffect(state.groceries) {

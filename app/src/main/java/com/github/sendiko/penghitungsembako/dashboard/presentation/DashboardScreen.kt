@@ -48,7 +48,7 @@ fun DashboardScreen(
     state: DashboardState,
     onNavigate: (Any) -> Unit,
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     ContentBoxWithNotification(
         isLoading = state.isLoading,
