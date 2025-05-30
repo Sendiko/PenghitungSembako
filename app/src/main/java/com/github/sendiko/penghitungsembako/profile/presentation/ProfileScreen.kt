@@ -50,6 +50,8 @@ import com.github.sendiko.penghitungsembako.core.domain.User
 import com.github.sendiko.penghitungsembako.profile.presentation.component.LogoutCard
 import com.github.sendiko.penghitungsembako.profile.presentation.component.StatsCard
 import com.github.sendiko.penghitungsembako.profile.presentation.utils.formatRupiah
+import com.sendiko.content_box_with_notification.ContentBoxWithNotification
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,195 +66,213 @@ fun ProfileScreen(
             onNavigate(SplashDestination)
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = stringResource(R.string.profile))
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            onNavigate(null)
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                },
-            )
-        }
-    ) { paddingValues ->
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(2),
-            contentPadding = PaddingValues(
-                top = paddingValues.calculateTopPadding() + 16.dp,
-                start = 16.dp,
-                end = 16.dp
-            ),
-            verticalItemSpacing = 16.dp,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item(span = StaggeredGridItemSpan.FullLine) {
-                Surface(
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    shape = CircleShape
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        AsyncImage(
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .size(64.dp),
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(state.user?.profileUrl)
-                                .crossfade(true)
-                                .build(),
-                            error = painterResource(R.drawable.baseline_broken_image_24),
-                            contentScale = ContentScale.Crop,
-                            contentDescription = state.user?.username,
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Column {
-                            Text(
-                                text = state.user?.username ?: "",
-                                style = MaterialTheme.typography.headlineSmall,
-                            )
-                            Text(
-                                text = state.user?.email ?: "",
-                                style = MaterialTheme.typography.bodySmall,
-                            )
-                        }
-                    }
-                }
-            }
-            item(
-                span = StaggeredGridItemSpan.FullLine
-            ) {
-                Text(
-                    text = stringResource(R.string.statistics),
-                    style = MaterialTheme.typography.labelMedium,
-                )
-            }
-            item {
-                StatsCard(
-                    label = stringResource(R.string.total_groceries),
-                    statistics = "40",
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                )
-            }
-            item {
-                StatsCard(
-                    label = stringResource(R.string.total_income),
-                    statistics = formatRupiah(5350000.0),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                )
-            }
-            item {
-                StatsCard(
-                    label = stringResource(R.string.total_transaction),
-                    statistics = "350",
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                    )
-                )
-            }
-            item(
-                span = StaggeredGridItemSpan.FullLine
-            ) {
-                Text(
-                    text = stringResource(R.string.settings),
-                    style = MaterialTheme.typography.labelMedium,
-                )
-            }
-            item {
-                Card(
-                    onClick = { onEvent(ProfileEvent.OnThemeChanged(!state.dynamicTheme)) },
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (state.dynamicTheme)
-                            MaterialTheme.colorScheme.tertiary
-                        else MaterialTheme.colorScheme.surfaceContainer,
-                        contentColor = if (state.dynamicTheme)
-                            MaterialTheme.colorScheme.onTertiary
-                        else MaterialTheme.colorScheme.onSurface,
-                    )
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        horizontalAlignment = Alignment.Start
-                    ) {
-                        Switch(
-                            checked = state.dynamicTheme,
-                            onCheckedChange = { onEvent(ProfileEvent.OnThemeChanged(!state.dynamicTheme)) },
-                            thumbContent = {
-                                if (state.dynamicTheme)
-                                    Icon(
-                                        imageVector = Icons.Filled.Palette,
-                                        contentDescription = stringResource(R.string.dynamic_theme)
-                                    )
-                                else Icon(
-                                    imageVector = Icons.Filled.Android,
-                                    contentDescription = stringResource(R.string.dynamic_theme)
-                                )
-                            }
-                        )
-                        Text(
-                            text = if (state.dynamicTheme)
-                                stringResource(R.string.dynamic_theme)
-                            else stringResource(R.string.app_theme),
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                    }
-                }
-            }
-            item {
-                Card(
-                    onClick = {
-                        onNavigate(AboutDestination)
-                    }
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        horizontalAlignment = Alignment.Start
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(48.dp),
-                            imageVector = Icons.Outlined.Info,
-                            contentDescription = stringResource(R.string.about)
-                        )
-                        Text(
-                            text = stringResource(R.string.about),
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                    }
-                }
-            }
-            item {
-                LogoutCard(
-                    onLogout = { onEvent(ProfileEvent.OnLogoutClicked) },
-                    text = stringResource(R.string.logout),
-                ) {
-                    Icon(
-                        modifier = Modifier.size(48.dp),
-                        imageVector = Icons.AutoMirrored.Filled.Logout,
-                        contentDescription = stringResource(R.string.logout)
-                    )
-                }
-            }
+    LaunchedEffect(state.errorMessage) {
+        if (state.errorMessage.isNotBlank()) {
+            delay(1000)
+            onEvent(ProfileEvent.ClearState)
         }
     }
+
+    LaunchedEffect(state.statistics) {
+        if (state.statistics == null)
+            onEvent(ProfileEvent.LoadData)
+    }
+
+    ContentBoxWithNotification(
+        isLoading = state.isLoading,
+        message = state.errorMessage,
+        content = {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(text = stringResource(R.string.profile))
+                        },
+                        navigationIcon = {
+                            IconButton(
+                                onClick = {
+                                    onNavigate(null)
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                    contentDescription = stringResource(R.string.back)
+                                )
+                            }
+                        },
+                    )
+                }
+            ) { paddingValues ->
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    contentPadding = PaddingValues(
+                        top = paddingValues.calculateTopPadding() + 16.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    ),
+                    verticalItemSpacing = 16.dp,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    item(span = StaggeredGridItemSpan.FullLine) {
+                        Surface(
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            shape = CircleShape
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                AsyncImage(
+                                    modifier = Modifier
+                                        .clip(CircleShape)
+                                        .size(64.dp),
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data(state.user?.profileUrl)
+                                        .crossfade(true)
+                                        .build(),
+                                    error = painterResource(R.drawable.baseline_broken_image_24),
+                                    contentScale = ContentScale.Crop,
+                                    contentDescription = state.user?.username,
+                                )
+                                Spacer(modifier = Modifier.width(16.dp))
+                                Column {
+                                    Text(
+                                        text = state.user?.username ?: "",
+                                        style = MaterialTheme.typography.headlineSmall,
+                                    )
+                                    Text(
+                                        text = state.user?.email ?: "",
+                                        style = MaterialTheme.typography.bodySmall,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    item(
+                        span = StaggeredGridItemSpan.FullLine
+                    ) {
+                        Text(
+                            text = stringResource(R.string.statistics),
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+                    }
+                    item {
+                        StatsCard(
+                            label = stringResource(R.string.total_groceries),
+                            statistics = state.statistics?.groceryCount.toString(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        )
+                    }
+                    item {
+                        StatsCard(
+                            label = stringResource(R.string.total_income),
+                            statistics = formatRupiah(state.statistics?.totalSales?.toDouble() ?: 0.0),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        )
+                    }
+                    item {
+                        StatsCard(
+                            label = stringResource(R.string.total_transaction),
+                            statistics = state.statistics?.totalHistory.toString(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        )
+                    }
+                    item(
+                        span = StaggeredGridItemSpan.FullLine
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings),
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+                    }
+                    item {
+                        Card(
+                            onClick = { onEvent(ProfileEvent.OnThemeChanged(!state.dynamicTheme)) },
+                            colors = CardDefaults.cardColors(
+                                containerColor = if (state.dynamicTheme)
+                                    MaterialTheme.colorScheme.tertiary
+                                else MaterialTheme.colorScheme.surfaceContainer,
+                                contentColor = if (state.dynamicTheme)
+                                    MaterialTheme.colorScheme.onTertiary
+                                else MaterialTheme.colorScheme.onSurface,
+                            )
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(16.dp),
+                                horizontalAlignment = Alignment.Start
+                            ) {
+                                Switch(
+                                    checked = state.dynamicTheme,
+                                    onCheckedChange = { onEvent(ProfileEvent.OnThemeChanged(!state.dynamicTheme)) },
+                                    thumbContent = {
+                                        if (state.dynamicTheme)
+                                            Icon(
+                                                imageVector = Icons.Filled.Palette,
+                                                contentDescription = stringResource(R.string.dynamic_theme)
+                                            )
+                                        else Icon(
+                                            imageVector = Icons.Filled.Android,
+                                            contentDescription = stringResource(R.string.dynamic_theme)
+                                        )
+                                    }
+                                )
+                                Text(
+                                    text = if (state.dynamicTheme)
+                                        stringResource(R.string.dynamic_theme)
+                                    else stringResource(R.string.app_theme),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                )
+                            }
+                        }
+                    }
+                    item {
+                        Card(
+                            onClick = {
+                                onNavigate(AboutDestination)
+                            }
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(16.dp),
+                                horizontalAlignment = Alignment.Start
+                            ) {
+                                Icon(
+                                    modifier = Modifier.size(48.dp),
+                                    imageVector = Icons.Outlined.Info,
+                                    contentDescription = stringResource(R.string.about)
+                                )
+                                Text(
+                                    text = stringResource(R.string.about),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                )
+                            }
+                        }
+                    }
+                    item {
+                        LogoutCard(
+                            onLogout = { onEvent(ProfileEvent.OnLogoutClicked) },
+                            text = stringResource(R.string.logout),
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(48.dp),
+                                imageVector = Icons.AutoMirrored.Filled.Logout,
+                                contentDescription = stringResource(R.string.logout)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    )
 
 }
 

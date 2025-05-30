@@ -3,6 +3,7 @@ package com.github.sendiko.penghitungsembako.profile.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sendiko.penghitungsembako.profile.data.ProfileRepositoryImpl
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -38,7 +39,8 @@ class ProfileViewModel(
                         _state.update {
                             it.copy(
                                 isSigningOut = false,
-                                signOutError = it.signOutError
+                                signOutError = it.signOutError,
+                                errorMessage = "Failed to logout."
                             )
                         }
                     }
@@ -55,6 +57,23 @@ class ProfileViewModel(
             is ProfileEvent.OnThemeChanged -> viewModelScope.launch {
                 repo.setDynamicTheme(event.dynamicTheme)
             }
+
+            ProfileEvent.LoadData -> loadData()
         }
+    }
+
+    private fun loadData() {
+        viewModelScope.launch {
+            delay(1000)
+            _state.update { it.copy(isLoading = true) }
+            repo.getStatistics(state.value.user?.id.toString())
+                .onSuccess { result ->
+                    _state.update { it.copy(statistics = result, isLoading = false) }
+                }
+                .onFailure {
+                    _state.update { it.copy(isLoading = false, errorMessage = "Failed to load statistics.") }
+                }
+        }
+
     }
 }
