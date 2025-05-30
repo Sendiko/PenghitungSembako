@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.grocery.dashboard.presentation
+package com.github.sendiko.penghitungsembako.dashboard.presentation
 
 import com.github.sendiko.penghitungsembako.core.domain.User
 

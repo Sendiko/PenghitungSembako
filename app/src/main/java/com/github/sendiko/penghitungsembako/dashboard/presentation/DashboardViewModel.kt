@@ -1,12 +1,10 @@
-package com.github.sendiko.penghitungsembako.grocery.dashboard.presentation
+package com.github.sendiko.penghitungsembako.dashboard.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sendiko.penghitungsembako.grocery.dashboard.data.DashboardRepositoryImpl
-import com.github.sendiko.penghitungsembako.grocery.list.presentation.ListEvent
+import com.github.sendiko.penghitungsembako.dashboard.data.DashboardRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
@@ -19,9 +17,5 @@ class DashboardViewModel(
     val state = combine(_user, _state) { user, state ->
         state.copy(user = user)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardState())
-
-    fun onEvent(event: DashboardEvent) {
-
-    }
 
 }

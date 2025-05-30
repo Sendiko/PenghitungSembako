@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.grocery.dashboard.presentation
+package com.github.sendiko.penghitungsembako.dashboard.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
