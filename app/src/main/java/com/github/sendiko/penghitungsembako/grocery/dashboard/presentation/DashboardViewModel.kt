@@ -1,120 +1,27 @@
 package com.github.sendiko.penghitungsembako.grocery.dashboard.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sendiko.penghitungsembako.core.preferences.UiMode
-import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
 import com.github.sendiko.penghitungsembako.grocery.dashboard.data.DashboardRepositoryImpl
-import kotlinx.coroutines.delay
+import com.github.sendiko.penghitungsembako.grocery.list.presentation.ListEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class DashboardViewModel(
     private val repository: DashboardRepositoryImpl
 ) : ViewModel() {
 
     private val _user = repository.getUser()
-    private val _uiMode = repository.getUiMode()
     private val _state = MutableStateFlow(DashboardState())
-    val state = combine(_uiMode, _user, _state) { uiMode, user, state ->
-        state.copy(uiMode = uiMode, user = user)
+    val state = combine(_user, _state) { user, state ->
+        state.copy(user = user)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardState())
 
-    fun dismissBottomSheet() {
-        _state.update {
-            it.copy(
-                selectedSembako = null,
-                quantity = "",
-                totalPrice = 0.0
-            )
-        }
-    }
-
-    fun onCalculateClick() {
-        if (state.value.quantity.toDoubleOrNull() == null) {
-            _state.update {
-                it.copy(message = "Masukkan jumlah barang yang valid")
-            }
-            return
-        }
-        if (state.value.quantity.toDouble() < 0) {
-            _state.update {
-                it.copy(message = "Masukkan jumlah barang yang valid")
-            }
-            return
-        }
-        if (state.value.quantity.isBlank()) {
-            _state.update {
-                it.copy(message = "Masukkan jumlah barang yang ingin dibeli")
-            }
-        }
-        if (state.value.quantity.isNotBlank()) {
-            _state.update {
-                it.copy(
-                    totalPrice = it.selectedSembako?.pricePerUnit?.times(it.quantity.toDouble())
-                        ?: 0.0
-                )
-            }
-            return
-        }
-    }
-
-    fun onSembakoClick(sembako: Grocery) {
-        _state.update {
-            it.copy(selectedSembako = sembako)
-        }
-    }
-
-    fun changeQuantity(quantity: String) {
-        _state.update { it.copy(quantity = quantity) }
-    }
-
-    private fun changeUnit(usingOns: Boolean) {
-        _state.update { it.copy(usingOns = usingOns) }
-    }
-
     fun onEvent(event: DashboardEvent) {
-        when (event) {
-            is DashboardEvent.OnQuantityChange -> changeQuantity(event.quantity)
-            is DashboardEvent.OnSembakoClick -> onSembakoClick(event.sembako)
-            DashboardEvent.OnCalculateClick -> onCalculateClick()
-            DashboardEvent.OnDismiss -> dismissBottomSheet()
-            is DashboardEvent.OnUnitChange -> changeUnit(event.unit)
-            is DashboardEvent.SetPreference -> setPreference(event.uiMode)
-            DashboardEvent.ClearState -> clearState()
-            DashboardEvent.LoadData -> loadData()
-        }
+
     }
 
-    private fun clearState() {
-        _state.update { it.copy(sembako = emptyList()) }
-    }
-
-    private fun loadData() {
-        _state.update { it.copy(isLoading = true) }
-        viewModelScope.launch {
-            delay(1000)
-            repository
-                .getRemoteGroceries(state.value.user!!.id.toString())
-                .onSuccess { result ->
-                    repository.saveGroceries(result)
-                    _state.update { it.copy(sembako = result, isLoading = false) }
-                }
-                .onFailure {
-                    repository.getLocalGroceries()
-                        .collect { result ->
-                            _state.update { it.copy(sembako = result, isLoading = false) }
-                        }
-                }
-        }
-    }
-
-    private fun setPreference(uiMode: UiMode) = viewModelScope.launch {
-        repository.setUiMode(uiMode)
-    }
 }
