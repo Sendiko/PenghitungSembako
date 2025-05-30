@@ -57,23 +57,6 @@ class ProfileViewModel(
             is ProfileEvent.OnThemeChanged -> viewModelScope.launch {
                 repo.setDynamicTheme(event.dynamicTheme)
             }
-
-            ProfileEvent.LoadData -> loadData()
         }
-    }
-
-    private fun loadData() {
-        viewModelScope.launch {
-            delay(1000)
-            _state.update { it.copy(isLoading = true) }
-            repo.getStatistics(state.value.user?.id.toString())
-                .onSuccess { result ->
-                    _state.update { it.copy(statistics = result, isLoading = false) }
-                }
-                .onFailure {
-                    _state.update { it.copy(isLoading = false, errorMessage = "Failed to load statistics.") }
-                }
-        }
-
     }
 }

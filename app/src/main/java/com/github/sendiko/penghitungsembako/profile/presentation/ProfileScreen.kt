@@ -73,11 +73,6 @@ fun ProfileScreen(
         }
     }
 
-    LaunchedEffect(state.statistics) {
-        if (state.statistics == null)
-            onEvent(ProfileEvent.LoadData)
-    }
-
     ContentBoxWithNotification(
         isLoading = state.isLoading,
         message = state.errorMessage,
@@ -148,44 +143,6 @@ fun ProfileScreen(
                                 }
                             }
                         }
-                    }
-                    item(
-                        span = StaggeredGridItemSpan.FullLine
-                    ) {
-                        Text(
-                            text = stringResource(R.string.statistics),
-                            style = MaterialTheme.typography.labelMedium,
-                        )
-                    }
-                    item {
-                        StatsCard(
-                            label = stringResource(R.string.total_groceries),
-                            statistics = state.statistics?.groceryCount.toString(),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-                        )
-                    }
-                    item {
-                        StatsCard(
-                            label = stringResource(R.string.total_income),
-                            statistics = formatRupiah(state.statistics?.totalSales?.toDouble() ?: 0.0),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                            )
-                        )
-                    }
-                    item {
-                        StatsCard(
-                            label = stringResource(R.string.total_transaction),
-                            statistics = state.statistics?.totalHistory.toString(),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        )
                     }
                     item(
                         span = StaggeredGridItemSpan.FullLine
