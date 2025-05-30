@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 class DashboardViewModel(
-    private val repository: DashboardRepositoryImpl
+    repository: DashboardRepositoryImpl
 ) : ViewModel() {
 
     private val _user = repository.getUser()
