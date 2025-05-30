@@ -12,7 +12,7 @@ class GoogleAuthUI {
     companion object {
         suspend fun signIn(context: Context): Result<GetCredentialResponse> {
             val googleIdOption = GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(true)
+                .setFilterByAuthorizedAccounts(false)
                 .setServerClientId(BuildConfig.API_KEY)
                 .build()
 

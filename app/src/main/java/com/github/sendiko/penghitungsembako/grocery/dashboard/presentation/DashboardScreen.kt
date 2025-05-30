@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ViewList
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material3.BottomAppBar
@@ -105,6 +106,14 @@ fun DashboardScreen(
                             ))
                         },
                         actions = {
+                            IconButton(
+                                onClick = {}
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Receipt,
+                                    contentDescription = null
+                                )
+                            }
                             IconButton(
                                 onClick = { onNavigate(ProfileDestination) }
                             ) {

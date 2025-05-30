@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,7 +49,8 @@ fun GroceryCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .aspectRatio(1f),
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(grocery.imageUrl.replace("http", "https"))
                     .crossfade(true)
@@ -66,7 +68,7 @@ fun GroceryCard(
             ) {
                 Text(
                     text = grocery.name,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.weight(1f),
                 )
                 IconButton(
@@ -80,6 +82,7 @@ fun GroceryCard(
             }
             Text(
                 text = stringResource(R.string.sembako_harga, grocery.pricePerUnit.toDouble(), grocery.unit),
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .fillMaxWidth()
