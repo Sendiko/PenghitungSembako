@@ -1,4 +1,4 @@
-package com.github.sendiko.penghitungsembako.grocery.dashboard.data.dto
+package com.github.sendiko.penghitungsembako.grocery.list.data.dto
 
 import com.google.gson.annotations.SerializedName
 
