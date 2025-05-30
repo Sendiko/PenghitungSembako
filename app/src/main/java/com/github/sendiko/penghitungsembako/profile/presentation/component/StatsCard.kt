@@ -1,6 +1,5 @@
 package com.github.sendiko.penghitungsembako.profile.presentation.component
 
-import android.R.attr.label
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
