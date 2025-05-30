@@ -12,6 +12,7 @@ import com.github.sendiko.penghitungsembako.grocery.form.data.dto.GetGroceryResp
 import com.github.sendiko.penghitungsembako.grocery.form.data.dto.PostGroceryRequest
 import com.github.sendiko.penghitungsembako.grocery.form.data.dto.PostGroceryResponse
 import com.github.sendiko.penghitungsembako.grocery.form.data.dto.UpdateGroceryRequest
+import com.github.sendiko.penghitungsembako.grocery.form.data.dto.UpdateGroceryResponse
 import com.github.sendiko.penghitungsembako.grocery.form.domain.FormRepository
 import kotlinx.coroutines.flow.Flow
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -98,10 +99,10 @@ class FormRepositoryImpl(
                 pricePerUnit = request.pricePerUnit.toString().toRequestBody(),
                 image = request.image
             ).enqueue(
-                object : Callback<PostGroceryResponse> {
+                object : Callback<UpdateGroceryResponse> {
                     override fun onResponse(
-                        call: Call<PostGroceryResponse?>,
-                        response: Response<PostGroceryResponse?>
+                        call: Call<UpdateGroceryResponse?>,
+                        response: Response<UpdateGroceryResponse?>
                     ) {
                         when(response.code()) {
                             200 -> continuation.resume(Result.success(200))
@@ -111,7 +112,7 @@ class FormRepositoryImpl(
                     }
 
                     override fun onFailure(
-                        call: Call<PostGroceryResponse?>,
+                        call: Call<UpdateGroceryResponse?>,
                         response: Throwable
                     ) {
                         continuation.resume(Result.failure(Exception("Server Error.")))
