@@ -38,6 +38,7 @@ import coil.request.ImageRequest
 import com.github.sendiko.penghitungsembako.R
 import com.github.sendiko.penghitungsembako.core.navigation.ListDestination
 import com.github.sendiko.penghitungsembako.core.navigation.ProfileDestination
+import com.github.sendiko.penghitungsembako.core.navigation.StatisticsDestination
 import com.github.sendiko.penghitungsembako.core.ui.theme.bodyFontFamily
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 
@@ -110,7 +111,7 @@ fun DashboardScreen(
                                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                             ),
-                            onClick = { onNavigate(ListDestination) }
+                            onClick = { onNavigate(StatisticsDestination) }
                         ) {
                             Column(
                                 modifier = Modifier.padding(16.dp)

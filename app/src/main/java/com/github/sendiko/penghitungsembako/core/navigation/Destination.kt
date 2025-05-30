@@ -15,6 +15,9 @@ object DashboardDestination
 object ListDestination
 
 @Serializable
+object StatisticsDestination
+
+@Serializable
 object ProfileDestination
 
 @Serializable
