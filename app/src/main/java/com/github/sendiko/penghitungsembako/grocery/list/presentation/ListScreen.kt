@@ -29,7 +29,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
@@ -56,7 +55,6 @@ import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
 import com.github.sendiko.penghitungsembako.core.ui.theme.bodyFontFamily
 import com.github.sendiko.penghitungsembako.grocery.core.presentation.GroceryCard
-import com.github.sendiko.penghitungsembako.grocery.dashboard.presentation.DashboardEvent
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 
 @OptIn(ExperimentalMaterial3Api::class)
