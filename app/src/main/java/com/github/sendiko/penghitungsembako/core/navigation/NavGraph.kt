@@ -30,6 +30,9 @@ import com.github.sendiko.penghitungsembako.login.presentation.LoginScreen
 import com.github.sendiko.penghitungsembako.login.presentation.LoginViewModel
 import com.github.sendiko.penghitungsembako.grocery.dashboard.data.DashboardRepositoryImpl
 import com.github.sendiko.penghitungsembako.grocery.form.data.FormRepositoryImpl
+import com.github.sendiko.penghitungsembako.grocery.list.data.ListRepositoryImpl
+import com.github.sendiko.penghitungsembako.grocery.list.presentation.ListScreen
+import com.github.sendiko.penghitungsembako.grocery.list.presentation.ListViewModel
 
 @Composable
 fun NavGraph(
@@ -101,6 +104,31 @@ fun NavGraph(
                     onEvent = viewModel::onEvent,
                     onNavigate = {
                         navController.navigate(it)
+                    }
+                )
+            }
+            composable<ListDestination> {
+                val viewModel = viewModel<ListViewModel>(
+                    factory = viewModelFactory {
+                        val repository = ListRepositoryImpl(
+                            remoteDataSource = SembakoApplication.module.apiService,
+                            localDataSource = SembakoApplication.module.sembakoDao,
+                            prefs = SembakoApplication.module.userPreferences
+                        )
+                        ListViewModel(repository)
+                    }
+                )
+                val state by viewModel.state.collectAsStateWithLifecycle()
+
+                ListScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    onNavigate = {
+                        if (it == null) {
+                            navController.navigateUp()
+                        } else {
+                            navController.navigate(it)
+                        }
                     }
                 )
             }

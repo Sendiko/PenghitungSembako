@@ -1,6 +1,6 @@
 package com.github.sendiko.penghitungsembako.core.network
 
-import com.github.sendiko.penghitungsembako.grocery.dashboard.data.dto.GetGroceriesResponse
+import com.github.sendiko.penghitungsembako.grocery.list.data.dto.GetGroceriesResponse
 import com.github.sendiko.penghitungsembako.grocery.form.data.dto.DeleteGroceryResponse
 import com.github.sendiko.penghitungsembako.grocery.form.data.dto.GetGroceryResponse
 import com.github.sendiko.penghitungsembako.grocery.form.data.dto.PostGroceryResponse
