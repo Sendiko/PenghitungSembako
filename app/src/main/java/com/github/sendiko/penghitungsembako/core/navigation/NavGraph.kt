@@ -13,6 +13,7 @@ import androidx.navigation.toRoute
 import com.github.sendiko.penghitungsembako.about.presentation.AboutScreenRoot
 import com.github.sendiko.penghitungsembako.core.di.SembakoApplication
 import com.github.sendiko.penghitungsembako.core.di.viewModelFactory
+import com.github.sendiko.penghitungsembako.core.navigation.StatisticsDestination
 import com.github.sendiko.penghitungsembako.core.preferences.UserPreferences
 import com.github.sendiko.penghitungsembako.core.preferences.dataStore
 import com.github.sendiko.penghitungsembako.login.data.LoginRepositoryImpl
@@ -33,6 +34,9 @@ import com.github.sendiko.penghitungsembako.grocery.form.data.FormRepositoryImpl
 import com.github.sendiko.penghitungsembako.grocery.list.data.ListRepositoryImpl
 import com.github.sendiko.penghitungsembako.grocery.list.presentation.ListScreen
 import com.github.sendiko.penghitungsembako.grocery.list.presentation.ListViewModel
+import com.github.sendiko.penghitungsembako.statistics.data.StatisticsRepositoryImpl
+import com.github.sendiko.penghitungsembako.statistics.presentation.StatisticsScreen
+import com.github.sendiko.penghitungsembako.statistics.presentation.StatisticsViewModel
 
 @Composable
 fun NavGraph(
@@ -136,7 +140,6 @@ fun NavGraph(
                         val profileRepository = ProfileRepositoryImpl(
                             context = context,
                             userPreferences = UserPreferences(SembakoApplication.module.application.dataStore),
-                            remoteDataSource = SembakoApplication.module.apiService
                         )
                         ProfileViewModel(profileRepository)
                     }
@@ -156,6 +159,24 @@ fun NavGraph(
                             else -> navController.navigate(it)
                         }
                     }
+                )
+            }
+            composable<StatisticsDestination> {
+                val viewModel = viewModel<StatisticsViewModel>(
+                    factory = viewModelFactory {
+                        val repository = StatisticsRepositoryImpl(
+                            remoteDataSource = SembakoApplication.module.apiService,
+                            userPreferences = SembakoApplication.module.userPreferences
+                        )
+                        StatisticsViewModel(repository)
+                    }
+                )
+                val state by viewModel.state.collectAsStateWithLifecycle()
+
+                StatisticsScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    onNavigateUp = { navController.navigateUp() }
                 )
             }
             composable<AboutDestination> {
