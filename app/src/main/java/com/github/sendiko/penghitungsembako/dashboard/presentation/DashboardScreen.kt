@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.github.sendiko.penghitungsembako.R
+import com.github.sendiko.penghitungsembako.core.navigation.HistoryDestination
 import com.github.sendiko.penghitungsembako.core.navigation.ListDestination
 import com.github.sendiko.penghitungsembako.core.navigation.ProfileDestination
 import com.github.sendiko.penghitungsembako.core.navigation.StatisticsDestination
@@ -166,7 +167,7 @@ fun DashboardScreen(
                                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                             ),
-                            onClick = { onNavigate(ListDestination) }
+                            onClick = { onNavigate(HistoryDestination) }
                         ) {
                             Column(
                                 modifier = Modifier.padding(16.dp)
