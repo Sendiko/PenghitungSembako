@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.github.sendiko.penghitungsembako.R
+import com.github.sendiko.penghitungsembako.core.ui.util.toRupiah
 import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
 
 @Composable
@@ -81,7 +82,7 @@ fun GroceryCard(
                 }
             }
             Text(
-                text = stringResource(R.string.sembako_harga, grocery.pricePerUnit.toDouble(), grocery.unit),
+                text = stringResource(R.string.sembako_harga, grocery.pricePerUnit.toString().toRupiah(), grocery.unit),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier

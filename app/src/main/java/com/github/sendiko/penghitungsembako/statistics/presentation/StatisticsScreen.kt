@@ -20,8 +20,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.sendiko.penghitungsembako.R
+import com.github.sendiko.penghitungsembako.core.ui.util.toRupiah
 import com.github.sendiko.penghitungsembako.profile.presentation.component.StatsCard
-import com.github.sendiko.penghitungsembako.profile.presentation.utils.formatRupiah
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,9 +74,8 @@ fun StatisticsScreen(
                     ) {
                         StatsCard(
                             label = stringResource(R.string.total_income),
-                            statistics = if (state.isLoading) stringResource(R.string.loading) else formatRupiah(
-                                state.statistics?.totalSales?.toDouble() ?: 0.0
-                            ),
+                            statistics = if (state.isLoading) stringResource(R.string.loading)
+                                else state.statistics?.totalSales.toString().toRupiah(),
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
