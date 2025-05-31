@@ -3,6 +3,7 @@ package com.github.sendiko.penghitungsembako.grocery.list.domain
 import com.github.sendiko.penghitungsembako.core.domain.User
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
+import com.github.sendiko.penghitungsembako.grocery.list.data.dto.SaveTransactionRequest
 import kotlinx.coroutines.flow.Flow
 
 interface ListRepository {
@@ -17,4 +18,7 @@ interface ListRepository {
     suspend fun setUiMode(uiMode: UiMode)
 
     fun getUiMode(): Flow<UiMode>
+
+    suspend fun saveTransaction(request: SaveTransactionRequest): Result<Int>
+
 }

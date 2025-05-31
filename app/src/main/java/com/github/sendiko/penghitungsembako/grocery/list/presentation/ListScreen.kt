@@ -178,7 +178,7 @@ fun ListScreen(
                                     modifier = Modifier
                                         .padding(horizontal = 16.dp)
                                         .weight(1f),
-                                    text = stringResource(R.string.total_price, state.totalPrice.toString().toRupiah()),
+                                    text = stringResource(R.string.total_price, state.totalPrice.toString().dropLast(1).toRupiah()),
                                     style = MaterialTheme.typography.headlineMedium
                                 )
                                 IconButton(
@@ -213,7 +213,7 @@ fun ListScreen(
                                     OutlinedButton(
                                         shape = RoundedCornerShape(16.dp),
                                         onClick = {
-
+                                            onEvent(ListEvent.OnSaveTransaction)
                                         },
                                         contentPadding = PaddingValues(vertical = 16.dp)
                                     ) {
@@ -284,7 +284,7 @@ fun ListScreen(
                             GroceryCard(
                                 grocery = sembako,
                                 onClick = {
-                                    onEvent(ListEvent.OnSembakoClick(sembako))
+                                    onEvent(ListEvent.OnGroceryChange(sembako))
                                 },
                                 onEdit = {
                                     onNavigate(FormDestination(sembako.id))

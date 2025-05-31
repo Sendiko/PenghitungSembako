@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
 import com.github.sendiko.penghitungsembako.grocery.list.data.ListRepositoryImpl
+import com.github.sendiko.penghitungsembako.grocery.list.data.dto.SaveTransactionRequest
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -55,7 +57,7 @@ class ListViewModel(
         if (state.value.quantity.isNotBlank()) {
             _state.update {
                 it.copy(
-                    totalPrice = it.grocery!!.pricePerUnit.times(it.quantity.toDouble()) / 10.0
+                    totalPrice = it.grocery!!.pricePerUnit.times(it.quantity.toDouble())
                 )
             }
             return
@@ -79,13 +81,34 @@ class ListViewModel(
     fun onEvent(event: ListEvent) {
         when (event) {
             is ListEvent.OnQuantityChange -> changeQuantity(event.quantity)
-            is ListEvent.OnSembakoClick -> onSembakoClick(event.sembako)
+            is ListEvent.OnGroceryChange -> onSembakoClick(event.sembako)
             ListEvent.OnCalculateClick -> onCalculateClick()
             ListEvent.OnDismiss -> dismissBottomSheet()
             is ListEvent.OnUnitChange -> changeUnit(event.unit)
             is ListEvent.SetPreference -> setPreference(event.uiMode)
             ListEvent.ClearState -> clearState()
             ListEvent.LoadData -> loadData()
+            ListEvent.OnSaveTransaction -> saveTransaction()
+        }
+    }
+
+    private fun saveTransaction() {
+        _state.update { it.copy(isLoading = true) }
+        viewModelScope.launch {
+            delay(1000)
+            val request = SaveTransactionRequest(
+                quantity = state.value.quantity,
+                totalPrice = state.value.totalPrice.toInt(),
+                userId = state.value.user!!.id,
+                groceryId = state.value.grocery!!.id
+            )
+            repository.saveTransaction(request)
+                .onSuccess {
+                    _state.update { it.copy(isLoading = false, message = "Transaksi berhasil disimpan") }
+                }
+                .onFailure {
+                    _state.update { it.copy(isLoading = false, message = "Transaksi gagal disimpan") }
+                }
         }
     }
 

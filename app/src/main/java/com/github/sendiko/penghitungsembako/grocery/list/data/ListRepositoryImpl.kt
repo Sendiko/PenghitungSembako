@@ -8,6 +8,8 @@ import com.github.sendiko.penghitungsembako.grocery.core.data.GroceryDao
 import com.github.sendiko.penghitungsembako.grocery.core.data.GroceryEntity
 import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
 import com.github.sendiko.penghitungsembako.grocery.list.data.dto.GetGroceriesResponse
+import com.github.sendiko.penghitungsembako.grocery.list.data.dto.SaveTransactionRequest
+import com.github.sendiko.penghitungsembako.grocery.list.data.dto.SaveTransactionResponse
 import com.github.sendiko.penghitungsembako.grocery.list.domain.ListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -22,7 +24,7 @@ class ListRepositoryImpl(
     private val prefs: UserPreferences,
     private val localDataSource: GroceryDao,
     private val remoteDataSource: ApiService
-) : ListRepository{
+) : ListRepository {
 
     override fun getUser(): Flow<User> {
         return prefs.getUser()
@@ -101,12 +103,39 @@ class ListRepositoryImpl(
             Result.failure(e)
         }
     }
+
     override suspend fun setUiMode(uiMode: UiMode) {
         prefs.setUiMode(uiMode)
     }
 
     override fun getUiMode(): Flow<UiMode> {
         return prefs.getUiMode()
+    }
+
+    override suspend fun saveTransaction(request: SaveTransactionRequest): Result<Int> {
+        return suspendCoroutine { continuation ->
+            remoteDataSource.saveHistory(request)
+                .enqueue(
+                    object : Callback<SaveTransactionResponse> {
+                        override fun onResponse(
+                            call: Call<SaveTransactionResponse?>,
+                            response: Response<SaveTransactionResponse?>
+                        ) {
+                            when (response.code()) {
+                                201 -> continuation.resume(Result.success(200))
+                                else -> continuation.resume(Result.failure(Exception("Server Error.")))
+                            }
+                        }
+
+                        override fun onFailure(
+                            call: Call<SaveTransactionResponse?>,
+                            t: Throwable
+                        ) {
+                            continuation.resume(Result.failure(Exception("Server Error.")))
+                        }
+                    }
+                )
+        }
     }
 
 }
