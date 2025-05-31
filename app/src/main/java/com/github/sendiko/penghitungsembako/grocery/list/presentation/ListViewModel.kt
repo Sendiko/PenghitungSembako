@@ -6,7 +6,6 @@ import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.grocery.core.domain.Grocery
 import com.github.sendiko.penghitungsembako.grocery.list.data.ListRepositoryImpl
 import com.github.sendiko.penghitungsembako.grocery.list.data.dto.SaveTransactionRequest
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
