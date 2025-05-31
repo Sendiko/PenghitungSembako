@@ -5,6 +5,7 @@ import com.github.sendiko.penghitungsembako.grocery.form.data.dto.DeleteGroceryR
 import com.github.sendiko.penghitungsembako.grocery.form.data.dto.GetGroceryResponse
 import com.github.sendiko.penghitungsembako.grocery.form.data.dto.PostGroceryResponse
 import com.github.sendiko.penghitungsembako.grocery.form.data.dto.UpdateGroceryResponse
+import com.github.sendiko.penghitungsembako.history.data.dto.GetHistoriesResponse
 import com.github.sendiko.penghitungsembako.login.data.dto.SaveUserRequest
 import com.github.sendiko.penghitungsembako.login.data.dto.SaveUserResponse
 import com.github.sendiko.penghitungsembako.statistics.data.dto.GetStatisticsResponse
@@ -66,5 +67,10 @@ interface ApiService {
     fun getStatistics(
         @Path("id") id: Int
     ): Call<GetStatisticsResponse>
+
+    @GET("history/{id}")
+    fun getHistories(
+        @Path("id") id: String,
+    ): Call<GetHistoriesResponse>
 
 }
