@@ -3,7 +3,7 @@
     <string name="sembako_harga">%1$s/%2$s</string>
     <string name="quantity">Jumlah</string>
     <string name="count">Hitung harga</string>
-    <string name="total_price">Harga akhir: Rp. %1$.2f</string>
+    <string name="total_price">Harga akhir: %1$s</string>
     <string name="about">Tentang aplikasi</string>
     <string name="description">Aplikasi Penghitung Sembako ini dibuat untuk Assessement Mata Kuliah Pemgrograman untuk Perangkat Bergerak 1.
         \n\nAplikasi ini dibuat untuk memudahkan penghitungan harga sembako seperti Telur, Minyak, Gula, dan Beras.

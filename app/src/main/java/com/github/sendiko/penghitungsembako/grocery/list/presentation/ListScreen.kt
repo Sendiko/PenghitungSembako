@@ -55,6 +55,7 @@ import com.github.sendiko.penghitungsembako.core.navigation.FormDestination
 import com.github.sendiko.penghitungsembako.core.preferences.UiMode
 import com.github.sendiko.penghitungsembako.core.ui.component.CustomTextField
 import com.github.sendiko.penghitungsembako.core.ui.theme.bodyFontFamily
+import com.github.sendiko.penghitungsembako.core.ui.util.toRupiah
 import com.github.sendiko.penghitungsembako.grocery.core.presentation.GroceryCard
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 
@@ -141,7 +142,7 @@ fun ListScreen(
                                     Text(
                                         text = stringResource(
                                             R.string.sembako_harga,
-                                            it.pricePerUnit.toDouble(),
+                                            it.pricePerUnit.toString().toRupiah(),
                                             it.unit
                                         ),
                                         style = MaterialTheme.typography.bodyLarge,
@@ -177,7 +178,7 @@ fun ListScreen(
                                     modifier = Modifier
                                         .padding(horizontal = 16.dp)
                                         .weight(1f),
-                                    text = stringResource(R.string.total_price, state.totalPrice),
+                                    text = stringResource(R.string.total_price, state.totalPrice.toString().toRupiah()),
                                     style = MaterialTheme.typography.headlineMedium
                                 )
                                 IconButton(

@@ -55,8 +55,7 @@ class ListViewModel(
         if (state.value.quantity.isNotBlank()) {
             _state.update {
                 it.copy(
-                    totalPrice = it.grocery?.pricePerUnit?.times(it.quantity.toDouble())
-                        ?: 0.0
+                    totalPrice = it.grocery!!.pricePerUnit.times(it.quantity.toDouble()) / 10.0
                 )
             }
             return
