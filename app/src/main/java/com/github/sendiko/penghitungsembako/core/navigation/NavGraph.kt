@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.github.sendiko.penghitungsembako.about.presentation.AboutScreenRoot
 import com.github.sendiko.penghitungsembako.core.di.SembakoApplication
@@ -34,6 +35,9 @@ import com.github.sendiko.penghitungsembako.grocery.form.data.FormRepositoryImpl
 import com.github.sendiko.penghitungsembako.grocery.list.data.ListRepositoryImpl
 import com.github.sendiko.penghitungsembako.grocery.list.presentation.ListScreen
 import com.github.sendiko.penghitungsembako.grocery.list.presentation.ListViewModel
+import com.github.sendiko.penghitungsembako.history.data.HistoryRepositoryImpl
+import com.github.sendiko.penghitungsembako.history.presentation.HistoryScreen
+import com.github.sendiko.penghitungsembako.history.presentation.HistoryViewModel
 import com.github.sendiko.penghitungsembako.statistics.data.StatisticsRepositoryImpl
 import com.github.sendiko.penghitungsembako.statistics.presentation.StatisticsScreen
 import com.github.sendiko.penghitungsembako.statistics.presentation.StatisticsViewModel
@@ -174,6 +178,24 @@ fun NavGraph(
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
                 StatisticsScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    onNavigateUp = { navController.navigateUp() }
+                )
+            }
+            composable<HistoryDestination> {
+                val viewModel = viewModel<HistoryViewModel>(
+                    factory = viewModelFactory {
+                        val repository = HistoryRepositoryImpl(
+                            userPreferences = SembakoApplication.module.userPreferences,
+                            remoteDataSource = SembakoApplication.module.apiService
+                        )
+                        HistoryViewModel(repository)
+                    }
+                )
+                val state by viewModel.state.collectAsStateWithLifecycle()
+
+                HistoryScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
                     onNavigateUp = { navController.navigateUp() }

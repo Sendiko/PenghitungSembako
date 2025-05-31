@@ -18,6 +18,9 @@ object ListDestination
 object StatisticsDestination
 
 @Serializable
+object HistoryDestination
+
+@Serializable
 object ProfileDestination
 
 @Serializable
