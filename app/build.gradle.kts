@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "com.github.sendiko.penghitungsembako"
+    namespace = "id.my.sendiko.sembako"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.github.sendiko.penghitungsembako"
+        applicationId = "id.my.sendiko.sembako"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

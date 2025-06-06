@@ -1,0 +1,22 @@
+package id.my.sendiko.sembako.grocery.form.data.dto
+
+import com.google.gson.annotations.SerializedName
+import okhttp3.MultipartBody
+
+data class UpdateGroceryRequest(
+
+    @field:SerializedName("userId")
+    val userId: Int,
+
+    @field:SerializedName("name")
+    val name: String,
+
+    @field:SerializedName("unit")
+    val unit: String,
+
+    @field:SerializedName("price")
+    val pricePerUnit: Double,
+
+    @field:SerializedName("image")
+    val image: MultipartBody.Part? = null,
+)
