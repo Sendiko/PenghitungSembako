@@ -80,7 +80,7 @@ fun HistoryScreen(
                     ),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(state.histories) { history ->
+                    items(state.histories.reversed()) { history ->
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                             verticalArrangement = Arrangement.spacedBy(8.dp),
