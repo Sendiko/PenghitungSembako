@@ -7,6 +7,10 @@ interface HistoryRepository {
 
     fun getUser(): Flow<User>
 
-    suspend fun getHistory(id: String): Result<List<History>>
+    suspend fun getRemoteHistories(id: String): Result<List<History>>
+
+    suspend fun getLocalHistories(): Flow<List<History>>
+
+    suspend fun saveHistoriesToLocal(histories: List<History>)
 
 }
