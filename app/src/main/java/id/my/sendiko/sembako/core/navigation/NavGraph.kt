@@ -188,7 +188,8 @@ fun NavGraph(
                     factory = viewModelFactory {
                         val repository = HistoryRepositoryImpl(
                             userPreferences = SembakoApplication.module.userPreferences,
-                            remoteDataSource = SembakoApplication.module.apiService
+                            remoteDataSource = SembakoApplication.module.apiService,
+                            localDataSource = SembakoApplication.module.historyDao
                         )
                         HistoryViewModel(repository)
                     }

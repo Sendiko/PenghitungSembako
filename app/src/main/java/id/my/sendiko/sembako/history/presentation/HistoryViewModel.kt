@@ -24,15 +24,21 @@ class HistoryViewModel(
     fun onEvent(event: HistoryEvent) {
         when (event) {
             is HistoryEvent.LoadData -> loadData()
+            HistoryEvent.ClearState -> clearState()
         }
+    }
+
+    private fun clearState() {
+        _state.update { it.copy(message = "")}
     }
 
     private fun loadData() {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             delay(1000)
-            repository.getHistory(state.value.user?.id.toString())
+            repository.getRemoteHistories(state.value.user?.id.toString())
                 .onSuccess { result ->
+                    repository.saveHistoriesToLocal(result)
                     _state.update {
                         it.copy(
                             isLoading = false,
@@ -41,11 +47,15 @@ class HistoryViewModel(
                     }
                 }
                 .onFailure { throwable ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            message = throwable.message.toString()
-                        )
+                    repository
+                    repository.getLocalHistories().collect { resultFromLocal ->
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                message = throwable.message.toString(),
+                                histories = resultFromLocal
+                            )
+                        }
                     }
                 }
         }
