@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,17 +9,26 @@ plugins {
 }
 
 android {
-    namespace = "com.github.sendiko.penghitungsembako"
+    namespace = "id.my.sendiko.sembako"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.github.sendiko.penghitungsembako"
+        applicationId = "id.my.sendiko.sembako"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val properties = Properties()
+        properties.load(
+            project.rootProject.file("local.properties").inputStream()
+        )
+
+        buildConfigField(
+            "String", "API_KEY", properties.getProperty("API_KEY")
+        )
     }
 
     buildTypes {
@@ -37,6 +48,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 }
@@ -58,7 +70,19 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+    implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.core.splashscreen)
     ksp(libs.androidx.room.compiler)
+    implementation(libs.content.box.with.notification)
+    implementation(libs.retrofit2.retrofit)
+    implementation(libs.retrofit2.converter.gson)
+    implementation(libs.okhttp3.okhttp)
+    implementation(libs.okhttp3.logging.interceptor)
+    implementation(libs.coil.compose)
+    implementation(libs.image.cropper)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
