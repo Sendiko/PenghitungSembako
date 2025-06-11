@@ -53,6 +53,10 @@ android {
     }
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -68,6 +72,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.credentials)
@@ -75,7 +80,6 @@ dependencies {
     implementation(libs.googleid)
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.core.splashscreen)
-    ksp(libs.androidx.room.compiler)
     implementation(libs.content.box.with.notification)
     implementation(libs.retrofit2.retrofit)
     implementation(libs.retrofit2.converter.gson)
