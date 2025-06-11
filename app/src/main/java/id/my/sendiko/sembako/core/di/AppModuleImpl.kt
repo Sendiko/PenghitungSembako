@@ -8,6 +8,7 @@ import id.my.sendiko.sembako.core.network.BASE_URL
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.core.preferences.dataStore
 import id.my.sendiko.sembako.grocery.core.data.GroceryDao
+import id.my.sendiko.sembako.history.data.HistoryDao
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -25,6 +26,9 @@ class AppModuleImpl(
 
     override val sembakoDao: GroceryDao
         get() = database.sembakoDao
+
+    override val historyDao: HistoryDao
+        get() = database.historyDao
 
     override val userPreferences: UserPreferences
         get() = UserPreferences(app.applicationContext.dataStore)
