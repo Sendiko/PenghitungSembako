@@ -58,6 +58,7 @@ import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.core.ui.util.toRupiah
 import id.my.sendiko.sembako.grocery.core.presentation.GroceryCard
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,6 +72,12 @@ fun ListScreen(
 
     LaunchedEffect(state.groceries) {
         onEvent(ListEvent.LoadData)
+    }
+    LaunchedEffect(state.message) {
+        if(state.message.isNotBlank()) {
+            delay(2000)
+            onEvent(ListEvent.ClearState)
+        }
     }
 
     ContentBoxWithNotification(
