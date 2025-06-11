@@ -25,6 +25,20 @@ class ListViewModel(
         state.copy(user = user, uiMode = uiMode)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ListState())
 
+    fun onEvent(event: ListEvent) {
+        when (event) {
+            is ListEvent.OnQuantityChange -> changeQuantity(event.quantity)
+            is ListEvent.OnGroceryChange -> onSembakoClick(event.sembako)
+            ListEvent.OnCalculateClick -> onCalculateClick()
+            ListEvent.OnDismiss -> dismissBottomSheet()
+            is ListEvent.OnUnitChange -> changeUnit(event.unit)
+            is ListEvent.SetPreference -> setPreference(event.uiMode)
+            ListEvent.ClearState -> clearState()
+            ListEvent.LoadData -> loadData()
+            ListEvent.OnSaveTransaction -> saveTransaction()
+        }
+    }
+
     fun dismissBottomSheet() {
         _state.update {
             it.copy(
@@ -77,20 +91,6 @@ class ListViewModel(
         _state.update { it.copy(usingOns = usingOns) }
     }
 
-    fun onEvent(event: ListEvent) {
-        when (event) {
-            is ListEvent.OnQuantityChange -> changeQuantity(event.quantity)
-            is ListEvent.OnGroceryChange -> onSembakoClick(event.sembako)
-            ListEvent.OnCalculateClick -> onCalculateClick()
-            ListEvent.OnDismiss -> dismissBottomSheet()
-            is ListEvent.OnUnitChange -> changeUnit(event.unit)
-            is ListEvent.SetPreference -> setPreference(event.uiMode)
-            ListEvent.ClearState -> clearState()
-            ListEvent.LoadData -> loadData()
-            ListEvent.OnSaveTransaction -> saveTransaction()
-        }
-    }
-
     private fun saveTransaction() {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
@@ -112,7 +112,8 @@ class ListViewModel(
     }
 
     private fun clearState() {
-        _state.update { it.copy(groceries = emptyList()) }
+        dismissBottomSheet()
+        _state.update { it.copy(groceries = emptyList(), message = "") }
     }
 
     private fun loadData() {
