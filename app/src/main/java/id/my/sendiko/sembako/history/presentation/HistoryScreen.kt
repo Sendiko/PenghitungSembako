@@ -30,6 +30,7 @@ import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.core.ui.util.toRupiah
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +43,13 @@ fun HistoryScreen(
 
     LaunchedEffect(Unit) {
         onEvent(HistoryEvent.LoadData)
+    }
+
+    LaunchedEffect(state.message) {
+        if (state.message.isNotBlank()){
+            delay(2000)
+            onEvent(HistoryEvent.ClearState)
+        }
     }
 
     ContentBoxWithNotification(
