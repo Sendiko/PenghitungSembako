@@ -48,6 +48,10 @@
     <string name="add_image">Tambah Foto</string>
     <string name="your_grocery">Sembako Anda</string>
     <string name="transaction">Transaksi</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
     <string name="history">Riwayat Transaksi</string>
+    <string name="good_morning">Selamat pagi</string>
+    <string name="good_afternoon">Selamat siang</string>
+    <string name="good_evening">Selamat sore</string>
+    <string name="good_night">Selamat malam</string>
 </resources>

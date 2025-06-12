@@ -8,8 +8,8 @@ import id.my.sendiko.sembako.grocery.form.data.dto.UpdateGroceryResponse
 import id.my.sendiko.sembako.grocery.list.data.dto.SaveTransactionRequest
 import id.my.sendiko.sembako.history.data.dto.GetHistoriesResponse
 import id.my.sendiko.sembako.grocery.list.data.dto.SaveTransactionResponse
-import id.my.sendiko.sembako.login.data.dto.SaveUserRequest
-import id.my.sendiko.sembako.login.data.dto.SaveUserResponse
+import id.my.sendiko.sembako.dashboard.data.dto.SaveUserRequest
+import id.my.sendiko.sembako.dashboard.data.dto.SaveUserResponse
 import id.my.sendiko.sembako.statistics.data.dto.GetStatisticsResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

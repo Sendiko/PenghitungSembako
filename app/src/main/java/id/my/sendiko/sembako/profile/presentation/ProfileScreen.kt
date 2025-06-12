@@ -49,6 +49,7 @@ import id.my.sendiko.sembako.core.ui.theme.AppTheme
 import id.my.sendiko.sembako.core.domain.User
 import id.my.sendiko.sembako.profile.presentation.component.LogoutCard
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
+import id.my.sendiko.sembako.core.navigation.DashboardDestination
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,7 +62,7 @@ fun ProfileScreen(
 
     LaunchedEffect(state.isSignOutSuccessful) {
         if (state.isSignOutSuccessful)
-            onNavigate(SplashDestination)
+            onNavigate(DashboardDestination)
     }
 
     LaunchedEffect(state.errorMessage) {
