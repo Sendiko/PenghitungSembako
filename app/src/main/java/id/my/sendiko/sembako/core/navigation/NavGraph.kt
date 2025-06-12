@@ -15,32 +15,30 @@ import id.my.sendiko.sembako.core.di.SembakoApplication
 import id.my.sendiko.sembako.core.di.viewModelFactory
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.core.preferences.dataStore
-import id.my.sendiko.sembako.login.data.LoginRepositoryImpl
-import id.my.sendiko.sembako.profile.data.ProfileRepositoryImpl
+import id.my.sendiko.sembako.dashboard.data.DashboardRepositoryImpl
+import id.my.sendiko.sembako.dashboard.presentation.DashboardScreen
 import id.my.sendiko.sembako.dashboard.presentation.DashboardViewModel
+import id.my.sendiko.sembako.grocery.form.data.FormRepositoryImpl
 import id.my.sendiko.sembako.grocery.form.presentation.FormScreen
 import id.my.sendiko.sembako.grocery.form.presentation.FormViewModel
-import id.my.sendiko.sembako.login.presentation.LoginScreen
-import id.my.sendiko.sembako.login.presentation.LoginViewModel
-import id.my.sendiko.sembako.dashboard.data.DashboardRepositoryImpl
-import id.my.sendiko.sembako.grocery.form.data.FormRepositoryImpl
 import id.my.sendiko.sembako.grocery.list.data.ListRepositoryImpl
 import id.my.sendiko.sembako.grocery.list.presentation.ListScreen
 import id.my.sendiko.sembako.grocery.list.presentation.ListViewModel
 import id.my.sendiko.sembako.history.data.HistoryRepositoryImpl
 import id.my.sendiko.sembako.history.presentation.HistoryScreen
 import id.my.sendiko.sembako.history.presentation.HistoryViewModel
-import id.my.sendiko.sembako.statistics.data.StatisticsRepositoryImpl
-import id.my.sendiko.sembako.statistics.presentation.StatisticsScreen
-import id.my.sendiko.sembako.statistics.presentation.StatisticsViewModel
-import id.my.sendiko.sembako.core.navigation.DashboardDestination
-import id.my.sendiko.sembako.core.navigation.SplashDestination
-import id.my.sendiko.sembako.dashboard.presentation.DashboardScreen
+import id.my.sendiko.sembako.login.data.LoginRepositoryImpl
+import id.my.sendiko.sembako.login.presentation.LoginScreen
+import id.my.sendiko.sembako.login.presentation.LoginViewModel
+import id.my.sendiko.sembako.profile.data.ProfileRepositoryImpl
 import id.my.sendiko.sembako.profile.presentation.ProfileScreen
 import id.my.sendiko.sembako.profile.presentation.ProfileViewModel
 import id.my.sendiko.sembako.splash.data.SplashRepositoryImpl
 import id.my.sendiko.sembako.splash.presentation.SplashScreen
 import id.my.sendiko.sembako.splash.presentation.SplashViewModel
+import id.my.sendiko.sembako.statistics.data.StatisticsRepositoryImpl
+import id.my.sendiko.sembako.statistics.presentation.StatisticsScreen
+import id.my.sendiko.sembako.statistics.presentation.StatisticsViewModel
 
 @Composable
 fun NavGraph(
@@ -170,7 +168,8 @@ fun NavGraph(
                     factory = viewModelFactory {
                         val repository = StatisticsRepositoryImpl(
                             remoteDataSource = SembakoApplication.module.apiService,
-                            userPreferences = SembakoApplication.module.userPreferences
+                            userPreferences = SembakoApplication.module.userPreferences,
+                            localDataSource = SembakoApplication.module.statisticsPreferences
                         )
                         StatisticsViewModel(repository)
                     }

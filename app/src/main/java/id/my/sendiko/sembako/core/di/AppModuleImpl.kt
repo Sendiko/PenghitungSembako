@@ -5,6 +5,7 @@ import androidx.room.Room
 import id.my.sendiko.sembako.core.database.AppDatabase
 import id.my.sendiko.sembako.core.network.ApiService
 import id.my.sendiko.sembako.core.network.BASE_URL
+import id.my.sendiko.sembako.core.preferences.StatisticsPreferences
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.core.preferences.dataStore
 import id.my.sendiko.sembako.grocery.core.data.GroceryDao
@@ -32,6 +33,9 @@ class AppModuleImpl(
 
     override val userPreferences: UserPreferences
         get() = UserPreferences(app.applicationContext.dataStore)
+
+    override val statisticsPreferences: StatisticsPreferences
+        get() = StatisticsPreferences(app.applicationContext.dataStore)
 
     override val okHttpClient: OkHttpClient
         get() = OkHttpClient.Builder()
