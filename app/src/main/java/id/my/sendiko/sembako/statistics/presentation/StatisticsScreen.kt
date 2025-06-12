@@ -23,6 +23,7 @@ import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.util.toRupiah
 import id.my.sendiko.sembako.profile.presentation.component.StatsCard
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +35,13 @@ fun StatisticsScreen(
     LaunchedEffect(state.statistics) {
         if (state.statistics == null)
             onEvent(StatisticsEvent.LoadData)
+    }
+
+    LaunchedEffect(state.message) {
+        if (state.message.isNotBlank()){
+            delay(2000)
+            onEvent(StatisticsEvent.ClearState)
+        }
     }
 
     ContentBoxWithNotification(

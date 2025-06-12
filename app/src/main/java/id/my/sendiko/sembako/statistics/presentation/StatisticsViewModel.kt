@@ -3,6 +3,7 @@ package id.my.sendiko.sembako.statistics.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.my.sendiko.sembako.statistics.data.StatisticsRepositoryImpl
+import id.my.sendiko.sembako.statistics.domain.Statistics
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,19 +25,32 @@ class StatisticsViewModel(
     fun onEvent(event: StatisticsEvent) {
         when(event) {
             is StatisticsEvent.LoadData -> loadData()
+            StatisticsEvent.ClearState -> clearState()
         }
+    }
+
+    private fun clearState() {
+        _state.update { it.copy(message = "") }
     }
 
     private fun loadData() {
         viewModelScope.launch {
             delay(1000)
             _state.update { it.copy(isLoading = true) }
-            repository.getStatistics(state.value.user?.id.toString())
+            repository.getStatisticsFromRemote(state.value.user?.id.toString())
                 .onSuccess { result ->
-                    _state.update { it.copy(statistics = result, isLoading = false) }
+                    val statistics = Statistics.fromStatisticsItem(result)
+                    repository.saveStatisticsToLocal(statistics = statistics)
+                    _state.update { it.copy(statistics = statistics, isLoading = false) }
                 }
                 .onFailure {
-                    _state.update { it.copy(isLoading = false, message = "Failed to load statistics.") }
+                    repository.getStatisticsFromLocal().collect { statistics ->
+                        _state.update { it.copy(
+                            isLoading = false,
+                            message = "Can't connect to server.",
+                            statistics = statistics
+                        ) }
+                    }
                 }
         }
 
