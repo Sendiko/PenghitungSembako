@@ -11,10 +11,10 @@ data class GetStatisticsResponse(
 	val status: Int,
 
 	@field:SerializedName("statistics")
-	val statistics: Statistics
+	val statisticsItem: StatisticsItem
 )
 
-data class Statistics(
+data class StatisticsItem(
 
 	@field:SerializedName("totalHistory")
 	val totalHistory: Int,
