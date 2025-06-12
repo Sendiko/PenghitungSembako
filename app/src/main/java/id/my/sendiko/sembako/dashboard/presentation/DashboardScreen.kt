@@ -37,34 +37,34 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.navigation.HistoryDestination
 import id.my.sendiko.sembako.core.navigation.ListDestination
 import id.my.sendiko.sembako.core.navigation.ProfileDestination
 import id.my.sendiko.sembako.core.navigation.StatisticsDestination
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
-import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     state: DashboardState,
     onEvent: (DashboardEvent) -> Unit,
+    signInEventFlow: Flow<Unit>,
     onNavigate: (Any) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-
     val context = LocalContext.current
 
-    LaunchedEffect(state.isSigningIn) {
-        GoogleAuthUI.signIn(context)
-            .onSuccess {
-                onEvent(DashboardEvent.OnResult(it))
-            }
-            .onFailure {
-                onEvent(DashboardEvent.ClearState)
-            }
+    LaunchedEffect(key1 = signInEventFlow) {
+        signInEventFlow.collectLatest {
+            val result = GoogleAuthUI.interactiveSignIn(context)
+            onEvent(DashboardEvent.OnResult(result))
+        }
     }
 
     LaunchedEffect(state.isSignInSuccessful) {
@@ -90,7 +90,7 @@ fun DashboardScreen(
                                 text = if (state.user.username.isBlank()) {
                                     stringResource(getGreeting())
                                 } else stringResource(R.string.greeting,
-                                    (state.user.username ?: "").split(" ")[0]
+                                    state.user.username.split(" ")[0]
                                 )
                             )
                         },
@@ -239,6 +239,7 @@ private fun DashboardScreenPrev() {
     DashboardScreen(
         state = DashboardState(),
         onNavigate = { },
-        onEvent = {  }
+        onEvent = {  } ,
+        signInEventFlow = flow {  }
     )
 }
