@@ -27,15 +27,9 @@ import id.my.sendiko.sembako.grocery.list.presentation.ListViewModel
 import id.my.sendiko.sembako.history.data.HistoryRepositoryImpl
 import id.my.sendiko.sembako.history.presentation.HistoryScreen
 import id.my.sendiko.sembako.history.presentation.HistoryViewModel
-import id.my.sendiko.sembako.login.data.LoginRepositoryImpl
-import id.my.sendiko.sembako.login.presentation.LoginScreen
-import id.my.sendiko.sembako.login.presentation.LoginViewModel
 import id.my.sendiko.sembako.profile.data.ProfileRepositoryImpl
 import id.my.sendiko.sembako.profile.presentation.ProfileScreen
 import id.my.sendiko.sembako.profile.presentation.ProfileViewModel
-import id.my.sendiko.sembako.splash.data.SplashRepositoryImpl
-import id.my.sendiko.sembako.splash.presentation.SplashScreen
-import id.my.sendiko.sembako.splash.presentation.SplashViewModel
 import id.my.sendiko.sembako.statistics.data.StatisticsRepositoryImpl
 import id.my.sendiko.sembako.statistics.presentation.StatisticsScreen
 import id.my.sendiko.sembako.statistics.presentation.StatisticsViewModel
@@ -45,58 +39,15 @@ fun NavGraph(
     navController: NavHostController,
 ) {
     NavHost(
-        startDestination = SplashDestination,
+        startDestination = DashboardDestination,
         navController = navController,
         builder = {
-            composable<SplashDestination> {
-                val viewModel = viewModel<SplashViewModel>(
-                    factory = viewModelFactory {
-                        val splashRepository =
-                            SplashRepositoryImpl(SembakoApplication.module.userPreferences)
-                        SplashViewModel(splashRepository)
-                    }
-                )
-
-                val state by viewModel.state.collectAsStateWithLifecycle()
-
-                SplashScreen(
-                    state = state,
-                    onNavigate = {
-                        navController.navigate(it) {
-                            popUpTo(SplashDestination)
-                        }
-                    }
-                )
-            }
-            composable<LoginDestination> {
-                val viewModel = viewModel<LoginViewModel>(
-                    factory = viewModelFactory {
-                        val loginRepository = LoginRepositoryImpl(
-                            remoteDataSource = SembakoApplication.module.apiService,
-                            localDataSource = SembakoApplication.module.userPreferences
-                        )
-                        LoginViewModel(loginRepository)
-                    }
-                )
-                val state by viewModel.state.collectAsStateWithLifecycle()
-
-                LoginScreen(
-                    state = state,
-                    onEvent = viewModel::onEvent,
-                    onNavigate = {
-                        navController.navigate(DashboardDestination) {
-                            popUpTo(DashboardDestination) {
-                                inclusive = true
-                            }
-                        }
-                    }
-                )
-            }
             composable<DashboardDestination> {
                 val viewModel = viewModel<DashboardViewModel>(
                     factory = viewModelFactory {
                         val repository = DashboardRepositoryImpl(
-                            prefs = SembakoApplication.module.userPreferences
+                            remoteDataSource = SembakoApplication.module.apiService,
+                            localDataSource = SembakoApplication.module.userPreferences
                         )
                         DashboardViewModel(repository)
                     }
@@ -105,6 +56,7 @@ fun NavGraph(
 
                 DashboardScreen(
                     state = state,
+                    onEvent = viewModel::onEvent,
                     onNavigate = {
                         navController.navigate(it)
                     }
@@ -155,8 +107,8 @@ fun NavGraph(
                     onNavigate = {
                         when(it) {
                             null -> navController.navigateUp()
-                            is SplashDestination -> navController.navigate(SplashDestination) {
-                                popUpTo(SplashDestination) { inclusive = true }
+                            is DashboardDestination -> navController.navigate(DashboardDestination) {
+                                popUpTo(DashboardDestination) { inclusive = true }
                             }
                             else -> navController.navigate(it)
                         }
