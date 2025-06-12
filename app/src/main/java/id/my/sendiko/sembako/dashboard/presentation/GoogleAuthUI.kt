@@ -10,9 +10,9 @@ import id.my.sendiko.sembako.BuildConfig
 class GoogleAuthUI {
 
     companion object {
-        suspend fun signIn(context: Context): Result<GetCredentialResponse> {
+        suspend fun silentSignIn(context: Context): Result<GetCredentialResponse> {
             val googleIdOption = GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false)
+                .setFilterByAuthorizedAccounts(true)
                 .setServerClientId(BuildConfig.API_KEY)
                 .build()
 
@@ -21,7 +21,28 @@ class GoogleAuthUI {
                 .build()
 
             return try {
-                val credentialManager = CredentialManager.Companion.create(context)
+                val credentialManager = CredentialManager.create(context)
+                val result = credentialManager.getCredential(context, request)
+                Result.success(result)
+            } catch (e: Exception) {
+                // It's common to fail here if no user is signed in silently
+                e.printStackTrace()
+                Result.failure(e)
+            }
+        }
+
+        suspend fun interactiveSignIn(context: Context): Result<GetCredentialResponse> {
+            val googleIdOption = GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(false) // This will show the UI
+                .setServerClientId(BuildConfig.API_KEY)
+                .build()
+
+            val request = GetCredentialRequest.Builder()
+                .addCredentialOption(googleIdOption)
+                .build()
+
+            return try {
+                val credentialManager = CredentialManager.create(context)
                 val result = credentialManager.getCredential(context, request)
                 Result.success(result)
             } catch (e: Exception) {
@@ -30,5 +51,4 @@ class GoogleAuthUI {
             }
         }
     }
-
 }
