@@ -50,6 +50,7 @@ import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.grocery.form.presentation.components.ConfirmationDialog
 import id.my.sendiko.sembako.grocery.form.presentation.components.GroceryImage
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
+import id.my.sendiko.sembako.grocery.form.presentation.images.getCroppedImage
 import kotlinx.coroutines.delay
 import kotlin.Unit
 
@@ -196,7 +197,7 @@ fun FormScreen(
                                 expanded = state.isExpanding,
                                 onDismissRequest = { onEvent(FormEvent.OnDropDownChanged(false)) }
                             ) {
-                                id.my.sendiko.sembako.grocery.form.presentation.Unit.entries.forEach {
+                                id.my.sendiko.sembako.grocery.form.presentation.components.Unit.entries.forEach {
                                     DropdownMenuItem(
                                         text = { Text(it.name) },
                                         onClick = {

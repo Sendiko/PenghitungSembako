@@ -38,7 +38,7 @@ fun StatsCard(
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = statistics.toString(),
+                text = statistics,
                 style = MaterialTheme.typography.headlineMedium
             )
         }
