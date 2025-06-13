@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.util.toRupiah
-import id.my.sendiko.sembako.profile.presentation.component.StatsCard
+import id.my.sendiko.sembako.statistics.presentation.components.StatsCard
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import kotlinx.coroutines.delay
 
