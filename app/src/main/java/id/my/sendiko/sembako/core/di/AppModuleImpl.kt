@@ -20,7 +20,7 @@ import kotlin.jvm.java
 class AppModuleImpl(
     private val app: Application
 ): AppModule {
-    override val database: AppDatabase
+    val database: AppDatabase
         get() = Room
             .databaseBuilder(app.applicationContext, AppDatabase::class.java, "sembako.db")
             .build()
@@ -37,7 +37,7 @@ class AppModuleImpl(
     override val statisticsPreferences: StatisticsPreferences
         get() = StatisticsPreferences(app.applicationContext.dataStore)
 
-    override val okHttpClient: OkHttpClient
+    val okHttpClient: OkHttpClient
         get() = OkHttpClient.Builder()
             .addInterceptor { chain ->
                 chain.proceed(chain.request().newBuilder().also {
@@ -52,7 +52,7 @@ class AppModuleImpl(
             .readTimeout(15, TimeUnit.SECONDS)
             .build()
 
-    override val retrofit: Retrofit
+    val retrofit: Retrofit
         get() = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)

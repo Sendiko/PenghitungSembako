@@ -1,10 +1,9 @@
 package id.my.sendiko.sembako.core.database
 
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import id.my.sendiko.sembako.grocery.core.data.GroceryEntity
 import id.my.sendiko.sembako.grocery.core.data.GroceryDao
+import id.my.sendiko.sembako.grocery.core.data.GroceryEntity
 import id.my.sendiko.sembako.history.data.HistoryDao
 import id.my.sendiko.sembako.history.data.HistoryEntity
 

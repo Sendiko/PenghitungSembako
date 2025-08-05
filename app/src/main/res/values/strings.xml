@@ -9,13 +9,8 @@
         \n\nAplikasi ini dibuat untuk memudahkan penghitungan harga sembako seperti Telur, Minyak, Gula, dan Beras.
         \n\nCopyright © Rizky Sendiko 2025
     </string>
-    <string name="contact_me">Kontak</string>
     <string name="greeting">Halo, %1$s</string>
     <string name="save">Simpan Transaksi</string>
-    <string name="github">Github</string>
-    <string name="kg">Kg</string>
-    <string name="using_ons">Hitung gunakan ons</string>
-    <string name="ons">ons</string>
     <string name="share">%1$s: Rp. %2$.2f x %3$.2f = Rp. %4$.2f</string>
     <string name="create_title">Tambah Sembako</string>
     <string name="create_label">Simpan</string>
@@ -33,8 +28,6 @@
     <string name="cancel">Batal</string>
     <string name="delete_title">Hapus sembako ini?</string>
     <string name="delete_message">Data akan hilang selamanya.</string>
-    <string name="hello">Halo</string>
-    <string name="login_title">Login dengan Google</string>
     <string name="login">Masuk</string>
     <string name="profile">Profil</string>
     <string name="logout">Keluar</string>

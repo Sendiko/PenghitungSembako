@@ -120,7 +120,7 @@ class FormViewModel(
             viewModelScope.launch {
                 _state.update { it.copy(isLoading = true) }
                 delay(1000)
-                repository.getGroceryFromRemote(state.value.id!!.toInt())
+                repository.getGroceryFromRemote(state.value.id!!)
                     .onSuccess { result ->
                         _state.update {
                             it.copy(
@@ -178,14 +178,14 @@ class FormViewModel(
             return
         }
         _state.update { it.copy(isLoading = true) }
-        parseCurrencyString(state.value.pricePerUnit)?.let {
+        parseCurrencyString(state.value.pricePerUnit)?.let { price ->
             viewModelScope.launch {
                 if (state.value.id != null) {
                     val request = UpdateGroceryRequest(
                         userId = state.value.user.id,
                         name = state.value.name,
                         unit = state.value.unit,
-                        pricePerUnit = it,
+                        pricePerUnit = price,
                         image = if (state.value.bitmap != null)
                             state.value.bitmap!!.toMultipartBody()
                         else null
@@ -223,7 +223,7 @@ class FormViewModel(
                         userId = state.value.user.id,
                         name = state.value.name,
                         unit = state.value.unit,
-                        pricePerUnit = it,
+                        pricePerUnit = price,
                         image = state.value.bitmap!!.toMultipartBody()
                     )
                     repository.saveGroceryToRemote(request)

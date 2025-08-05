@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.map
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.collections.forEach
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -70,8 +69,8 @@ class ListRepositoryImpl(
     }
 
     override suspend fun getLocalGroceries(): Flow<List<Grocery>> {
-        val result = localDataSource.getAll().map {
-            it.map {
+        val result = localDataSource.getAll().map { data ->
+            data.map {
                 Grocery(
                     id = it.id,
                     name = it.name,
