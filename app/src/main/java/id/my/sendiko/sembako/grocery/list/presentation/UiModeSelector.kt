@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.preferences.UiMode
-import id.my.sendiko.sembako.core.ui.theme.AppTheme
+import id.my.sendiko.sembako.core.ui.theme.SembakoProTheme
 
 @Composable
 fun UiModeSelector(
@@ -65,7 +65,7 @@ fun UiModeSelector(
 @Preview
 @Composable
 private fun UiModeSelectorPrev() {
-    AppTheme {
+    SembakoProTheme {
         UiModeSelector(
             modifier = Modifier.padding(8.dp),
             selectedUiMode = UiMode.LIST,

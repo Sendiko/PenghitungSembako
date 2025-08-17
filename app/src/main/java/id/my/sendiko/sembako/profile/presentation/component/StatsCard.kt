@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import id.my.sendiko.sembako.R
-import id.my.sendiko.sembako.core.ui.theme.AppTheme
+import id.my.sendiko.sembako.core.ui.theme.SembakoProTheme
 import id.my.sendiko.sembako.profile.presentation.utils.formatRupiah
 
 @Composable
@@ -48,7 +48,7 @@ fun StatsCard(
 @Preview
 @Composable
 private fun StatsCardPrev() {
-    AppTheme {
+    SembakoProTheme {
         Surface {
             StatsCard(
                 modifier = Modifier.padding(16.dp),

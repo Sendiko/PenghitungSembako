@@ -44,8 +44,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.navigation.AboutDestination
-import id.my.sendiko.sembako.core.navigation.SplashDestination
-import id.my.sendiko.sembako.core.ui.theme.AppTheme
+import id.my.sendiko.sembako.core.ui.theme.SembakoProTheme
 import id.my.sendiko.sembako.core.domain.User
 import id.my.sendiko.sembako.profile.presentation.component.LogoutCard
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
@@ -235,7 +234,7 @@ fun ProfileScreen(
 @Preview(showSystemUi = true)
 @Composable
 private fun ProfileScreenPrev() {
-    AppTheme {
+    SembakoProTheme {
         ProfileScreen(
             state = ProfileState(
                 user = User(

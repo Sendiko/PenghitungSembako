@@ -20,6 +20,19 @@ class UserPreferences(
     private val emailKey = stringPreferencesKey("email")
     private val profileUrlKey = stringPreferencesKey("profile_url")
     private val dynamicThemeKey = booleanPreferencesKey("dynamic_theme")
+    private val hasBoardingKey = booleanPreferencesKey("has_boarding")
+
+    fun getHasBoarding(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[hasBoardingKey] ?: false
+        }
+    }
+
+    suspend fun setHasBoarding(hasBoarding: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[hasBoardingKey] = hasBoarding
+        }
+    }
 
     suspend fun setDynamicTheme(dynamicTheme: Boolean) {
         dataStore.edit { preferences ->
