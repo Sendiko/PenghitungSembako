@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PenghitungSembako</string>
+    <string name="app_name">SembakoPro</string>
     <string name="sembako_harga">%1$s/%2$s</string>
     <string name="quantity">Jumlah</string>
     <string name="count">Hitung harga</string>
@@ -54,4 +54,15 @@
     <string name="good_afternoon">Selamat siang</string>
     <string name="good_evening">Selamat sore</string>
     <string name="good_night">Selamat malam</string>
+    <string name="farmers_market">Farmers Market</string>
+    <string name="supermarket_workers">Supermarket Workers</string>
+    <string name="credit_card">Credit Card</string>
+    <string name="onboarding_one_title">Atur Toko Anda</string>
+    <string name="onboarding_one_content">Pastikan semuanya diperiksa untuk efisiensi optimal</string>
+    <string name="onboarding_two_title">Lacak stok Anda</string>
+    <string name="onboarding_two_content">Tidak perlu perhitungan manual lagi!</string>
+    <string name="onboarding_three_title">Struk Digital</string>
+    <string name="onboarding_three_content">Kwitansi kertas adalah sesuatu yang sudah ketinggalan zaman!</string>
+    <string name="next">Selanjutnya</string>
+    <string name="register">Daftar Sekarang</string>
 </resources>
