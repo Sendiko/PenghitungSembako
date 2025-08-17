@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 object SplashDestination
 
 @Serializable
-object LoginDestination
+object OnboardingDestination
 
 @Serializable
 object DashboardDestination

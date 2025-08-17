@@ -4,14 +4,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import id.my.sendiko.sembako.core.navigation.DashboardDestination
 import id.my.sendiko.sembako.core.navigation.NavGraph
+import id.my.sendiko.sembako.core.navigation.OnboardingDestination
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.core.preferences.dataStore
-import id.my.sendiko.sembako.core.ui.theme.AppTheme
-import androidx.compose.runtime.getValue
+import id.my.sendiko.sembako.core.ui.theme.SembakoProTheme
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -20,17 +25,31 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        installSplashScreen()
+        val splashScreen = installSplashScreen()
         userPreferences = UserPreferences(this.dataStore)
+        var isLoading = true
+        lifecycleScope.launch {
+            userPreferences.getHasBoarding().first()
+            isLoading = false
+        }
+        splashScreen.setKeepOnScreenCondition { isLoading }
         setContent {
             val dynamicTheme by userPreferences.getDynamicTheme().collectAsStateWithLifecycle(true)
-            AppTheme(
+            val hasBoarding by userPreferences.getHasBoarding().collectAsStateWithLifecycle(null)
+            SembakoProTheme(
                 dynamicColor = dynamicTheme
             ) {
-                val navController = rememberNavController()
-                NavGraph(
-                    navController = navController
-                )
+                if (hasBoarding != null) {
+                    val navController = rememberNavController()
+                    NavGraph(
+                        navController = navController,
+                        startDestination = if (hasBoarding == true) {
+                            DashboardDestination
+                        } else {
+                            OnboardingDestination
+                        }
+                    )
+                }
             }
         }
     }

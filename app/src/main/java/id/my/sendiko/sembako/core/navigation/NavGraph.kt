@@ -27,6 +27,9 @@ import id.my.sendiko.sembako.grocery.list.presentation.ListViewModel
 import id.my.sendiko.sembako.history.data.HistoryRepositoryImpl
 import id.my.sendiko.sembako.history.presentation.HistoryScreen
 import id.my.sendiko.sembako.history.presentation.HistoryViewModel
+import id.my.sendiko.sembako.onboarding.data.OnboardingRepositoryImpl
+import id.my.sendiko.sembako.onboarding.presentation.OnboardingScreen
+import id.my.sendiko.sembako.onboarding.presentation.OnboardingViewModel
 import id.my.sendiko.sembako.profile.data.ProfileRepositoryImpl
 import id.my.sendiko.sembako.profile.presentation.ProfileScreen
 import id.my.sendiko.sembako.profile.presentation.ProfileViewModel
@@ -37,11 +40,30 @@ import id.my.sendiko.sembako.statistics.presentation.StatisticsViewModel
 @Composable
 fun NavGraph(
     navController: NavHostController,
+    startDestination: Any
 ) {
     NavHost(
-        startDestination = DashboardDestination,
+        startDestination = startDestination,
         navController = navController,
         builder = {
+            composable<OnboardingDestination> {
+                val viewModel = viewModel<OnboardingViewModel>(
+                    factory = viewModelFactory {
+                        val repository = OnboardingRepositoryImpl(
+                            userPreferences = SembakoApplication.module.userPreferences
+                        )
+                        OnboardingViewModel(repository)
+                    }
+                )
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                OnboardingScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    onNavigate = {
+                        navController.navigate(DashboardDestination)
+                    }
+                )
+            }
             composable<DashboardDestination> {
                 val viewModel = viewModel<DashboardViewModel>(
                     factory = viewModelFactory {
