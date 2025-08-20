@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="id.my.sendiko.sembako" />
+                  <option name="mobileSdkAppId" value="1:527021377342:android:156f915cbb493cb3098e6f" />
+                  <option name="projectId" value="sembakopro-be730" />
+                  <option name="projectNumber" value="527021377342" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -29,6 +29,8 @@ coreSplashscreen = "1.2.0-beta02"
 coilCompose = "2.7.0"
 androidImageCropper = "4.6.0"
 playServicesBasement = "18.7.0"
+googleGmsGoogleServices = "4.4.3"
+firebaseAuth = "24.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -67,6 +69,7 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "androidImageCropper" }
 play-services-basement = { group = "com.google.android.gms", name = "play-services-basement", version.ref = "playServicesBasement" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -74,3 +77,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
