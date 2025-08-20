@@ -33,6 +33,8 @@ import id.my.sendiko.sembako.onboarding.presentation.OnboardingViewModel
 import id.my.sendiko.sembako.profile.data.ProfileRepositoryImpl
 import id.my.sendiko.sembako.profile.presentation.ProfileScreen
 import id.my.sendiko.sembako.profile.presentation.ProfileViewModel
+import id.my.sendiko.sembako.signin.presentation.SignInScreen
+import id.my.sendiko.sembako.signin.presentation.SignInViewModel
 import id.my.sendiko.sembako.statistics.data.StatisticsRepositoryImpl
 import id.my.sendiko.sembako.statistics.presentation.StatisticsScreen
 import id.my.sendiko.sembako.statistics.presentation.StatisticsViewModel
@@ -60,8 +62,17 @@ fun NavGraph(
                     state = state,
                     onEvent = viewModel::onEvent,
                     onNavigate = {
-                        navController.navigate(DashboardDestination)
+                        navController.navigate(SignInDestination)
                     }
+                )
+            }
+            composable<SignInDestination> {
+                val viewModel = viewModel<SignInViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+
+                SignInScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent
                 )
             }
             composable<DashboardDestination> {

@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import id.my.sendiko.sembako.core.navigation.DashboardDestination
 import id.my.sendiko.sembako.core.navigation.NavGraph
 import id.my.sendiko.sembako.core.navigation.OnboardingDestination
+import id.my.sendiko.sembako.core.navigation.SignInDestination
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.core.preferences.dataStore
 import id.my.sendiko.sembako.core.ui.theme.SembakoProTheme
@@ -36,17 +37,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             val dynamicTheme by userPreferences.getDynamicTheme().collectAsStateWithLifecycle(true)
             val hasBoarding by userPreferences.getHasBoarding().collectAsStateWithLifecycle(null)
+            val user by userPreferences.getUser().collectAsStateWithLifecycle(null)
             SembakoProTheme(
                 dynamicColor = dynamicTheme
             ) {
-                if (hasBoarding != null) {
+                if (user != null) {
                     val navController = rememberNavController()
                     NavGraph(
                         navController = navController,
-                        startDestination = if (hasBoarding == true) {
-                            DashboardDestination
+                        startDestination = if (user?.id == 0) {
+                            if (hasBoarding == true) {
+                                SignInDestination
+                            } else {
+                                OnboardingDestination
+                            }
                         } else {
-                            OnboardingDestination
+                            DashboardDestination
                         }
                     )
                 }
