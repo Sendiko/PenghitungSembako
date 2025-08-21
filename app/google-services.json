@@ -12,7 +12,12 @@
           "package_name": "id.my.sendiko.sembako"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "527021377342-7f78n7025b7l67vpo5e9dcbktr6kn60n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCr1ZC9zABfCrxOw8eBGjVYWuK00pPTRyE"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527021377342-7f78n7025b7l67vpo5e9dcbktr6kn60n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
