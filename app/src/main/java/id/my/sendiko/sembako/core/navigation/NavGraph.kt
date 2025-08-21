@@ -33,6 +33,7 @@ import id.my.sendiko.sembako.onboarding.presentation.OnboardingViewModel
 import id.my.sendiko.sembako.profile.data.ProfileRepositoryImpl
 import id.my.sendiko.sembako.profile.presentation.ProfileScreen
 import id.my.sendiko.sembako.profile.presentation.ProfileViewModel
+import id.my.sendiko.sembako.signin.data.SignInRepositoryImpl
 import id.my.sendiko.sembako.signin.presentation.SignInScreen
 import id.my.sendiko.sembako.signin.presentation.SignInViewModel
 import id.my.sendiko.sembako.statistics.data.StatisticsRepositoryImpl
@@ -67,19 +68,30 @@ fun NavGraph(
                 )
             }
             composable<SignInDestination> {
-                val viewModel = viewModel<SignInViewModel>()
+                val viewModel = viewModel<SignInViewModel>(
+                    factory = viewModelFactory {
+                        val repository = SignInRepositoryImpl(
+                            auth = SembakoApplication.module.firebaseAuth,
+                            remoteDataSource = SembakoApplication.module.apiService,
+                            localDataSource = SembakoApplication.module.userPreferences
+                        )
+                        SignInViewModel(repository)
+                    }
+                )
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
                 SignInScreen(
                     state = state,
-                    onEvent = viewModel::onEvent
+                    onEvent = viewModel::onEvent,
+                    onNavigate = {
+                        navController.navigate(DashboardDestination)
+                    }
                 )
             }
             composable<DashboardDestination> {
                 val viewModel = viewModel<DashboardViewModel>(
                     factory = viewModelFactory {
                         val repository = DashboardRepositoryImpl(
-                            remoteDataSource = SembakoApplication.module.apiService,
                             localDataSource = SembakoApplication.module.userPreferences
                         )
                         DashboardViewModel(repository)

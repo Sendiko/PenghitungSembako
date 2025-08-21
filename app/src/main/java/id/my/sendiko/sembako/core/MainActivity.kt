@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavGraph(
                         navController = navController,
-                        startDestination = if (user?.id == 0) {
+                        startDestination = if (user?.id.isNullOrBlank()) {
                             if (hasBoarding == true) {
                                 SignInDestination
                             } else {

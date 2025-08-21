@@ -1,6 +1,7 @@
 package id.my.sendiko.sembako.core.di
 
 import android.app.Application
+import com.google.firebase.auth.FirebaseAuth
 import id.my.sendiko.sembako.core.database.AppDatabase
 import id.my.sendiko.sembako.core.network.ApiService
 import id.my.sendiko.sembako.core.preferences.StatisticsPreferences
@@ -29,5 +30,7 @@ interface AppModule {
     val apiService: ApiService
 
     val application: Application
+
+    val firebaseAuth: FirebaseAuth
 
 }

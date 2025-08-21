@@ -2,6 +2,7 @@ package id.my.sendiko.sembako.core.di
 
 import android.app.Application
 import androidx.room.Room
+import com.google.firebase.auth.FirebaseAuth
 import id.my.sendiko.sembako.core.database.AppDatabase
 import id.my.sendiko.sembako.core.network.ApiService
 import id.my.sendiko.sembako.core.network.BASE_URL
@@ -15,7 +16,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import kotlin.jvm.java
 
 class AppModuleImpl(
     private val app: Application
@@ -63,5 +63,7 @@ class AppModuleImpl(
         get() = retrofit.create(ApiService::class.java)
     override val application: Application
         get() = app
+    override val firebaseAuth: FirebaseAuth
+        get() = FirebaseAuth.getInstance()
 
 }

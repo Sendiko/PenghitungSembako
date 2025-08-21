@@ -11,8 +11,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,14 +23,35 @@ import androidx.compose.ui.unit.dp
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.theme.SembakoProTheme
+import id.my.sendiko.sembako.dashboard.presentation.GoogleAuthUI
 import id.my.sendiko.sembako.signin.presentation.components.GoogleButton
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SignInScreen(
     state: SignInState,
-    onEvent: (SignInEvent) -> Unit
+    onEvent: (SignInEvent) -> Unit,
+    onNavigate: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(state.isSuccess) {
+        delay(1500)
+        if (state.isSuccess) {
+            onNavigate()
+        }
+    }
+
+    LaunchedEffect(state.isError) {
+        delay(1500)
+        if (state.isError) {
+            onEvent(SignInEvent.OnClearState)
+        }
+    }
+
     ContentBoxWithNotification(
         isLoading = state.isLoading,
         isErrorNotification = state.isError,
@@ -52,7 +76,13 @@ fun SignInScreen(
                     )
                     GoogleButton(
                         onClick = {
-                            onEvent(SignInEvent.OnSignIn)
+                            coroutineScope.launch {
+                                GoogleAuthUI.interactiveSignIn(context)
+                                    .onSuccess { result ->
+                                        val result = GoogleAuthUI.interactiveSignIn(context)
+                                        onEvent(SignInEvent.OnGoogleSignedIn(result))
+                                    }
+                            }
                         }
                     )
                 }
@@ -68,7 +98,8 @@ private fun SignInScreenPrev() {
     SembakoProTheme {
         SignInScreen(
             state = SignInState(),
-            onEvent = {}
+            onEvent = {},
+            onNavigate = {}
         )
     }
 }
