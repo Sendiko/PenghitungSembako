@@ -40,15 +40,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import id.my.sendiko.sembako.R
-import id.my.sendiko.sembako.core.navigation.AboutDestination
-import id.my.sendiko.sembako.core.ui.theme.SembakoProTheme
-import id.my.sendiko.sembako.core.domain.User
-import id.my.sendiko.sembako.profile.presentation.component.LogoutCard
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
+import id.my.sendiko.sembako.R
+import id.my.sendiko.sembako.core.domain.User
+import id.my.sendiko.sembako.core.navigation.AboutDestination
 import id.my.sendiko.sembako.core.navigation.DashboardDestination
+import id.my.sendiko.sembako.core.ui.theme.SembakoProTheme
+import id.my.sendiko.sembako.profile.presentation.component.LogoutCard
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -238,10 +239,10 @@ private fun ProfileScreenPrev() {
         ProfileScreen(
             state = ProfileState(
                 user = User(
-                    id = 0,
+                    id = "",
                     username = "Sendiko",
                     email = "sarangtawon897@gmail.com",
-                    profileUrl = "https://images.pexels.com/photos/31995895/pexels-photo-31995895/free-photo-of-turkish-coffee-with-scenic-bursa-view.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    profileUrl = "https://images.pexels.com/photos/31995895/pexels-photo-31995895/free-photo-of-turkish-coffee-with-scenic-bursa-view.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1".toUri()
                 )
             ),
             onEvent = {},

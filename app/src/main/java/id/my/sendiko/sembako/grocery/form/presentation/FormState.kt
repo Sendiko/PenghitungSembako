@@ -1,6 +1,7 @@
 package id.my.sendiko.sembako.grocery.form.presentation
 
 import android.graphics.Bitmap
+import android.net.Uri
 import id.my.sendiko.sembako.core.domain.User
 
 data class FormState(
@@ -20,5 +21,5 @@ data class FormState(
     val imageUrl: String = "",
     val bitmapMessage: String = "",
     val isLoading: Boolean = false,
-    val user: User = User(0, "", "", "")
+    val user: User = User("", "", "", Uri.EMPTY)
 )

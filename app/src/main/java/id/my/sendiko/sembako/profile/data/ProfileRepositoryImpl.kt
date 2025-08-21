@@ -1,12 +1,13 @@
 package id.my.sendiko.sembako.profile.data
 
 import android.content.Context
+import android.net.Uri
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.exceptions.ClearCredentialException
+import id.my.sendiko.sembako.core.domain.User
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.profile.domain.ProfileRepository
-import id.my.sendiko.sembako.core.domain.User
 import kotlinx.coroutines.flow.Flow
 
 class ProfileRepositoryImpl(
@@ -24,7 +25,7 @@ class ProfileRepositoryImpl(
             credentialManager.clearCredentialState(
                 ClearCredentialStateRequest()
             )
-            val clearUser = User(0, "", "", "")
+            val clearUser = User("", "", "", Uri.EMPTY)
             userPreferences.saveUser(clearUser)
             Result.success(true)
         } catch (e: ClearCredentialException) {

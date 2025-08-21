@@ -182,7 +182,7 @@ class FormViewModel(
             viewModelScope.launch {
                 if (state.value.id != null) {
                     val request = UpdateGroceryRequest(
-                        userId = state.value.user.id,
+                        userId = state.value.user.id?:"",
                         name = state.value.name,
                         unit = state.value.unit,
                         pricePerUnit = it,
@@ -220,7 +220,7 @@ class FormViewModel(
                         }
                 } else {
                     val request = PostGroceryRequest(
-                        userId = state.value.user.id,
+                        userId = state.value.user.id?:"",
                         name = state.value.name,
                         unit = state.value.unit,
                         pricePerUnit = it,

@@ -6,7 +6,7 @@ import okhttp3.MultipartBody
 data class UpdateGroceryRequest(
 
     @field:SerializedName("userId")
-    val userId: Int,
+    val userId: String,
 
     @field:SerializedName("name")
     val name: String,

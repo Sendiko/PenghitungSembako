@@ -1,8 +1,10 @@
 package id.my.sendiko.sembako.core.domain
 
+import android.net.Uri
+
 data class User(
-    val id: Int,
-    val username: String,
-    val email: String,
-    val profileUrl: String,
+    val id: String?,
+    val username: String?,
+    val email: String?,
+    val profileUrl: Uri?,
 )

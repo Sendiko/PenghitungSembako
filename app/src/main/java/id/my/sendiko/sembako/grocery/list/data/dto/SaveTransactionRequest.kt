@@ -5,13 +5,13 @@ import com.google.gson.annotations.SerializedName
 data class SaveTransactionRequest(
 
 	@field:SerializedName("quantity")
-	val quantity: Any,
+	val quantity: String,
 
 	@field:SerializedName("totalPrice")
 	val totalPrice: Int,
 
 	@field:SerializedName("userId")
-	val userId: Int,
+	val userId: String,
 
 	@field:SerializedName("groceryId")
 	val groceryId: Int

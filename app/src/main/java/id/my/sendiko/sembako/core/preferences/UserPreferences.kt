@@ -1,10 +1,10 @@
 package id.my.sendiko.sembako.core.preferences
 
+import androidx.core.net.toUri
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import id.my.sendiko.sembako.core.domain.User
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +15,7 @@ class UserPreferences(
 ) {
 
     private val uiModeKey = stringPreferencesKey("ui_mode")
-    private val userIdKey = intPreferencesKey("user")
+    private val userIdKey = stringPreferencesKey("user")
     private val nameKey = stringPreferencesKey("name")
     private val emailKey = stringPreferencesKey("email")
     private val profileUrlKey = stringPreferencesKey("profile_url")
@@ -48,10 +48,10 @@ class UserPreferences(
 
     suspend fun saveUser(user: User) {
         dataStore.edit { preferences ->
-            preferences[userIdKey] = user.id
-            preferences[nameKey] = user.username
-            preferences[emailKey] = user.email
-            preferences[profileUrlKey] = user.profileUrl
+            preferences[userIdKey] = user.id ?: ""
+            preferences[nameKey] = user.username ?: ""
+            preferences[emailKey] = user.email ?: ""
+            preferences[profileUrlKey] = user.profileUrl.toString()
         }
     }
 
@@ -60,8 +60,8 @@ class UserPreferences(
             val name = preferences[nameKey] ?: ""
             val email = preferences[emailKey] ?: ""
             val profileUrl = preferences[profileUrlKey] ?: ""
-            val id = preferences[userIdKey] ?: 0
-            User(id, name, email, profileUrl)
+            val id = preferences[userIdKey] ?: ""
+            User(id, name, email, profileUrl.toUri())
         }
     }
 
