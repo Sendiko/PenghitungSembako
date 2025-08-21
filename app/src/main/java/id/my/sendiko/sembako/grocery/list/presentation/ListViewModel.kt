@@ -98,7 +98,7 @@ class ListViewModel(
             val request = SaveTransactionRequest(
                 quantity = state.value.quantity,
                 totalPrice = state.value.totalPrice.toInt(),
-                userId = state.value.user!!.id,
+                userId = state.value.user!!.id?:"",
                 groceryId = state.value.grocery!!.id
             )
             repository.saveTransaction(request)
