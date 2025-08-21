@@ -1,9 +1,10 @@
 package id.my.sendiko.sembako.dashboard.presentation
 
+import android.net.Uri
 import id.my.sendiko.sembako.core.domain.User
 
 data class DashboardState(
-    val user: User = User(0, "", "", ""),
+    val user: User = User("", "", "", Uri.EMPTY),
     val message: String = "",
     val isLoading: Boolean = false,
     val isSigningIn: Boolean = false,

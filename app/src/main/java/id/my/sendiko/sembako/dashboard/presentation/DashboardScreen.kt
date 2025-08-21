@@ -46,7 +46,6 @@ import id.my.sendiko.sembako.core.navigation.StatisticsDestination
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,14 +57,6 @@ fun DashboardScreen(
     onNavigate: (Any) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val context = LocalContext.current
-
-    LaunchedEffect(key1 = signInEventFlow) {
-        signInEventFlow.collectLatest {
-            val result = GoogleAuthUI.interactiveSignIn(context)
-            onEvent(DashboardEvent.OnResult(result))
-        }
-    }
 
     LaunchedEffect(state.isSignInSuccessful) {
         if (state.isSignInSuccessful) {
@@ -87,7 +78,7 @@ fun DashboardScreen(
                         scrollBehavior = scrollBehavior,
                         title = {
                             Text(
-                                text = if (state.user.username.isBlank()) {
+                                text = if (state.user.username.isNullOrBlank()) {
                                     stringResource(getGreeting())
                                 } else stringResource(R.string.greeting,
                                     state.user.username.split(" ")[0]
@@ -164,7 +155,7 @@ fun DashboardScreen(
                                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                             ),
                             onClick = {
-                                if (state.user.username.isBlank())
+                                if (state.user.username.isNullOrBlank())
                                     onEvent(DashboardEvent.OnLoginClicked)
                                 else onNavigate(ProfileDestination)
                             }
@@ -172,7 +163,7 @@ fun DashboardScreen(
                             Column(
                                 modifier = Modifier.padding(16.dp)
                             ) {
-                                if (state.user.username.isBlank()) {
+                                if (state.user.username.isNullOrBlank()) {
                                     Icon(
                                         modifier = Modifier.size(64.dp),
                                         imageVector = Icons.Filled.Person,
@@ -194,7 +185,7 @@ fun DashboardScreen(
                                 }
                                 Spacer(Modifier.height(8.dp))
                                 Text(
-                                    text = if (state.user.username.isNotBlank())
+                                    text = if (state.user.username.isNullOrBlank())
                                         stringResource(R.string.profile)
                                     else stringResource(R.string.login),
                                     style = MaterialTheme.typography.titleLarge
