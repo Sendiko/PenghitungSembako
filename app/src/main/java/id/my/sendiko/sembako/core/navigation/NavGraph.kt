@@ -102,7 +102,6 @@ fun NavGraph(
                 DashboardScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
-                    signInEventFlow = viewModel.signInEvent,
                     onNavigate = {
                         navController.navigate(it)
                     }

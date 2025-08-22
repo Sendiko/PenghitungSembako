@@ -1,5 +1,6 @@
 package id.my.sendiko.sembako.dashboard.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.my.sendiko.sembako.dashboard.data.DashboardRepositoryImpl
@@ -13,12 +14,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
-    private val repository: DashboardRepositoryImpl
+    repository: DashboardRepositoryImpl
 ) : ViewModel() {
 
     private val _user = repository.getUser()
     private val _state = MutableStateFlow(DashboardState())
     val state = combine(_user, _state) { user, state ->
+        Log.i("User", "state: $user")
         state.copy(user = user)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardState())
 

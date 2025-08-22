@@ -45,15 +45,12 @@ import id.my.sendiko.sembako.core.navigation.ProfileDestination
 import id.my.sendiko.sembako.core.navigation.StatisticsDestination
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     state: DashboardState,
     onEvent: (DashboardEvent) -> Unit,
-    signInEventFlow: Flow<Unit>,
     onNavigate: (Any) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -130,7 +127,8 @@ fun DashboardScreen(
                                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                             ),
-                            onClick = { onNavigate(StatisticsDestination) }
+                            onClick = { onNavigate(StatisticsDestination) },
+                            enabled = false
                         ) {
                             Column(
                                 modifier = Modifier.padding(16.dp)
@@ -185,7 +183,7 @@ fun DashboardScreen(
                                 }
                                 Spacer(Modifier.height(8.dp))
                                 Text(
-                                    text = if (state.user.username.isNullOrBlank())
+                                    text = if (!state.user.username.isNullOrBlank())
                                         stringResource(R.string.profile)
                                     else stringResource(R.string.login),
                                     style = MaterialTheme.typography.titleLarge
@@ -199,6 +197,7 @@ fun DashboardScreen(
                                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                             ),
+                            enabled = false,
                             onClick = { onNavigate(HistoryDestination) }
                         ) {
                             Column(
@@ -231,6 +230,5 @@ private fun DashboardScreenPrev() {
         state = DashboardState(),
         onNavigate = { },
         onEvent = {  } ,
-        signInEventFlow = flow {  }
     )
 }
