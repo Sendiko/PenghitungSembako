@@ -1,6 +1,7 @@
 package id.my.sendiko.sembako.core
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
                 dynamicColor = dynamicTheme
             ) {
                 if (user != null) {
+                    Log.i("UserPreferences", "onCreate: $user")
                     val navController = rememberNavController()
                     NavGraph(
                         navController = navController,

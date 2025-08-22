@@ -1,6 +1,7 @@
 package id.my.sendiko.sembako.signin.presentation
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.theme.SembakoProTheme
-import id.my.sendiko.sembako.dashboard.presentation.GoogleAuthUI
 import id.my.sendiko.sembako.signin.presentation.components.GoogleButton
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -46,7 +46,8 @@ fun SignInScreen(
     }
 
     LaunchedEffect(state.isError) {
-        delay(1500)
+        Log.e("FirebaseAuth", "SignInScreen: ${state.message}")
+        delay(5000)
         if (state.isError) {
             onEvent(SignInEvent.OnClearState)
         }
@@ -77,11 +78,8 @@ fun SignInScreen(
                     GoogleButton(
                         onClick = {
                             coroutineScope.launch {
-                                GoogleAuthUI.interactiveSignIn(context)
-                                    .onSuccess { result ->
-                                        val result = GoogleAuthUI.interactiveSignIn(context)
-                                        onEvent(SignInEvent.OnGoogleSignedIn(result))
-                                    }
+                                val result = GoogleAuthUI.interactiveSignIn(context)
+                                onEvent(SignInEvent.OnGoogleSignedIn(result))
                             }
                         }
                     )

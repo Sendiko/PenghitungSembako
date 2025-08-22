@@ -1,5 +1,6 @@
 package id.my.sendiko.sembako.signin.presentation
 
+import android.util.Log
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.ViewModel
@@ -48,8 +49,8 @@ class SignInViewModel(private val repository: SignInRepository) : ViewModel() {
                         profileUrl = result?.photoUrl
                     )
                     repository.saveUserToRemote(user)
-                        .onSuccess {
-                            repository.saveUserToLocal(user)
+                        .onSuccess { remoteUser ->
+                            repository.saveUserToLocal(remoteUser)
                             _state.update {
                                 it.copy(
                                     isLoading = false,
@@ -69,6 +70,7 @@ class SignInViewModel(private val repository: SignInRepository) : ViewModel() {
                         }
                 }
                 .onFailure { error ->
+                    Log.e("FirebaseAuth", "signInAsGuest: ${error.localizedMessage}")
                     _state.update {
                         it.copy(
                             isLoading = false,
@@ -81,6 +83,7 @@ class SignInViewModel(private val repository: SignInRepository) : ViewModel() {
 
     private fun signInWithGoogle(response: Result<GetCredentialResponse>) {
         viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
             response.onSuccess { result ->
                 val credential = result.credential
                 if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
@@ -91,11 +94,12 @@ class SignInViewModel(private val repository: SignInRepository) : ViewModel() {
                         profileUrl = googleId.profilePictureUri,
                         id = ""
                     )
+                    Log.i("User", "signInAsGuest: $user")
                     repository.signInWithGoogle(googleId.idToken)
                         .onSuccess {
                             repository.saveUserToRemote(user)
-                                .onSuccess {
-                                    repository.saveUserToLocal(user)
+                                .onSuccess { remoteUser ->
+                                    repository.saveUserToLocal(remoteUser)
                                     _state.update {
                                         it.copy(
                                             isLoading = false,
@@ -104,6 +108,13 @@ class SignInViewModel(private val repository: SignInRepository) : ViewModel() {
                                         )
                                     }
                                 }
+                        }
+                        .onFailure { error ->
+                            _state.update { it.copy(
+                                isLoading = false,
+                                isError = true,
+                                message = error.message?:"Failed to sign in"
+                            ) }
                         }
                 }
             }
