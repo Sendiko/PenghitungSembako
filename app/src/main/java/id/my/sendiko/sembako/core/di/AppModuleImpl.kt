@@ -8,6 +8,7 @@ import id.my.sendiko.sembako.core.network.BASE_URL
 import id.my.sendiko.sembako.core.preferences.StatisticsPreferences
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.core.preferences.dataStore
+import id.my.sendiko.sembako.dashboard.data.datasource.DashboardDataSource
 import id.my.sendiko.sembako.grocery.core.data.GroceryDao
 import id.my.sendiko.sembako.history.data.HistoryDao
 import okhttp3.OkHttpClient
@@ -61,7 +62,10 @@ class AppModuleImpl(
 
     override val apiService: ApiService
         get() = retrofit.create(ApiService::class.java)
+
     override val application: Application
         get() = app
 
+    override val dashboardDataSource: DashboardDataSource
+        get() = retrofit.create(DashboardDataSource::class.java)
 }

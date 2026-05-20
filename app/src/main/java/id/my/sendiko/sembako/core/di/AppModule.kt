@@ -5,6 +5,7 @@ import id.my.sendiko.sembako.core.database.AppDatabase
 import id.my.sendiko.sembako.core.network.ApiService
 import id.my.sendiko.sembako.core.preferences.StatisticsPreferences
 import id.my.sendiko.sembako.core.preferences.UserPreferences
+import id.my.sendiko.sembako.dashboard.data.datasource.DashboardDataSource
 import id.my.sendiko.sembako.grocery.core.data.GroceryDao
 import id.my.sendiko.sembako.history.data.HistoryDao
 import okhttp3.OkHttpClient
@@ -29,5 +30,7 @@ interface AppModule {
     val apiService: ApiService
 
     val application: Application
+
+    val dashboardDataSource: DashboardDataSource
 
 }
