@@ -11,7 +11,6 @@ import id.my.sendiko.sembako.history.data.HistoryEntity
 @Database(
     entities = [GroceryEntity::class, HistoryEntity::class],
     version = 5,
-    autoMigrations = [AutoMigration(from = 4, to = 5)],
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
