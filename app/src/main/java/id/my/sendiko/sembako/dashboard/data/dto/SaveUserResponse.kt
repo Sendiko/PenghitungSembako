@@ -1,7 +1,7 @@
 package id.my.sendiko.sembako.dashboard.data.dto
 
 import com.google.gson.annotations.SerializedName
-import id.my.sendiko.sembako.core.domain.Store
+import id.my.sendiko.sembako.store.domain.Store
 import id.my.sendiko.sembako.user.core.domain.User
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
