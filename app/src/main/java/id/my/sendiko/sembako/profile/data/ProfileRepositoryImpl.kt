@@ -24,7 +24,7 @@ class ProfileRepositoryImpl(
             credentialManager.clearCredentialState(
                 ClearCredentialStateRequest()
             )
-            val clearUser = User(0, "", "", "")
+            val clearUser = User(0, "", "", "", false)
             userPreferences.saveUser(clearUser)
             Result.success(true)
         } catch (e: ClearCredentialException) {

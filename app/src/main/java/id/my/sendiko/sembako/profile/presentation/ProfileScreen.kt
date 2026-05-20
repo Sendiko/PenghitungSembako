@@ -242,7 +242,8 @@ private fun ProfileScreenPrev() {
                     id = 0,
                     username = "Sendiko",
                     email = "sarangtawon897@gmail.com",
-                    profileUrl = "https://images.pexels.com/photos/31995895/pexels-photo-31995895/free-photo-of-turkish-coffee-with-scenic-bursa-view.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    profileUrl = "https://images.pexels.com/photos/31995895/pexels-photo-31995895/free-photo-of-turkish-coffee-with-scenic-bursa-view.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                    hasStore = false
                 )
             ),
             onEvent = {},
