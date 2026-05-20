@@ -94,7 +94,7 @@ fun NavGraph(
                     factory = viewModelFactory {
                         val profileRepository = ProfileRepositoryImpl(
                             context = context,
-                            userPreferences = UserPreferences(SembakoApplication.module.application.dataStore),
+                            userLocalDataSource = UserPreferences(SembakoApplication.module.application.dataStore),
                         )
                         ProfileViewModel(profileRepository)
                     }

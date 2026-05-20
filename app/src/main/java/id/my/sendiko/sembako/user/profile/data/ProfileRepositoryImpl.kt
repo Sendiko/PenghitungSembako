@@ -10,12 +10,12 @@ import id.my.sendiko.sembako.user.core.domain.User
 import kotlinx.coroutines.flow.Flow
 
 class ProfileRepositoryImpl(
-    private val userPreferences: UserPreferences,
+    private val userLocalDataSource: UserPreferences,
     private val context: Context,
 ): ProfileRepository {
 
     override fun getUser(): Flow<User> {
-        return userPreferences.getUser()
+        return userLocalDataSource.getUser()
     }
 
     override suspend fun logout(): Result<Boolean> {
@@ -25,7 +25,7 @@ class ProfileRepositoryImpl(
                 ClearCredentialStateRequest()
             )
             val clearUser = User(0, "", "", "", false)
-            userPreferences.saveUser(clearUser)
+            userLocalDataSource.saveUser(clearUser)
             Result.success(true)
         } catch (e: ClearCredentialException) {
             Result.failure(e)
@@ -33,11 +33,11 @@ class ProfileRepositoryImpl(
     }
 
     override fun getDynamicTheme(): Flow<Boolean> {
-        return userPreferences.getDynamicTheme()
+        return userLocalDataSource.getDynamicTheme()
     }
 
     override suspend fun setDynamicTheme(dynamicTheme: Boolean) {
-        userPreferences.setDynamicTheme(dynamicTheme)
+        userLocalDataSource.setDynamicTheme(dynamicTheme)
     }
 
 }
