@@ -3,23 +3,19 @@ package id.my.sendiko.sembako.dashboard.presentation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.PieChart
-import androidx.compose.material.icons.filled.Receipt
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.PieChart
+import androidx.compose.material.icons.rounded.Receipt
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -44,6 +40,8 @@ import id.my.sendiko.sembako.core.navigation.ListDestination
 import id.my.sendiko.sembako.core.navigation.ProfileDestination
 import id.my.sendiko.sembako.core.navigation.StatisticsDestination
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
+import id.my.sendiko.sembako.dashboard.presentation.components.LongMenuCard
+import id.my.sendiko.sembako.dashboard.presentation.components.MenuCard
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -77,6 +75,7 @@ fun DashboardScreen(
     ContentBoxWithNotification(
         isLoading = state.isLoading,
         message = state.message,
+        isErrorNotification = state.signInError.isNotEmpty(),
         textStyle = TextStyle(
             fontFamily = bodyFontFamily
         ),
@@ -89,7 +88,8 @@ fun DashboardScreen(
                             Text(
                                 text = if (state.user.username.isBlank()) {
                                     stringResource(getGreeting())
-                                } else stringResource(R.string.greeting,
+                                } else stringResource(
+                                    R.string.greeting,
                                     state.user.username.split(" ")[0]
                                 )
                             )
@@ -103,79 +103,59 @@ fun DashboardScreen(
                         top = paddingValues.calculateTopPadding() + 16.dp,
                         start = 16.dp,
                         end = 16.dp,
-                        bottom = paddingValues.calculateBottomPadding()+ 16.dp
+                        bottom = paddingValues.calculateBottomPadding() + 16.dp
                     ),
                     columns = StaggeredGridCells.Fixed(2),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalItemSpacing = 16.dp
                 ) {
+                    if (!state.user.hasStore) {
+                        item(span = StaggeredGridItemSpan.FullLine) {
+                            LongMenuCard(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = { }
+                            )
+                        }
+                    }
                     item {
-                        Card(
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                            ),
-                            onClick = { onNavigate(ListDestination) }
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(16.dp)
-                            ) {
+                        MenuCard(
+                            onClick = { onNavigate(ListDestination) },
+                            icon = {
                                 Icon(
                                     modifier = Modifier.size(64.dp),
                                     painter = painterResource(R.drawable.grocery),
                                     contentDescription = stringResource(R.string.your_grocery)
                                 )
-                                Spacer(Modifier.height(8.dp))
-                                Text(
-                                    text = stringResource(R.string.your_grocery),
-                                    style = MaterialTheme.typography.titleLarge
-                                )
-                            }
-                        }
+                            },
+                            text = stringResource(R.string.your_grocery)
+                        )
                     }
+
                     item {
-                        Card(
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                            ),
-                            onClick = { onNavigate(StatisticsDestination) }
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(16.dp)
-                            ) {
+                        MenuCard(
+                            onClick = { onNavigate(StatisticsDestination) },
+                            icon = {
                                 Icon(
                                     modifier = Modifier.size(64.dp),
-                                    imageVector = Icons.Filled.PieChart,
+                                    imageVector = Icons.Rounded.PieChart,
                                     contentDescription = stringResource(R.string.statistics)
                                 )
-                                Spacer(Modifier.height(8.dp))
-                                Text(
-                                    text = stringResource(R.string.statistics),
-                                    style = MaterialTheme.typography.titleLarge
-                                )
-                            }
-                        }
+                            },
+                            text = stringResource(R.string.statistics)
+                        )
                     }
                     item {
-                        Card(
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                            ),
+                        MenuCard(
                             onClick = {
                                 if (state.user.username.isBlank())
                                     onEvent(DashboardEvent.OnLoginClicked)
                                 else onNavigate(ProfileDestination)
-                            }
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(16.dp)
-                            ) {
+                            },
+                            icon = {
                                 if (state.user.username.isBlank()) {
                                     Icon(
                                         modifier = Modifier.size(64.dp),
-                                        imageVector = Icons.Filled.Person,
+                                        imageVector = Icons.Rounded.Person,
                                         contentDescription = stringResource(R.string.profile)
                                     )
                                 } else {
@@ -192,39 +172,24 @@ fun DashboardScreen(
                                         contentDescription = state.user.username,
                                     )
                                 }
-                                Spacer(Modifier.height(8.dp))
-                                Text(
-                                    text = if (state.user.username.isNotBlank())
-                                        stringResource(R.string.profile)
-                                    else stringResource(R.string.login),
-                                    style = MaterialTheme.typography.titleLarge
-                                )
-                            }
-                        }
+                            },
+                            text = if (state.user.username.isNotBlank())
+                                stringResource(R.string.profile)
+                            else stringResource(R.string.login_title)
+                        )
                     }
                     item {
-                        Card(
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                            ),
-                            onClick = { onNavigate(HistoryDestination) }
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(16.dp)
-                            ) {
+                        MenuCard(
+                            onClick = { onNavigate(HistoryDestination) },
+                            icon = {
                                 Icon(
                                     modifier = Modifier.size(64.dp),
-                                    imageVector = Icons.Default.Receipt,
+                                    imageVector = Icons.Rounded.Receipt,
                                     contentDescription = stringResource(R.string.transaction)
                                 )
-                                Spacer(Modifier.height(8.dp))
-                                Text(
-                                    text = stringResource(R.string.transaction),
-                                    style = MaterialTheme.typography.titleLarge
-                                )
-                            }
-                        }
+                            },
+                            text = stringResource(R.string.transaction)
+                        )
                     }
                 }
             }
@@ -239,7 +204,7 @@ private fun DashboardScreenPrev() {
     DashboardScreen(
         state = DashboardState(),
         onNavigate = { },
-        onEvent = {  } ,
-        signInEventFlow = flow {  }
+        onEvent = { },
+        signInEventFlow = flow { }
     )
 }

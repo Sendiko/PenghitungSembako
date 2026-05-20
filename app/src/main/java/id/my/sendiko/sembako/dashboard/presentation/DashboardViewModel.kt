@@ -52,7 +52,8 @@ class DashboardViewModel(
                         username = googleId.displayName ?: "No Name",
                         email = googleId.id,
                         profileUrl = googleId.profilePictureUri.toString(),
-                        id = 0
+                        id = 0,
+                        hasStore = false
                     )
                     viewModelScope.launch {
                         repository.saveUserToRemote(user)
