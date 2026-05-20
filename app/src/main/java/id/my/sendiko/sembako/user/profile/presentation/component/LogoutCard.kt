@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.profile.presentation.component
+package id.my.sendiko.sembako.user.profile.presentation.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

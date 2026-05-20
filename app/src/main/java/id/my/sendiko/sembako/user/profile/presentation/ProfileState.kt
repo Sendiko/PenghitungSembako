@@ -1,6 +1,6 @@
-package id.my.sendiko.sembako.profile.presentation
+package id.my.sendiko.sembako.user.profile.presentation
 
-import id.my.sendiko.sembako.core.domain.User
+import id.my.sendiko.sembako.user.core.domain.User
 
 data class ProfileState(
     val isSigningOut: Boolean = false,

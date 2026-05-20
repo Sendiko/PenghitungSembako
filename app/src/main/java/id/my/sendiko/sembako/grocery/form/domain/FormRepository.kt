@@ -1,6 +1,6 @@
 package id.my.sendiko.sembako.grocery.form.domain
 
-import id.my.sendiko.sembako.core.domain.User
+import id.my.sendiko.sembako.user.core.domain.User
 import id.my.sendiko.sembako.grocery.core.data.GroceryEntity
 import id.my.sendiko.sembako.grocery.core.domain.Grocery
 import id.my.sendiko.sembako.grocery.form.data.dto.PostGroceryRequest

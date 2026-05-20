@@ -27,9 +27,9 @@ import id.my.sendiko.sembako.grocery.list.presentation.ListViewModel
 import id.my.sendiko.sembako.history.data.HistoryRepositoryImpl
 import id.my.sendiko.sembako.history.presentation.HistoryScreen
 import id.my.sendiko.sembako.history.presentation.HistoryViewModel
-import id.my.sendiko.sembako.profile.data.ProfileRepositoryImpl
-import id.my.sendiko.sembako.profile.presentation.ProfileScreen
-import id.my.sendiko.sembako.profile.presentation.ProfileViewModel
+import id.my.sendiko.sembako.user.profile.data.ProfileRepositoryImpl
+import id.my.sendiko.sembako.user.profile.presentation.ProfileScreen
+import id.my.sendiko.sembako.user.profile.presentation.ProfileViewModel
 import id.my.sendiko.sembako.statistics.data.StatisticsRepositoryImpl
 import id.my.sendiko.sembako.statistics.presentation.StatisticsScreen
 import id.my.sendiko.sembako.statistics.presentation.StatisticsViewModel
@@ -46,7 +46,7 @@ fun NavGraph(
                 val viewModel = viewModel<DashboardViewModel>(
                     factory = viewModelFactory {
                         val repository = DashboardRepositoryImpl(
-                            remoteDataSource = SembakoApplication.module.dashboardDataSource,
+                            remoteDataSource = SembakoApplication.module.userRemoteDataSource,
                             localDataSource = SembakoApplication.module.userPreferences
                         )
                         DashboardViewModel(repository)

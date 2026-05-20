@@ -1,6 +1,6 @@
 package id.my.sendiko.sembako.history.domain
 
-import id.my.sendiko.sembako.core.domain.User
+import id.my.sendiko.sembako.user.core.domain.User
 import kotlinx.coroutines.flow.Flow
 
 interface HistoryRepository {

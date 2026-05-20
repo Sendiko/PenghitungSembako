@@ -1,12 +1,12 @@
-package id.my.sendiko.sembako.profile.data
+package id.my.sendiko.sembako.user.profile.data
 
 import android.content.Context
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.exceptions.ClearCredentialException
 import id.my.sendiko.sembako.core.preferences.UserPreferences
-import id.my.sendiko.sembako.profile.domain.ProfileRepository
-import id.my.sendiko.sembako.core.domain.User
+import id.my.sendiko.sembako.user.profile.domain.ProfileRepository
+import id.my.sendiko.sembako.user.core.domain.User
 import kotlinx.coroutines.flow.Flow
 
 class ProfileRepositoryImpl(

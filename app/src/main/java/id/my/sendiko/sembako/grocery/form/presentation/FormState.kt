@@ -1,7 +1,7 @@
 package id.my.sendiko.sembako.grocery.form.presentation
 
 import android.graphics.Bitmap
-import id.my.sendiko.sembako.core.domain.User
+import id.my.sendiko.sembako.user.core.domain.User
 
 data class FormState(
     val id: Int? = null,

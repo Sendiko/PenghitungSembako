@@ -1,8 +1,8 @@
-package id.my.sendiko.sembako.profile.presentation
+package id.my.sendiko.sembako.user.profile.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import id.my.sendiko.sembako.profile.data.ProfileRepositoryImpl
+import id.my.sendiko.sembako.user.profile.data.ProfileRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine

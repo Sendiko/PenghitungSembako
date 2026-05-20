@@ -25,11 +25,6 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    @POST("user")
-    fun saveUser(
-        @Body request: SaveUserRequest
-    ): Call<SaveUserResponse>
-
     @GET("grocery/{userId}")
     fun getGroceries(
         @Path("userId") userId: String,

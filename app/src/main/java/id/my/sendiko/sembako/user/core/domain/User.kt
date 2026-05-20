@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.core.domain
+package id.my.sendiko.sembako.user.core.domain
 
 data class User(
     val id: Int,

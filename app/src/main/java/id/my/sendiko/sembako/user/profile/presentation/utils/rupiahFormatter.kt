@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.profile.presentation.utils
+package id.my.sendiko.sembako.user.profile.presentation.utils
 
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols

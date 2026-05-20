@@ -1,6 +1,6 @@
 package id.my.sendiko.sembako.grocery.list.presentation
 
-import id.my.sendiko.sembako.core.domain.User
+import id.my.sendiko.sembako.user.core.domain.User
 import id.my.sendiko.sembako.core.preferences.UiMode
 import id.my.sendiko.sembako.grocery.core.domain.Grocery
 

@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.profile.presentation
+package id.my.sendiko.sembako.user.profile.presentation
 
 sealed interface ProfileEvent {
     data object OnLogoutClicked : ProfileEvent

@@ -1,8 +1,8 @@
 package id.my.sendiko.sembako.dashboard.data
 
-import id.my.sendiko.sembako.core.domain.User
+import id.my.sendiko.sembako.user.core.domain.User
 import id.my.sendiko.sembako.core.preferences.UserPreferences
-import id.my.sendiko.sembako.dashboard.data.datasource.DashboardDataSource
+import id.my.sendiko.sembako.user.core.data.UserRemoteDataSource
 import id.my.sendiko.sembako.dashboard.domain.DashboardRepository
 import id.my.sendiko.sembako.dashboard.data.dto.SaveUserRequest
 import id.my.sendiko.sembako.dashboard.data.dto.SaveUserResponse
@@ -14,7 +14,7 @@ import retrofit2.Response
 import kotlin.coroutines.resume
 
 class DashboardRepositoryImpl(
-    val remoteDataSource: DashboardDataSource,
+    val remoteDataSource: UserRemoteDataSource,
     val localDataSource: UserPreferences
 ) : DashboardRepository {
 

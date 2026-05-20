@@ -1,6 +1,6 @@
 package id.my.sendiko.sembako.history.presentation
 
-import id.my.sendiko.sembako.core.domain.User
+import id.my.sendiko.sembako.user.core.domain.User
 import id.my.sendiko.sembako.history.domain.History
 
 data class HistoryState(

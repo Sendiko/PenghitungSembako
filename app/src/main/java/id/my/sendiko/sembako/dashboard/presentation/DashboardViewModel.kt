@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import id.my.sendiko.sembako.core.domain.User
+import id.my.sendiko.sembako.user.core.domain.User
 import id.my.sendiko.sembako.dashboard.data.DashboardRepositoryImpl
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

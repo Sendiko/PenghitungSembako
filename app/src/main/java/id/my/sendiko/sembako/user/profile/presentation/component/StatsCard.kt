@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.profile.presentation.component
+package id.my.sendiko.sembako.user.profile.presentation.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.theme.AppTheme
-import id.my.sendiko.sembako.profile.presentation.utils.formatRupiah
+import id.my.sendiko.sembako.user.profile.presentation.utils.formatRupiah
 
 @Composable
 fun StatsCard(

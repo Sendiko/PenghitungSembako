@@ -1,6 +1,6 @@
 package id.my.sendiko.sembako.dashboard.presentation
 
-import id.my.sendiko.sembako.core.domain.User
+import id.my.sendiko.sembako.user.core.domain.User
 
 data class DashboardState(
     val user: User = User(0, "", "", "", false),
