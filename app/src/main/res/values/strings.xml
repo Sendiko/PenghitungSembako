@@ -34,7 +34,7 @@
     <string name="delete_title">Hapus sembako ini?</string>
     <string name="delete_message">Data akan hilang selamanya.</string>
     <string name="hello">Halo</string>
-    <string name="login_title">Login dengan Google</string>
+    <string name="login_title">Masuk dengan Google</string>
     <string name="login">Masuk</string>
     <string name="profile">Profil</string>
     <string name="logout">Keluar</string>
@@ -54,4 +54,5 @@
     <string name="good_afternoon">Selamat siang</string>
     <string name="good_evening">Selamat sore</string>
     <string name="good_night">Selamat malam</string>
+    <string name="create_store_hint">Yuk daftarin toko kamu!</string>
 </resources>
