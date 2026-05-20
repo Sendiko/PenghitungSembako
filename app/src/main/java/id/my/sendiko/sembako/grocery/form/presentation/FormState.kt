@@ -20,5 +20,5 @@ data class FormState(
     val imageUrl: String = "",
     val bitmapMessage: String = "",
     val isLoading: Boolean = false,
-    val user: User = User(0, "", "", "")
+    val user: User = User(0, "", "", "", false)
 )
