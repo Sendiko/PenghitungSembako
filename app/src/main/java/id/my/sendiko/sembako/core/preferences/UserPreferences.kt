@@ -20,6 +20,7 @@ class UserPreferences(
     private val emailKey = stringPreferencesKey("email")
     private val profileUrlKey = stringPreferencesKey("profile_url")
     private val dynamicThemeKey = booleanPreferencesKey("dynamic_theme")
+    private val hasStoreKey = booleanPreferencesKey("has_store")
 
     suspend fun setDynamicTheme(dynamicTheme: Boolean) {
         dataStore.edit { preferences ->
@@ -39,16 +40,18 @@ class UserPreferences(
             preferences[nameKey] = user.username
             preferences[emailKey] = user.email
             preferences[profileUrlKey] = user.profileUrl
+            preferences[hasStoreKey] = user.hasStore
         }
     }
 
     fun getUser(): Flow<User> {
         return dataStore.data.map { preferences ->
-            val name = preferences[nameKey] ?: ""
+            val username = preferences[nameKey] ?: ""
             val email = preferences[emailKey] ?: ""
             val profileUrl = preferences[profileUrlKey] ?: ""
             val id = preferences[userIdKey] ?: 0
-            User(id, name, email, profileUrl)
+            val hasStore = preferences[hasStoreKey] ?: false
+            User(id, username, email, profileUrl, hasStore)
         }
     }
 
