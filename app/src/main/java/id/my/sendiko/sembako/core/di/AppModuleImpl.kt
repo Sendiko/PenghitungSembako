@@ -8,19 +8,19 @@ import id.my.sendiko.sembako.core.network.BASE_URL
 import id.my.sendiko.sembako.core.preferences.StatisticsPreferences
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.core.preferences.dataStore
-import id.my.sendiko.sembako.user.core.data.UserRemoteDataSource
 import id.my.sendiko.sembako.grocery.core.data.GroceryDao
 import id.my.sendiko.sembako.history.data.HistoryDao
+import id.my.sendiko.sembako.store.data.datasource.StoreDataSource
+import id.my.sendiko.sembako.user.core.data.UserRemoteDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import kotlin.jvm.java
 
 class AppModuleImpl(
     private val app: Application
-): AppModule {
+) : AppModule {
     override val database: AppDatabase
         get() = Room
             .databaseBuilder(app.applicationContext, AppDatabase::class.java, "sembako.db")
@@ -68,4 +68,7 @@ class AppModuleImpl(
 
     override val userRemoteDataSource: UserRemoteDataSource
         get() = retrofit.create(UserRemoteDataSource::class.java)
+
+    override val storeDataSource: StoreDataSource
+        get() = retrofit.create(StoreDataSource::class.java)
 }
