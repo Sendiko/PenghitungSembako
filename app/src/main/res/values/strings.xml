@@ -55,4 +55,17 @@
     <string name="good_evening">Selamat sore</string>
     <string name="good_night">Selamat malam</string>
     <string name="create_store_hint">Yuk daftarin toko kamu!</string>
+    <string name="store_info">Informasi Toko</string>
+    <string name="store_name">Nama Toko</string>
+    <string name="store_name_hint">Masukkan nama toko</string>
+    <string name="store_address">Alamat Toko</string>
+    <string name="store_address_hint">Masukkan alamat toko</string>
+    <string name="store_phone">Nomor Telepon Toko</string>
+    <string name="store_phone_hint">Masukkan nomor telepon toko</string>
+    <string name="store_email">Email Toko</string>
+    <string name="store_email_hint">Masukkan email toko</string>
+    <string name="cd_store">Ikon Toko</string>
+    <string name="cd_location">Ikon Lokasi</string>
+    <string name="cd_phone">Ikon Telepon</string>
+    <string name="cd_email">Ikon Email</string>
 </resources>
