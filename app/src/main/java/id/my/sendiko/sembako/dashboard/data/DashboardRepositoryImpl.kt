@@ -107,6 +107,10 @@ class DashboardRepositoryImpl(
         }
     }
 
+    override suspend fun setHasStore() {
+        userLocalDataSource.setHasStore()
+    }
+
     override suspend fun saveUserToLocal(user: User): Result<Boolean> {
         return try {
             userLocalDataSource.saveUser(user)

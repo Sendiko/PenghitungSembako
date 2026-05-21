@@ -12,4 +12,6 @@ interface DashboardRepository {
     suspend fun saveUserToLocal(user: User): Result<Boolean>
 
     suspend fun saveStore(store: Store): Result<Store>
+
+    suspend fun setHasStore()
 }
