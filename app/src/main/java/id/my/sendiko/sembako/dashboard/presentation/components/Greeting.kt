@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.dashboard.presentation
+package id.my.sendiko.sembako.dashboard.presentation.components
 
 import id.my.sendiko.sembako.R
 import java.util.Calendar
