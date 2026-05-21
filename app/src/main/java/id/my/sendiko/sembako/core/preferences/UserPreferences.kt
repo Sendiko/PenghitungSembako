@@ -22,6 +22,12 @@ class UserPreferences(
     private val dynamicThemeKey = booleanPreferencesKey("dynamic_theme")
     private val hasStoreKey = booleanPreferencesKey("has_store")
 
+    suspend fun setHasStore() {
+        dataStore.edit { preferences ->
+            preferences[hasStoreKey] = true
+        }
+    }
+
     suspend fun setDynamicTheme(dynamicTheme: Boolean) {
         dataStore.edit { preferences ->
             preferences[dynamicThemeKey] = dynamicTheme
