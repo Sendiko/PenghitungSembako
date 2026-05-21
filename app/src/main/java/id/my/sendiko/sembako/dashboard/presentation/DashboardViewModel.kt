@@ -9,6 +9,7 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import id.my.sendiko.sembako.user.core.domain.User
 import id.my.sendiko.sembako.dashboard.data.DashboardRepositoryImpl
+import id.my.sendiko.sembako.store.domain.Store
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -27,18 +28,69 @@ class DashboardViewModel(
 
     fun onEvent(event: DashboardEvent) {
         when (event) {
-            is DashboardEvent.OnLoginClicked -> {
-                _state.update { it.copy(isSigningIn = true) }
-                viewModelScope.launch {
-                    _signInEvent.emit(Unit)
-                }
-            }
-            DashboardEvent.ClearState -> _state.update {
-                it.copy(signInError = "", isSigningIn = false, message = "")
-            }
-
+            is DashboardEvent.OnLoginClicked -> onLoginClicked()
+            DashboardEvent.ClearState -> clearState()
             is DashboardEvent.OnResult -> handleSignInResult(event.result)
+            is DashboardEvent.OnStoreAddressChange -> updateStoreAddress(event.address)
+            is DashboardEvent.OnStoreEmailChange -> updateStoreEmail(event.email)
+            is DashboardEvent.OnStoreNameChange -> updateStoreName(event.name)
+            is DashboardEvent.OnStorePhoneChange -> updateStorePhone(event.phone)
+            is DashboardEvent.OnStoreSheetVisible -> updateStoreSheetVisible(event.isVisible)
+            DashboardEvent.OnSaveStore -> onSaveStore()
+        }
+    }
 
+    private fun onLoginClicked() {
+        _state.update { it.copy(isSigningIn = true) }
+        viewModelScope.launch {
+            _signInEvent.emit(Unit)
+        }
+    }
+
+    private fun clearState() {
+        _state.update {
+            it.copy(signInError = "", isSigningIn = false, message = "")
+        }
+    }
+
+    private fun updateStoreAddress(address: String) {
+        _state.update { it.copy(storeAddress = address) }
+    }
+
+    private fun updateStoreEmail(email: String) {
+        _state.update { it.copy(storeEmail = email) }
+    }
+
+    private fun updateStoreName(name: String) {
+        _state.update { it.copy(storeName = name) }
+    }
+
+    private fun updateStorePhone(phone: String) {
+        _state.update { it.copy(storePhone = phone) }
+    }
+
+    private fun updateStoreSheetVisible(isVisible: Boolean) {
+        _state.update { it.copy(isStoreSheetVisible = isVisible) }
+    }
+
+    private fun onSaveStore() {
+        _state.update { it.copy(isLoading = true) }
+        viewModelScope.launch {
+            repository.saveStore(
+                Store(
+                    id = 0,
+                    name = state.value.storeName,
+                    address = state.value.storeAddress,
+                    phone = state.value.storePhone,
+                    email = state.value.storeEmail
+                )
+            )
+                .onSuccess { result ->
+                    _state.update { it.copy(isLoading = false, message = "Toko ${result.name} telah terdaftar!") }
+                }
+                .onFailure { error ->
+                    _state.update { it.copy(isLoading = false, message = error.message?: "Terjadi kesalahan.", isError = true) }
+                }
         }
     }
 
@@ -69,7 +121,8 @@ class DashboardViewModel(
                             .onFailure { remoteError ->
                                 _state.update { it.copy(
                                     isSigningIn = false,
-                                    signInError = remoteError.message ?: "Failed to save user to remote."
+                                    signInError = remoteError.message ?: "Failed to save user to remote.",
+                                    isError = true
                                 ) }
                             }
                     }

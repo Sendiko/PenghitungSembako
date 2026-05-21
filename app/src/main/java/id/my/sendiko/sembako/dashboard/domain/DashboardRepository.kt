@@ -1,5 +1,6 @@
 package id.my.sendiko.sembako.dashboard.domain
 
+import id.my.sendiko.sembako.store.domain.Store
 import id.my.sendiko.sembako.user.core.domain.User
 import kotlinx.coroutines.flow.Flow
 
@@ -9,4 +10,6 @@ interface DashboardRepository {
     suspend fun saveUserToRemote(user: User): Result<User>
 
     suspend fun saveUserToLocal(user: User): Result<Boolean>
+
+    suspend fun saveStore(store: Store): Result<Store>
 }

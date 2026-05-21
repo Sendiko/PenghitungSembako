@@ -1,7 +1,6 @@
 package id.my.sendiko.sembako.dashboard.presentation
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -42,6 +41,8 @@ import id.my.sendiko.sembako.core.navigation.StatisticsDestination
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.dashboard.presentation.components.LongMenuCard
 import id.my.sendiko.sembako.dashboard.presentation.components.MenuCard
+import id.my.sendiko.sembako.dashboard.presentation.components.getGreeting
+import id.my.sendiko.sembako.store.presentation.StoreModalBottomSheet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -75,7 +76,7 @@ fun DashboardScreen(
     ContentBoxWithNotification(
         isLoading = state.isLoading,
         message = state.message,
-        isErrorNotification = state.signInError.isNotEmpty(),
+        isErrorNotification = state.isError,
         textStyle = TextStyle(
             fontFamily = bodyFontFamily
         ),
@@ -113,7 +114,7 @@ fun DashboardScreen(
                         item(span = StaggeredGridItemSpan.FullLine) {
                             LongMenuCard(
                                 modifier = Modifier.fillMaxWidth(),
-                                onClick = { }
+                                onClick = { onEvent(DashboardEvent.OnStoreSheetVisible(true)) }
                             )
                         }
                     }
@@ -195,6 +196,21 @@ fun DashboardScreen(
             }
         }
     )
+
+    if (state.isStoreSheetVisible) {
+        StoreModalBottomSheet(
+            onDismissRequest = { onEvent(DashboardEvent.OnStoreSheetVisible(false)) },
+            onSaveClick = { onEvent(DashboardEvent.OnSaveStore) },
+            storeName = state.storeName,
+            onStoreNameChange = { onEvent(DashboardEvent.OnStoreNameChange(it)) },
+            storeAddress = state.storeAddress,
+            onStoreAddressChange = { onEvent(DashboardEvent.OnStoreAddressChange(it)) },
+            storePhone = state.storePhone,
+            onStorePhoneChange = { onEvent(DashboardEvent.OnStorePhoneChange(it)) },
+            storeEmail = state.storeEmail,
+            onStoreEmailChange = { onEvent(DashboardEvent.OnStoreEmailChange(it)) }
+        )
+    }
 
 }
 
