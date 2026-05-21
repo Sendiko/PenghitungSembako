@@ -3,6 +3,7 @@ package id.my.sendiko.sembako.dashboard.presentation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -12,9 +13,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.PieChart
 import androidx.compose.material.icons.rounded.Receipt
+import androidx.compose.material.icons.rounded.Store
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -28,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -41,7 +45,6 @@ import id.my.sendiko.sembako.core.navigation.StatisticsDestination
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.dashboard.presentation.components.LongMenuCard
 import id.my.sendiko.sembako.dashboard.presentation.components.MenuCard
-import id.my.sendiko.sembako.dashboard.presentation.components.getGreeting
 import id.my.sendiko.sembako.store.presentation.StoreModalBottomSheet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -90,18 +93,39 @@ fun DashboardScreen(
         content = {
             Scaffold(
                 topBar = {
-                    LargeTopAppBar(
+                    CenterAlignedTopAppBar(
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         scrollBehavior = scrollBehavior,
                         title = {
                             Text(
-                                text = if (state.user.username.isBlank()) {
-                                    stringResource(getGreeting())
-                                } else stringResource(
-                                    R.string.greeting,
-                                    state.user.username.split(" ")[0]
-                                )
+                                text = stringResource(R.string.app_name),
+                                fontWeight = FontWeight.SemiBold
                             )
                         },
+                        actions = {
+                            IconButton(
+                                onClick = { onNavigate(ProfileDestination) }
+                            ) {
+                                if (state.user.username.isBlank()) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Person,
+                                        contentDescription = stringResource(R.string.profile)
+                                    )
+                                } else {
+                                    AsyncImage(
+                                        modifier = Modifier
+                                            .clip(CircleShape),
+                                        model = ImageRequest.Builder(LocalContext.current)
+                                            .data(state.user.profileUrl)
+                                            .crossfade(true)
+                                            .build(),
+                                        error = painterResource(R.drawable.baseline_broken_image_24),
+                                        contentScale = ContentScale.Crop,
+                                        contentDescription = state.user.username,
+                                    )
+                                }
+                            }
+                        }
                     )
                 }
             ) { paddingValues ->
@@ -117,6 +141,7 @@ fun DashboardScreen(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalItemSpacing = 16.dp
                 ) {
+
                     if (!state.user.hasStore) {
                         item(span = StaggeredGridItemSpan.FullLine) {
                             LongMenuCard(
@@ -125,6 +150,7 @@ fun DashboardScreen(
                             )
                         }
                     }
+
                     item {
                         MenuCard(
                             onClick = { onNavigate(ListDestination) },
@@ -137,6 +163,22 @@ fun DashboardScreen(
                             },
                             text = stringResource(R.string.your_grocery)
                         )
+                    }
+
+                    if (state.user.hasStore) {
+                        item {
+                            MenuCard(
+                                onClick = { },
+                                icon = {
+                                    Icon(
+                                        modifier = Modifier.size(64.dp),
+                                        imageVector = Icons.Rounded.Store,
+                                        contentDescription = stringResource(R.string.store_info)
+                                    )
+                                },
+                                text = stringResource(R.string.your_store)
+                            )
+                        }
                     }
 
                     item {
@@ -152,40 +194,25 @@ fun DashboardScreen(
                             text = stringResource(R.string.statistics)
                         )
                     }
-                    item {
-                        MenuCard(
-                            onClick = {
-                                if (state.user.username.isBlank())
+
+                    if (state.user.username.isBlank()) {
+                        item {
+                            MenuCard(
+                                onClick = {
                                     onEvent(DashboardEvent.OnLoginClicked)
-                                else onNavigate(ProfileDestination)
-                            },
-                            icon = {
-                                if (state.user.username.isBlank()) {
+                                },
+                                icon = {
                                     Icon(
                                         modifier = Modifier.size(64.dp),
                                         imageVector = Icons.Rounded.Person,
                                         contentDescription = stringResource(R.string.profile)
                                     )
-                                } else {
-                                    AsyncImage(
-                                        modifier = Modifier
-                                            .clip(CircleShape)
-                                            .size(64.dp),
-                                        model = ImageRequest.Builder(LocalContext.current)
-                                            .data(state.user.profileUrl)
-                                            .crossfade(true)
-                                            .build(),
-                                        error = painterResource(R.drawable.baseline_broken_image_24),
-                                        contentScale = ContentScale.Crop,
-                                        contentDescription = state.user.username,
-                                    )
-                                }
-                            },
-                            text = if (state.user.username.isNotBlank())
-                                stringResource(R.string.profile)
-                            else stringResource(R.string.login_title)
-                        )
+                                },
+                                text = stringResource(R.string.login_title)
+                            )
+                        }
                     }
+
                     item {
                         MenuCard(
                             onClick = { onNavigate(HistoryDestination) },
@@ -199,6 +226,7 @@ fun DashboardScreen(
                             text = stringResource(R.string.transaction)
                         )
                     }
+
                 }
             }
         }
