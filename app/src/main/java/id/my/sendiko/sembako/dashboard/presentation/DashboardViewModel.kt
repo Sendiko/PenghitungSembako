@@ -86,6 +86,7 @@ class DashboardViewModel(
                 )
             )
                 .onSuccess { result ->
+                    repository.setHasStore()
                     _state.update { it.copy(isLoading = false, message = "Toko ${result.name} telah terdaftar!") }
                 }
                 .onFailure { error ->

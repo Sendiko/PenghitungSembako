@@ -73,6 +73,13 @@ fun DashboardScreen(
         }
     }
 
+    LaunchedEffect(state.message) {
+        if (state.message.isNotBlank()) {
+            delay(2000)
+            onEvent(DashboardEvent.ClearState)
+        }
+    }
+
     ContentBoxWithNotification(
         isLoading = state.isLoading,
         message = state.message,
