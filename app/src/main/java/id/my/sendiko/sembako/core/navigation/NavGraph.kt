@@ -46,8 +46,9 @@ fun NavGraph(
                 val viewModel = viewModel<DashboardViewModel>(
                     factory = viewModelFactory {
                         val repository = DashboardRepositoryImpl(
-                            remoteDataSource = SembakoApplication.module.userRemoteDataSource,
-                            localDataSource = SembakoApplication.module.userPreferences
+                            userRemoteDataSource = SembakoApplication.module.userRemoteDataSource,
+                            userLocalDataSource = SembakoApplication.module.userPreferences,
+                            storeRemoteDataSource = SembakoApplication.module.storeDataSource
                         )
                         DashboardViewModel(repository)
                     }
