@@ -30,3 +30,6 @@ object AboutDestination
 data class FormDestination(
     val id: Int? = null
 )
+
+@Serializable
+data object StoreDestination
