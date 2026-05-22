@@ -23,54 +23,14 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    @GET("grocery/{userId}")
-    fun getGroceries(
-        @Path("userId") userId: String,
-    ): Call<GetGroceriesResponse>
-
-    @Multipart
-    @POST("grocery")
-    fun saveGrocery(
-        @Part("userId") userId: RequestBody,
-        @Part("name") name: RequestBody,
-        @Part("unit") unit: RequestBody,
-        @Part("price") pricePerUnit: RequestBody,
-        @Part image: MultipartBody.Part,
-    ): Call<PostGroceryResponse>
-
-    @Multipart
-    @PUT("grocery/{id}")
-    fun updateGrocery(
-        @Path("id") id: Int,
-        @Part("name") name: RequestBody,
-        @Part("unit") unit: RequestBody,
-        @Part("price") pricePerUnit: RequestBody,
-        @Part image: MultipartBody.Part? = null,
-    ): Call<UpdateGroceryResponse>
-
-    @GET("grocery/details/{id}")
-    fun getGrocery(
-        @Path("id") id: Int,
-    ): Call<GetGroceryResponse>
-
-    @DELETE("grocery/{id}")
-    fun deleteGrocery(
-        @Path("id") id: Int,
-    ): Call<DeleteGroceryResponse>
-
     @GET("stats/{id}")
     fun getStatistics(
         @Path("id") id: Int
     ): Call<GetStatisticsResponse>
 
-    @GET("history/{id}")
+    @GET("transaction/{id}")
     fun getHistories(
         @Path("id") id: String,
     ): Call<GetHistoriesResponse>
-
-    @POST("history")
-    fun saveHistory(
-        @Body request: SaveTransactionRequest
-    ): Call<SaveTransactionResponse>
 
 }
