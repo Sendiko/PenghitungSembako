@@ -2,7 +2,10 @@ package id.my.sendiko.sembako.grocery.list.presentation
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -50,12 +53,14 @@ import id.my.sendiko.sembako.grocery.list.presentation.components.StoreSelector
 import id.my.sendiko.sembako.grocery.list.presentation.components.UiModeSelector
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun GroceryListScreen(
     state: GroceryListState,
     onEvent: (GroceryListEvent) -> Unit,
     onNavigate: (Any?) -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val context = LocalContext.current
@@ -80,150 +85,157 @@ fun GroceryListScreen(
             fontFamily = bodyFontFamily
         ),
         content = {
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        scrollBehavior = scrollBehavior,
-                        title = {
-                            Text(text = stringResource(R.string.your_grocery))
-                        },
-                        navigationIcon = {
-                            IconButton(
-                                onClick = { onNavigate(null) }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                    contentDescription = stringResource(R.string.back)
-                                )
-                            }
-                        },
-                        actions = {
-                            IconButton(
-                                onClick = { onEvent(GroceryListEvent.LoadData) }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Rounded.Refresh,
-                                    contentDescription = stringResource(R.string.refersh)
-                                )
-                            }
-                        }
-                    )
-                },
-                floatingActionButton = {
-                    ExtendedFloatingActionButton(
-                        onClick = { onNavigate(FormDestination(null, state.selectedStore?.id)) },
-                        text = {
-                            Text(
-                                text = stringResource(R.string.create_title)
-                            )
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Add,
-                                contentDescription = stringResource(R.string.create_title)
-                            )
-                        }
-                    )
-                }
-            ) { paddingValues ->
-                AnimatedVisibility(
-                    visible = state.grocery != null
-                ) {
-                    GroceryModalBottomSheet(
-                        state = state,
-                        onEvent = onEvent,
-                        onShareClick = {
-                            shareData(
-                                context = context,
-                                message = context.getString(
-                                    R.string.share,
-                                    state.grocery?.name ?: "",
-                                    state.grocery?.pricePerUnit ?: 0,
-                                    state.quantity.toDoubleOrNull() ?: 0.0,
-                                    state.totalPrice
-                                )
-                            )
-                        }
-                    )
-                }
-                AnimatedVisibility(
-                    visible = true,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    LazyVerticalStaggeredGrid(
-                        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-                        columns = StaggeredGridCells.Fixed(2),
-                        contentPadding = PaddingValues(
-                            top = paddingValues.calculateTopPadding() + 16.dp,
-                            start = 16.dp,
-                            end = 16.dp,
-                            bottom = 128.dp
+            with(sharedTransitionScope) {
+                Scaffold(
+                    modifier = Modifier
+                        .sharedBounds(
+                            rememberSharedContentState(key = "grocery_list"),
+                            animatedVisibilityScope = animatedContentScope
                         ),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalItemSpacing = 16.dp
-                    ) {
-                        item(
-                            span = StaggeredGridItemSpan.FullLine
-                        ) {
-                            StoreSelector(
-                                selectedStore = state.selectedStore,
-                                stores = state.stores,
-                                onStoreChange = {
-                                    onEvent(GroceryListEvent.OnStoreChange(it))
+                    topBar = {
+                        TopAppBar(
+                            scrollBehavior = scrollBehavior,
+                            title = {
+                                Text(text = stringResource(R.string.your_grocery))
+                            },
+                            navigationIcon = {
+                                IconButton(
+                                    onClick = { onNavigate(null) }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                        contentDescription = stringResource(R.string.back)
+                                    )
                                 }
-                            )
-                        }
-                        item(
-                            span = StaggeredGridItemSpan.FullLine
+                            },
+                            actions = {
+                                IconButton(
+                                    onClick = { onEvent(GroceryListEvent.LoadData) }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Refresh,
+                                        contentDescription = stringResource(R.string.refersh)
+                                    )
+                                }
+                            }
+                        )
+                    },
+                    floatingActionButton = {
+                        ExtendedFloatingActionButton(
+                            onClick = { onNavigate(FormDestination(null, state.selectedStore?.id)) },
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.create_title)
+                                )
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.Add,
+                                    contentDescription = stringResource(R.string.create_title)
+                                )
+                            }
+                        )
+                    }
+                ) { paddingValues ->
+                    AnimatedVisibility(
+                        visible = state.grocery != null
+                    ) {
+                        GroceryModalBottomSheet(
+                            state = state,
+                            onEvent = onEvent,
+                            onShareClick = {
+                                shareData(
+                                    context = context,
+                                    message = context.getString(
+                                        R.string.share,
+                                        state.grocery?.name ?: "",
+                                        state.grocery?.pricePerUnit ?: 0,
+                                        state.quantity.toDoubleOrNull() ?: 0.0,
+                                        state.totalPrice
+                                    )
+                                )
+                            }
+                        )
+                    }
+                    AnimatedVisibility(
+                        visible = true,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        LazyVerticalStaggeredGrid(
+                            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                            columns = StaggeredGridCells.Fixed(2),
+                            contentPadding = PaddingValues(
+                                top = paddingValues.calculateTopPadding() + 16.dp,
+                                start = 16.dp,
+                                end = 16.dp,
+                                bottom = 128.dp
+                            ),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                            verticalItemSpacing = 16.dp
                         ) {
-                            Box(
-                                contentAlignment = Alignment.CenterStart
+                            item(
+                                span = StaggeredGridItemSpan.FullLine
                             ) {
-                                UiModeSelector(
-                                    modifier = Modifier.wrapContentSize(),
-                                    selectedUiMode = state.uiMode,
-                                    onUiModeChange = {
-                                        onEvent(GroceryListEvent.SetPreference(it))
+                                StoreSelector(
+                                    selectedStore = state.selectedStore,
+                                    stores = state.stores,
+                                    onStoreChange = {
+                                        onEvent(GroceryListEvent.OnStoreChange(it))
+                                    }
+                                )
+                            }
+                            item(
+                                span = StaggeredGridItemSpan.FullLine
+                            ) {
+                                Box(
+                                    contentAlignment = Alignment.CenterStart
+                                ) {
+                                    UiModeSelector(
+                                        modifier = Modifier.wrapContentSize(),
+                                        selectedUiMode = state.uiMode,
+                                        onUiModeChange = {
+                                            onEvent(GroceryListEvent.SetPreference(it))
+                                        }
+                                    )
+                                }
+                            }
+                            items(
+                                items = state.groceries,
+                                span = {
+                                    if (state.uiMode == UiMode.LIST)
+                                        StaggeredGridItemSpan.FullLine
+                                    else StaggeredGridItemSpan.SingleLane
+                                }
+                            ) { sembako ->
+                                GroceryCard(
+                                    grocery = sembako,
+                                    onClick = {
+                                        onEvent(GroceryListEvent.OnGroceryChange(sembako))
+                                    },
+                                    onEdit = {
+                                        onNavigate(FormDestination(sembako.id, state.selectedStore?.id))
                                     }
                                 )
                             }
                         }
-                        items(
-                            items = state.groceries,
-                            span = {
-                                if (state.uiMode == UiMode.LIST)
-                                    StaggeredGridItemSpan.FullLine
-                                else StaggeredGridItemSpan.SingleLane
-                            }
-                        ) { sembako ->
-                            GroceryCard(
-                                grocery = sembako,
-                                onClick = {
-                                    onEvent(GroceryListEvent.OnGroceryChange(sembako))
-                                },
-                                onEdit = {
-                                    onNavigate(FormDestination(sembako.id, state.selectedStore?.id))
-                                }
+                    }
+                    AnimatedVisibility(
+                        visible = state.groceries.isEmpty(),
+                        modifier = Modifier.padding(paddingValues),
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                modifier = Modifier.size(256.dp),
+                                painter = painterResource(R.drawable.empty),
+                                contentDescription = stringResource(R.string.empty)
                             )
                         }
-                    }
-                }
-                AnimatedVisibility(
-                    visible = state.groceries.isEmpty(),
-                    modifier = Modifier.padding(paddingValues),
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            modifier = Modifier.size(256.dp),
-                            painter = painterResource(R.drawable.empty),
-                            contentDescription = stringResource(R.string.empty)
-                        )
                     }
                 }
             }

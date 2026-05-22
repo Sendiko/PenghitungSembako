@@ -1,5 +1,8 @@
 package id.my.sendiko.sembako.dashboard.presentation
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -52,13 +55,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun DashboardScreen(
     state: DashboardState,
     onEvent: (DashboardEvent) -> Unit,
     signInEventFlow: Flow<Unit>,
     onNavigate: (Any) -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val context = LocalContext.current
@@ -154,50 +159,68 @@ fun DashboardScreen(
                     }
 
                     item {
-                        MenuCard(
-                            onClick = { onNavigate(ListDestination) },
-                            icon = {
-                                Icon(
-                                    modifier = Modifier.size(64.dp),
-                                    painter = painterResource(R.drawable.grocery),
-                                    contentDescription = stringResource(R.string.your_grocery)
-                                )
-                            },
-                            text = stringResource(R.string.your_grocery),
-                            enabled = state.user.id != 0
-                        )
-                    }
-
-                    if (state.user.hasStore) {
-                        item {
+                        with(sharedTransitionScope) {
                             MenuCard(
-                                onClick = { onNavigate(StoreDestination) },
+                                modifier = Modifier.sharedElement(
+                                    rememberSharedContentState(key = "grocery_list"),
+                                    animatedVisibilityScope = animatedContentScope
+                                ),
+                                onClick = { onNavigate(ListDestination) },
                                 icon = {
                                     Icon(
                                         modifier = Modifier.size(64.dp),
-                                        imageVector = Icons.Rounded.Store,
-                                        contentDescription = stringResource(R.string.store_info)
+                                        painter = painterResource(R.drawable.grocery),
+                                        contentDescription = stringResource(R.string.your_grocery)
                                     )
                                 },
-                                text = stringResource(R.string.your_store),
+                                text = stringResource(R.string.your_grocery),
                                 enabled = state.user.id != 0
                             )
                         }
                     }
 
-                    item {
-                        MenuCard(
-                            onClick = { onNavigate(StatisticsDestination) },
-                            icon = {
-                                Icon(
-                                    modifier = Modifier.size(64.dp),
-                                    imageVector = Icons.Rounded.PieChart,
-                                    contentDescription = stringResource(R.string.statistics)
+                    if (state.user.hasStore) {
+                        item {
+                            with(sharedTransitionScope) {
+                                MenuCard(
+                                    modifier = Modifier.sharedElement(
+                                        rememberSharedContentState(key = "store_list"),
+                                        animatedVisibilityScope = animatedContentScope
+                                    ),
+                                    onClick = { onNavigate(StoreDestination) },
+                                    icon = {
+                                        Icon(
+                                            modifier = Modifier.size(64.dp),
+                                            imageVector = Icons.Rounded.Store,
+                                            contentDescription = stringResource(R.string.store_info)
+                                        )
+                                    },
+                                    text = stringResource(R.string.your_store),
+                                    enabled = state.user.id != 0
                                 )
-                            },
-                            text = stringResource(R.string.statistics),
-                            enabled = state.user.id != 0
-                        )
+                            }
+                        }
+                    }
+
+                    item {
+                        with(sharedTransitionScope) {
+                            MenuCard(
+                                modifier = Modifier.sharedElement(
+                                    rememberSharedContentState(key = "statistics"),
+                                    animatedVisibilityScope = animatedContentScope
+                                ),
+                                onClick = { onNavigate(StatisticsDestination) },
+                                icon = {
+                                    Icon(
+                                        modifier = Modifier.size(64.dp),
+                                        imageVector = Icons.Rounded.PieChart,
+                                        contentDescription = stringResource(R.string.statistics)
+                                    )
+                                },
+                                text = stringResource(R.string.statistics),
+                                enabled = state.user.id != 0
+                            )
+                        }
                     }
 
                     if (state.user.username.isBlank()) {
@@ -220,18 +243,24 @@ fun DashboardScreen(
                     }
 
                     item {
-                        MenuCard(
-                            onClick = { onNavigate(HistoryDestination) },
-                            icon = {
-                                Icon(
-                                    modifier = Modifier.size(64.dp),
-                                    imageVector = Icons.Rounded.Receipt,
-                                    contentDescription = stringResource(R.string.transaction)
-                                )
-                            },
-                            text = stringResource(R.string.transaction),
-                            enabled = state.user.id != 0
-                        )
+                        with(sharedTransitionScope) {
+                            MenuCard(
+                                modifier = Modifier.sharedElement(
+                                    rememberSharedContentState(key = "history"),
+                                    animatedVisibilityScope = animatedContentScope
+                                ),
+                                onClick = { onNavigate(HistoryDestination) },
+                                icon = {
+                                    Icon(
+                                        modifier = Modifier.size(64.dp),
+                                        imageVector = Icons.Rounded.Receipt,
+                                        contentDescription = stringResource(R.string.transaction)
+                                    )
+                                },
+                                text = stringResource(R.string.transaction),
+                                enabled = state.user.id != 0
+                            )
+                        }
                     }
 
                 }
@@ -254,15 +283,4 @@ fun DashboardScreen(
         )
     }
 
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun DashboardScreenPrev() {
-    DashboardScreen(
-        state = DashboardState(),
-        onNavigate = { },
-        onEvent = { },
-        signInEventFlow = flow { }
-    )
 }

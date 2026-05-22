@@ -1,12 +1,14 @@
 package id.my.sendiko.sembako.statistics.presentation
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,20 +20,23 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.util.toRupiah
 import id.my.sendiko.sembako.user.profile.presentation.component.StatsCard
-import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun StatisticsScreen(
     state: StatisticsState,
     onEvent: (StatisticsEvent) -> Unit,
-    onNavigateUp: () -> Unit
+    onNavigateUp: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
 ) {
     LaunchedEffect(state.statistics) {
         if (state.statistics == null)
@@ -49,67 +54,73 @@ fun StatisticsScreen(
         message = state.message,
         isLoading = state.isLoading,
         content = {
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = {
-                            Text(text = stringResource(R.string.statistics))
-                        },
-                        navigationIcon = {
-                            IconButton(
-                                onClick = onNavigateUp
-                            ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                    contentDescription = stringResource(R.string.back)
-                                )
-                            }
-                        }
-                    )
-                }
-            ) { paddingValues ->
-                LazyVerticalStaggeredGrid(
-                    columns = StaggeredGridCells.Fixed(2),
-                    contentPadding = PaddingValues(
-                        top = paddingValues.calculateTopPadding() + 16.dp,
-                        start = 16.dp,
-                        end = 16.dp
+            with(sharedTransitionScope) {
+                Scaffold(
+                    modifier = Modifier.sharedBounds(
+                        rememberSharedContentState(key = "statistics"),
+                        animatedVisibilityScope = animatedContentScope
                     ),
-                    verticalItemSpacing = 16.dp,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    item(
-                        span = StaggeredGridItemSpan.FullLine
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(text = stringResource(R.string.statistics))
+                            },
+                            navigationIcon = {
+                                IconButton(
+                                    onClick = onNavigateUp
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                        contentDescription = stringResource(R.string.back)
+                                    )
+                                }
+                            }
+                        )
+                    }
+                ) { paddingValues ->
+                    LazyVerticalStaggeredGrid(
+                        columns = StaggeredGridCells.Fixed(2),
+                        contentPadding = PaddingValues(
+                            top = paddingValues.calculateTopPadding() + 16.dp,
+                            start = 16.dp,
+                            end = 16.dp
+                        ),
+                        verticalItemSpacing = 16.dp,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        StatsCard(
-                            label = stringResource(R.string.total_income),
-                            statistics = if (state.isLoading) stringResource(R.string.loading)
+                        item(
+                            span = StaggeredGridItemSpan.FullLine
+                        ) {
+                            StatsCard(
+                                label = stringResource(R.string.total_income),
+                                statistics = if (state.isLoading) stringResource(R.string.loading)
                                 else state.statistics?.totalSales.toString().toRupiah(),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                                )
                             )
-                        )
-                    }
-                    item{
-                        StatsCard(
-                            label = stringResource(R.string.total_groceries),
-                            statistics = if (state.isLoading) stringResource(R.string.loading) else state.statistics?.groceryCount.toString(),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        }
+                        item{
+                            StatsCard(
+                                label = stringResource(R.string.total_groceries),
+                                statistics = if (state.isLoading) stringResource(R.string.loading) else state.statistics?.groceryCount.toString(),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
                             )
-                        )
-                    }
-                    item {
-                        StatsCard(
-                            label = stringResource(R.string.total_transaction),
-                            statistics = if (state.isLoading) stringResource(R.string.loading) else state.statistics?.totalHistory.toString(),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                        }
+                        item {
+                            StatsCard(
+                                label = stringResource(R.string.total_transaction),
+                                statistics = if (state.isLoading) stringResource(R.string.loading) else state.statistics?.totalHistory.toString(),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }

@@ -1,5 +1,8 @@
 package id.my.sendiko.sembako.history.presentation
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -27,18 +29,20 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.core.ui.util.toRupiah
-import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun HistoryScreen(
     state: HistoryState,
     onEvent: (HistoryEvent) -> Unit,
-    onNavigateUp: () -> Unit
+    onNavigateUp: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedContentScope,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -58,62 +62,68 @@ fun HistoryScreen(
         isLoading = state.isLoading,
         textStyle = TextStyle(fontFamily = bodyFontFamily),
         content = {
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        scrollBehavior = scrollBehavior,
-                        title = {
-                            Text(
-                                text = stringResource(R.string.history)
-                            )
-                        },
-                        navigationIcon = {
-                            IconButton(
-                                onClick = onNavigateUp
-                            ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                    contentDescription = stringResource(R.string.back)
-                                )
-                            }
-                        }
-                    )
-                }
-            ) { paddingValues ->
-                LazyColumn(
-                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-                    contentPadding = PaddingValues(
-                        top = paddingValues.calculateTopPadding(),
-                        end = 16.dp,
-                        start = 16.dp
+            with(sharedTransitionScope) {
+                Scaffold(
+                    modifier = Modifier.sharedBounds(
+                        rememberSharedContentState(key = "history"),
+                        animatedVisibilityScope = animatedContentScope
                     ),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(state.histories.reversed()) { history ->
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                            horizontalAlignment = Alignment.End
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
+                    topBar = {
+                        TopAppBar(
+                            scrollBehavior = scrollBehavior,
+                            title = {
                                 Text(
-                                    text = history.groceryName,
-                                    style = MaterialTheme.typography.titleMedium
+                                    text = stringResource(R.string.history)
                                 )
+                            },
+                            navigationIcon = {
+                                IconButton(
+                                    onClick = onNavigateUp
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                        contentDescription = stringResource(R.string.back)
+                                    )
+                                }
+                            }
+                        )
+                    }
+                ) { paddingValues ->
+                    LazyColumn(
+                        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                        contentPadding = PaddingValues(
+                            top = paddingValues.calculateTopPadding(),
+                            end = 16.dp,
+                            start = 16.dp
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        items(state.histories.reversed()) { history ->
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                horizontalAlignment = Alignment.End
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = history.groceryName,
+                                        style = MaterialTheme.typography.titleMedium
+                                    )
+                                    Text(
+                                        text = history.quantity.toString(),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                }
+                                HorizontalDivider()
                                 Text(
-                                    text = history.quantity.toString(),
+                                    text = history.totalPrice.toString().toRupiah(),
                                     style = MaterialTheme.typography.bodyLarge
                                 )
                             }
-                            HorizontalDivider()
-                            Text(
-                                text = history.totalPrice.toString().toRupiah(),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
                         }
                     }
                 }
