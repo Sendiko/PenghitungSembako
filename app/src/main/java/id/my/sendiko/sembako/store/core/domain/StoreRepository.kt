@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.store.domain
+package id.my.sendiko.sembako.store.core.domain
 
 import id.my.sendiko.sembako.user.core.domain.User
 import kotlinx.coroutines.flow.Flow

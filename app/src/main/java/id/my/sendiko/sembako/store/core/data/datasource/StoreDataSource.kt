@@ -1,8 +1,8 @@
-package id.my.sendiko.sembako.store.data.datasource
+package id.my.sendiko.sembako.store.core.data.datasource
 
-import id.my.sendiko.sembako.store.data.dto.GetStoresResponse
-import id.my.sendiko.sembako.store.data.dto.PostStoreRequest
-import id.my.sendiko.sembako.store.data.dto.PostStoreResponse
+import id.my.sendiko.sembako.store.core.data.dto.GetStoresResponse
+import id.my.sendiko.sembako.store.core.data.dto.PostStoreRequest
+import id.my.sendiko.sembako.store.core.data.dto.PostStoreResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

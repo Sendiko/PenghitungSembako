@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.store.presentation
+package id.my.sendiko.sembako.store.list.presentation
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import id.my.sendiko.sembako.R
-import id.my.sendiko.sembako.store.presentation.components.StoreCard
+import id.my.sendiko.sembako.store.list.presentation.components.StoreCard
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)

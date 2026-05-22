@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.store.presentation.components
+package id.my.sendiko.sembako.store.list.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import id.my.sendiko.sembako.R
-import id.my.sendiko.sembako.store.domain.Store
+import id.my.sendiko.sembako.store.core.domain.Store
 
 @Composable
 fun StoreCard(

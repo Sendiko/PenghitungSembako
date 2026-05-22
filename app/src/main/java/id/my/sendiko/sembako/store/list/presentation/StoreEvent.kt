@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.store.presentation
+package id.my.sendiko.sembako.store.list.presentation
 
 sealed interface StoreEvent {
     data object OnClearState : StoreEvent

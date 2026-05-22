@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.store.domain
+package id.my.sendiko.sembako.store.core.domain
 
 data class Store(
     val id: Int,

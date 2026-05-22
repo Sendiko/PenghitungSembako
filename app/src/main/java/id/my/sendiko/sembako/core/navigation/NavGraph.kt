@@ -19,21 +19,21 @@ import id.my.sendiko.sembako.core.preferences.dataStore
 import id.my.sendiko.sembako.dashboard.data.DashboardRepositoryImpl
 import id.my.sendiko.sembako.dashboard.presentation.DashboardScreen
 import id.my.sendiko.sembako.dashboard.presentation.DashboardViewModel
-import id.my.sendiko.sembako.grocery.form.data.FormRepositoryImpl
-import id.my.sendiko.sembako.grocery.form.presentation.FormScreen
-import id.my.sendiko.sembako.grocery.form.presentation.FormViewModel
-import id.my.sendiko.sembako.grocery.list.data.ListRepositoryImpl
-import id.my.sendiko.sembako.grocery.list.presentation.ListScreen
-import id.my.sendiko.sembako.grocery.list.presentation.ListViewModel
+import id.my.sendiko.sembako.grocery.form.data.GroceryFormRepositoryImpl
+import id.my.sendiko.sembako.grocery.form.presentation.GroceryFormScreen
+import id.my.sendiko.sembako.grocery.form.presentation.GroceryFormViewModel
+import id.my.sendiko.sembako.grocery.list.data.GroceryListRepositoryImpl
+import id.my.sendiko.sembako.grocery.list.presentation.GroceryListScreen
+import id.my.sendiko.sembako.grocery.list.presentation.GroceryListViewModel
 import id.my.sendiko.sembako.history.data.HistoryRepositoryImpl
 import id.my.sendiko.sembako.history.presentation.HistoryScreen
 import id.my.sendiko.sembako.history.presentation.HistoryViewModel
 import id.my.sendiko.sembako.statistics.data.StatisticsRepositoryImpl
 import id.my.sendiko.sembako.statistics.presentation.StatisticsScreen
 import id.my.sendiko.sembako.statistics.presentation.StatisticsViewModel
-import id.my.sendiko.sembako.store.data.StoreRepositoryImpl
-import id.my.sendiko.sembako.store.presentation.StoreScreen
-import id.my.sendiko.sembako.store.presentation.StoreViewModel
+import id.my.sendiko.sembako.store.core.data.StoreRepositoryImpl
+import id.my.sendiko.sembako.store.list.presentation.StoreScreen
+import id.my.sendiko.sembako.store.list.presentation.StoreViewModel
 import id.my.sendiko.sembako.user.profile.data.ProfileRepositoryImpl
 import id.my.sendiko.sembako.user.profile.presentation.ProfileScreen
 import id.my.sendiko.sembako.user.profile.presentation.ProfileViewModel
@@ -71,22 +71,22 @@ fun NavGraph(
                 )
             }
             composable<ListDestination> {
-                val viewModel = viewModel<ListViewModel>(
+                val viewModel = viewModel<GroceryListViewModel>(
                     factory = viewModelFactory {
                         initializer {
-                            val repository = ListRepositoryImpl(
+                            val repository = GroceryListRepositoryImpl(
                                 groceryRemoteDataSource = SembakoApplication.module.groceryDataSource,
                                 groceryLocalDataSource = SembakoApplication.module.sembakoDao,
                                 userLocalDataSource = SembakoApplication.module.userPreferences,
                                 storeRemoteDataSource = SembakoApplication.module.storeDataSource
                             )
-                            ListViewModel(repository)
+                            GroceryListViewModel(repository)
                         }
                     }
                 )
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
-                ListScreen(
+                GroceryListScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
                     onNavigate = {
@@ -177,15 +177,15 @@ fun NavGraph(
             composable<FormDestination> {
                 val args = it.toRoute<FormDestination>()
 
-                val viewModel = viewModel<FormViewModel>(
+                val viewModel = viewModel<GroceryFormViewModel>(
                     factory = viewModelFactory {
                         initializer {
-                            val repository = FormRepositoryImpl(
+                            val repository = GroceryFormRepositoryImpl(
                                 localDataSource = SembakoApplication.module.sembakoDao,
                                 remoteDataSource = SembakoApplication.module.groceryDataSource,
                                 userPreferences = SembakoApplication.module.userPreferences
                             )
-                            FormViewModel(repository)
+                            GroceryFormViewModel(repository)
                         }
                     }
                 )
@@ -194,7 +194,7 @@ fun NavGraph(
                 }
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
-                FormScreen(
+                GroceryFormScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
                     onNavigateBack = { navController.navigateUp() }

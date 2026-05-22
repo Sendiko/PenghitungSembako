@@ -1,8 +1,8 @@
-package id.my.sendiko.sembako.store.presentation
+package id.my.sendiko.sembako.store.list.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import id.my.sendiko.sembako.store.domain.StoreRepository
+import id.my.sendiko.sembako.store.core.domain.StoreRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine

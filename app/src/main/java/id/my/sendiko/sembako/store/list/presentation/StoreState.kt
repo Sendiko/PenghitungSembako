@@ -1,6 +1,6 @@
-package id.my.sendiko.sembako.store.presentation
+package id.my.sendiko.sembako.store.list.presentation
 
-import id.my.sendiko.sembako.store.domain.Store
+import id.my.sendiko.sembako.store.core.domain.Store
 import id.my.sendiko.sembako.user.core.domain.User
 
 data class StoreState(

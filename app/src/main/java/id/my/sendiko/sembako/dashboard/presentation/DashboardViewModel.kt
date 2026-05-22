@@ -8,7 +8,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import id.my.sendiko.sembako.dashboard.domain.DashboardRepository
-import id.my.sendiko.sembako.store.domain.Store
+import id.my.sendiko.sembako.store.core.domain.Store
 import id.my.sendiko.sembako.user.core.domain.User
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

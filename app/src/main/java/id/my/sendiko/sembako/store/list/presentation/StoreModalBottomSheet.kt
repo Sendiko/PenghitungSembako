@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.store.presentation
+package id.my.sendiko.sembako.store.list.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

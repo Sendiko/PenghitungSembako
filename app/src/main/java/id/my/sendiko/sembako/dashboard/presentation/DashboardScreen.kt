@@ -46,7 +46,7 @@ import id.my.sendiko.sembako.core.navigation.StoreDestination
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.dashboard.presentation.components.LongMenuCard
 import id.my.sendiko.sembako.dashboard.presentation.components.MenuCard
-import id.my.sendiko.sembako.store.presentation.StoreModalBottomSheet
+import id.my.sendiko.sembako.store.list.presentation.StoreModalBottomSheet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest

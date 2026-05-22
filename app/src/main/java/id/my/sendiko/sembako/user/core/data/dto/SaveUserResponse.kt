@@ -1,7 +1,7 @@
 package id.my.sendiko.sembako.user.core.data.dto
 
 import com.google.gson.annotations.SerializedName
-import id.my.sendiko.sembako.store.data.dto.StoreDto
+import id.my.sendiko.sembako.store.core.data.dto.StoreDto
 import id.my.sendiko.sembako.user.core.domain.User
 
 data class SaveUserResponse(

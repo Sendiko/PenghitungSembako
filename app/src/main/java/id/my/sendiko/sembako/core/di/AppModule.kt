@@ -9,7 +9,7 @@ import id.my.sendiko.sembako.user.core.data.UserRemoteDataSource
 import id.my.sendiko.sembako.grocery.core.data.GroceryDao
 import id.my.sendiko.sembako.grocery.core.data.GroceryRemoteDataSource
 import id.my.sendiko.sembako.history.data.HistoryDao
-import id.my.sendiko.sembako.store.data.datasource.StoreDataSource
+import id.my.sendiko.sembako.store.core.data.datasource.StoreDataSource
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 

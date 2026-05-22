@@ -1,10 +1,10 @@
-package id.my.sendiko.sembako.store.data
+package id.my.sendiko.sembako.store.core.data
 
 import id.my.sendiko.sembako.core.preferences.UserPreferences
-import id.my.sendiko.sembako.store.data.datasource.StoreDataSource
-import id.my.sendiko.sembako.store.data.dto.GetStoresResponse
-import id.my.sendiko.sembako.store.domain.Store
-import id.my.sendiko.sembako.store.domain.StoreRepository
+import id.my.sendiko.sembako.store.core.data.datasource.StoreDataSource
+import id.my.sendiko.sembako.store.core.data.dto.GetStoresResponse
+import id.my.sendiko.sembako.store.core.domain.Store
+import id.my.sendiko.sembako.store.core.domain.StoreRepository
 import id.my.sendiko.sembako.user.core.domain.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

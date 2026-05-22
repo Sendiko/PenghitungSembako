@@ -71,4 +71,7 @@
     <string name="your_store">Toko Anda</string>
     <string name="selected_store">Toko Terpilih</string>
     <string name="select_store">Pilih Toko</string>
+    <string name="current_location">Lokasi saat ini:</string>
+    <string name="refersh">Refresh</string>
+    <string name="dropdown">dropdown</string>
 </resources>

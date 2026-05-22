@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.store.data.dto
+package id.my.sendiko.sembako.store.core.data.dto
 
 import com.google.gson.annotations.SerializedName
 

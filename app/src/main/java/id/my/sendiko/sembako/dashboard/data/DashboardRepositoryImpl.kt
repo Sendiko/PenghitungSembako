@@ -2,10 +2,10 @@ package id.my.sendiko.sembako.dashboard.data
 
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.dashboard.domain.DashboardRepository
-import id.my.sendiko.sembako.store.data.datasource.StoreDataSource
-import id.my.sendiko.sembako.store.data.dto.PostStoreRequest
-import id.my.sendiko.sembako.store.data.dto.PostStoreResponse
-import id.my.sendiko.sembako.store.domain.Store
+import id.my.sendiko.sembako.store.core.data.datasource.StoreDataSource
+import id.my.sendiko.sembako.store.core.data.dto.PostStoreRequest
+import id.my.sendiko.sembako.store.core.data.dto.PostStoreResponse
+import id.my.sendiko.sembako.store.core.domain.Store
 import id.my.sendiko.sembako.user.core.data.UserRemoteDataSource
 import id.my.sendiko.sembako.user.core.data.dto.SaveUserRequest
 import id.my.sendiko.sembako.user.core.data.dto.SaveUserResponse
