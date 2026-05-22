@@ -2,7 +2,6 @@ package id.my.sendiko.sembako.grocery.list.presentation
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -51,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.navigation.FormDestination
 import id.my.sendiko.sembako.core.preferences.UiMode
@@ -58,7 +58,6 @@ import id.my.sendiko.sembako.core.ui.component.CustomTextField
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.core.ui.util.toRupiah
 import id.my.sendiko.sembako.grocery.core.presentation.GroceryCard
-import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,6 +1,5 @@
 package id.my.sendiko.sembako.grocery.list.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.my.sendiko.sembako.core.preferences.UiMode
@@ -101,7 +100,7 @@ class ListViewModel(
                 totalPrice = state.value.totalPrice.toInt(),
                 userId = state.value.user!!.id,
                 groceryId = state.value.grocery!!.id,
-                storeId = state.value.selectedStore?.id?:0
+                storeId = state.value.selectedStore?.id ?: 0
             )
             repository.saveTransaction(request)
                 .onSuccess {

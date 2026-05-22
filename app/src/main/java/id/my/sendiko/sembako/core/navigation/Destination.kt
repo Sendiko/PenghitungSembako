@@ -3,12 +3,6 @@ package id.my.sendiko.sembako.core.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-object SplashDestination
-
-@Serializable
-object LoginDestination
-
-@Serializable
 object DashboardDestination
 
 @Serializable
