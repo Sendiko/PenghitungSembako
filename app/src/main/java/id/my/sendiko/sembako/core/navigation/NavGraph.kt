@@ -75,9 +75,10 @@ fun NavGraph(
                     factory = viewModelFactory {
                         initializer {
                             val repository = ListRepositoryImpl(
-                                remoteDataSource = SembakoApplication.module.apiService,
-                                localDataSource = SembakoApplication.module.sembakoDao,
-                                prefs = SembakoApplication.module.userPreferences
+                                groceryRemoteDataSource = SembakoApplication.module.groceryDataSource,
+                                groceryLocalDataSource = SembakoApplication.module.sembakoDao,
+                                userLocalDataSource = SembakoApplication.module.userPreferences,
+                                storeRemoteDataSource = SembakoApplication.module.storeDataSource
                             )
                             ListViewModel(repository)
                         }
@@ -181,7 +182,7 @@ fun NavGraph(
                         initializer {
                             val repository = FormRepositoryImpl(
                                 localDataSource = SembakoApplication.module.sembakoDao,
-                                remoteDataSource = SembakoApplication.module.apiService,
+                                remoteDataSource = SembakoApplication.module.groceryDataSource,
                                 userPreferences = SembakoApplication.module.userPreferences
                             )
                             FormViewModel(repository)
@@ -189,7 +190,7 @@ fun NavGraph(
                     }
                 )
                 LaunchedEffect(true) {
-                    viewModel.setId(args.id)
+                    viewModel.setId(args.id, args.storeId)
                 }
                 val state by viewModel.state.collectAsStateWithLifecycle()
 

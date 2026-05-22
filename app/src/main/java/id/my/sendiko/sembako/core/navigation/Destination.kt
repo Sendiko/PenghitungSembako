@@ -28,7 +28,8 @@ object AboutDestination
 
 @Serializable
 data class FormDestination(
-    val id: Int? = null
+    val id: Int?,
+    val storeId: Int?,
 )
 
 @Serializable
