@@ -9,6 +9,7 @@ import id.my.sendiko.sembako.core.preferences.StatisticsPreferences
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.core.preferences.dataStore
 import id.my.sendiko.sembako.grocery.core.data.GroceryDao
+import id.my.sendiko.sembako.grocery.core.data.GroceryRemoteDataSource
 import id.my.sendiko.sembako.history.data.HistoryDao
 import id.my.sendiko.sembako.store.data.datasource.StoreDataSource
 import id.my.sendiko.sembako.user.core.data.UserRemoteDataSource
@@ -71,4 +72,7 @@ class AppModuleImpl(
 
     override val storeDataSource: StoreDataSource
         get() = retrofit.create(StoreDataSource::class.java)
+
+    override val groceryDataSource: GroceryRemoteDataSource
+        get() = retrofit.create(GroceryRemoteDataSource::class.java)
 }
