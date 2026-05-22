@@ -10,20 +10,20 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class StoreViewModel(
+class StoreListViewModel(
     private val repository: StoreRepository
 ) : ViewModel() {
 
     private val _user = repository.getUser()
-    private val _state = MutableStateFlow(StoreState())
+    private val _state = MutableStateFlow(StoreListState())
     val state = combine(_state, _user) { state, user ->
         state.copy(user = user)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), StoreState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), StoreListState())
 
-    fun onEvent(event: StoreEvent) {
+    fun onEvent(event: StoreListEvent) {
         when (event) {
-            StoreEvent.OnLoadData -> loadData()
-            StoreEvent.OnClearState -> clearState()
+            StoreListEvent.OnLoadData -> loadData()
+            StoreListEvent.OnClearState -> clearState()
         }
     }
 

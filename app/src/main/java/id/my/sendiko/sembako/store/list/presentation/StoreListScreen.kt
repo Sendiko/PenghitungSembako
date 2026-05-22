@@ -27,22 +27,22 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StoreScreen(
-    state: StoreState,
-    onEvent: (StoreEvent) -> Unit,
+fun StoreListScreen(
+    state: StoreListState,
+    onEvent: (StoreListEvent) -> Unit,
     onNavigateBack: () -> Unit
 ) {
 
     LaunchedEffect(state.message) {
         if (state.message.isNotBlank()) {
             delay(2000)
-            onEvent(StoreEvent.OnClearState)
+            onEvent(StoreListEvent.OnClearState)
         }
     }
 
     LaunchedEffect(state.user.id) {
         if (state.user.id != 0) {
-            onEvent(StoreEvent.OnLoadData)
+            onEvent(StoreListEvent.OnLoadData)
         }
     }
 
@@ -94,9 +94,9 @@ fun StoreScreen(
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun StoreCardPrev() {
-    StoreScreen(
-        state = StoreState(),
+private fun StoreListCardPrev() {
+    StoreListScreen(
+        state = StoreListState(),
         onEvent = { },
         onNavigateBack = { }
     )

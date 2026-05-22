@@ -32,8 +32,8 @@ import id.my.sendiko.sembako.statistics.data.StatisticsRepositoryImpl
 import id.my.sendiko.sembako.statistics.presentation.StatisticsScreen
 import id.my.sendiko.sembako.statistics.presentation.StatisticsViewModel
 import id.my.sendiko.sembako.store.core.data.StoreRepositoryImpl
-import id.my.sendiko.sembako.store.list.presentation.StoreScreen
-import id.my.sendiko.sembako.store.list.presentation.StoreViewModel
+import id.my.sendiko.sembako.store.list.presentation.StoreListScreen
+import id.my.sendiko.sembako.store.list.presentation.StoreListViewModel
 import id.my.sendiko.sembako.user.profile.data.ProfileRepositoryImpl
 import id.my.sendiko.sembako.user.profile.presentation.ProfileScreen
 import id.my.sendiko.sembako.user.profile.presentation.ProfileViewModel
@@ -201,19 +201,19 @@ fun NavGraph(
                 )
             }
             composable<StoreDestination> {
-                val viewModel = viewModel<StoreViewModel>(
+                val viewModel = viewModel<StoreListViewModel>(
                     factory = viewModelFactory {
                         initializer {
                             val repository = StoreRepositoryImpl(
                                 dataSource = SembakoApplication.module.storeDataSource,
                                 userLocalDataSource = SembakoApplication.module.userPreferences
                             )
-                            StoreViewModel(repository)
+                            StoreListViewModel(repository)
                         }
                     }
                 )
                 val state by viewModel.state.collectAsStateWithLifecycle()
-                StoreScreen(
+                StoreListScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
                     onNavigateBack = { navController.navigateUp() }

@@ -3,7 +3,7 @@ package id.my.sendiko.sembako.store.list.presentation
 import id.my.sendiko.sembako.store.core.domain.Store
 import id.my.sendiko.sembako.user.core.domain.User
 
-data class StoreState(
+data class StoreListState(
     val isLoading: Boolean = false,
     val message: String = "",
     val isError: Boolean = false,
