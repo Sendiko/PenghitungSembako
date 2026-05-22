@@ -14,5 +14,8 @@ data class SaveTransactionRequest(
 	val userId: Int,
 
 	@field:SerializedName("groceryId")
-	val groceryId: Int
+	val groceryId: Int,
+
+	@field:SerializedName("storeId")
+	val storeId: Int
 )

@@ -19,4 +19,7 @@ data class PostGroceryRequest(
 
     @field:SerializedName("image")
     val image: MultipartBody.Part,
+
+    @field:SerializedName("storeId")
+    val storeId: Int,
 )
