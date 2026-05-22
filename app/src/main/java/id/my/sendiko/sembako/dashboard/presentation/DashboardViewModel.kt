@@ -7,14 +7,20 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import id.my.sendiko.sembako.user.core.domain.User
-import id.my.sendiko.sembako.dashboard.data.DashboardRepositoryImpl
+import id.my.sendiko.sembako.dashboard.domain.DashboardRepository
 import id.my.sendiko.sembako.store.domain.Store
-import kotlinx.coroutines.flow.*
+import id.my.sendiko.sembako.user.core.domain.User
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
-    private val repository: DashboardRepositoryImpl
+    private val repository: DashboardRepository
 ) : ViewModel() {
 
     private val _user = repository.getUser()
@@ -87,10 +93,21 @@ class DashboardViewModel(
             )
                 .onSuccess { result ->
                     repository.setHasStore()
-                    _state.update { it.copy(isLoading = false, message = "Toko ${result.name} telah terdaftar!") }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            message = "Toko ${result.name} telah terdaftar!"
+                        )
+                    }
                 }
                 .onFailure { error ->
-                    _state.update { it.copy(isLoading = false, message = error.message?: "Terjadi kesalahan.", isError = true) }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            message = error.message ?: "Terjadi kesalahan.",
+                            isError = true
+                        )
+                    }
                 }
         }
     }
@@ -112,27 +129,42 @@ class DashboardViewModel(
                         repository.saveUserToRemote(user)
                             .onSuccess { remoteUser ->
                                 repository.saveUserToLocal(remoteUser)
-                                _state.update { it.copy(
-                                    isSignInSuccessful = true,
-                                    isSigningIn = false,
-                                    message = "Berhasil login",
-                                    user = remoteUser
-                                ) }
+                                _state.update {
+                                    it.copy(
+                                        isSignInSuccessful = true,
+                                        isSigningIn = false,
+                                        message = "Berhasil login",
+                                        user = remoteUser
+                                    )
+                                }
                             }
                             .onFailure { remoteError ->
-                                _state.update { it.copy(
-                                    isSigningIn = false,
-                                    signInError = remoteError.message ?: "Failed to save user to remote.",
-                                    isError = true
-                                ) }
+                                _state.update {
+                                    it.copy(
+                                        isSigningIn = false,
+                                        signInError = remoteError.message
+                                            ?: "Failed to save user to remote.",
+                                        isError = true
+                                    )
+                                }
                             }
                     }
                 } catch (e: GoogleIdTokenParsingException) {
                     e.printStackTrace()
-                    _state.update { it.copy(signInError = "Gagal mem-parsing token: ${e.message}", isSigningIn = false) }
+                    _state.update {
+                        it.copy(
+                            signInError = "Gagal mem-parsing token: ${e.message}",
+                            isSigningIn = false
+                        )
+                    }
                 }
             } else {
-                _state.update { it.copy(signInError = "Invalid credential type received.", isSigningIn = false) }
+                _state.update {
+                    it.copy(
+                        signInError = "Invalid credential type received.",
+                        isSigningIn = false
+                    )
+                }
             }
         }.onFailure { exception ->
             val errorMessage = if (exception is ApiException) {

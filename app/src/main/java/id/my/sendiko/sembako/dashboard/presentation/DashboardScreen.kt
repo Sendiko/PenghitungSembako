@@ -42,6 +42,7 @@ import id.my.sendiko.sembako.core.navigation.HistoryDestination
 import id.my.sendiko.sembako.core.navigation.ListDestination
 import id.my.sendiko.sembako.core.navigation.ProfileDestination
 import id.my.sendiko.sembako.core.navigation.StatisticsDestination
+import id.my.sendiko.sembako.core.navigation.StoreDestination
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.dashboard.presentation.components.LongMenuCard
 import id.my.sendiko.sembako.dashboard.presentation.components.MenuCard
@@ -168,7 +169,7 @@ fun DashboardScreen(
                     if (state.user.hasStore) {
                         item {
                             MenuCard(
-                                onClick = { },
+                                onClick = { onNavigate(StoreDestination) },
                                 icon = {
                                     Icon(
                                         modifier = Modifier.size(64.dp),
