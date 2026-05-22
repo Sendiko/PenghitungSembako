@@ -69,4 +69,6 @@
     <string name="cd_phone">Ikon Telepon</string>
     <string name="cd_email">Ikon Email</string>
     <string name="your_store">Toko Anda</string>
+    <string name="selected_store">Toko Terpilih</string>
+    <string name="select_store">Pilih Toko</string>
 </resources>

@@ -6,6 +6,7 @@ import id.my.sendiko.sembako.core.preferences.UiMode
 import id.my.sendiko.sembako.grocery.core.domain.Grocery
 import id.my.sendiko.sembako.grocery.list.data.ListRepositoryImpl
 import id.my.sendiko.sembako.grocery.list.data.dto.SaveTransactionRequest
+import id.my.sendiko.sembako.store.domain.Store
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -36,6 +37,23 @@ class ListViewModel(
             ListEvent.ClearState -> clearState()
             ListEvent.LoadData -> loadData()
             ListEvent.OnSaveTransaction -> saveTransaction()
+            is ListEvent.OnStoreChange -> onStoreChange(event.store)
+        }
+    }
+
+    private fun onStoreChange(store: Store) {
+        _state.update { it.copy(selectedStore = store, isLoading = true) }
+        viewModelScope.launch {
+            repository.getRemoteGroceries(store.id.toString())
+                .onSuccess { groceries ->
+                    repository.saveGroceries(groceries)
+                    _state.update { it.copy(groceries = groceries, isLoading = false) }
+                }
+                .onFailure {
+                    repository.getLocalGroceries().collect { localGroceries ->
+                        _state.update { it.copy(groceries = localGroceries, isLoading = false) }
+                    }
+                }
         }
     }
 

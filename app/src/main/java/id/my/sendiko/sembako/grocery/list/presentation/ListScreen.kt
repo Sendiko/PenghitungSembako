@@ -45,6 +45,7 @@ import id.my.sendiko.sembako.core.preferences.UiMode
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.grocery.core.presentation.GroceryCard
 import id.my.sendiko.sembako.grocery.list.presentation.components.GroceryModalBottomSheet
+import id.my.sendiko.sembako.grocery.list.presentation.components.StoreSelector
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -150,6 +151,17 @@ fun ListScreen(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalItemSpacing = 16.dp
                     ) {
+                        item(
+                            span = StaggeredGridItemSpan.FullLine
+                        ) {
+                            StoreSelector(
+                                selectedStore = state.selectedStore,
+                                stores = state.stores,
+                                onStoreChange = {
+                                    onEvent(ListEvent.OnStoreChange(it))
+                                }
+                            )
+                        }
                         item(
                             span = StaggeredGridItemSpan.FullLine
                         ) {
