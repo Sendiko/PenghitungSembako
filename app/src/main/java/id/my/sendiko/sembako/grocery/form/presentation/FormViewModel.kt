@@ -114,13 +114,13 @@ class FormViewModel(
         }
     }
 
-    fun setId(id: Int?) {
-        _state.update { it.copy(id = id) }
+    fun setId(id: Int?, storeId: Int?) {
+        _state.update { it.copy(id = id, storeId = storeId?:0) }
         if (id != null) {
             viewModelScope.launch {
                 _state.update { it.copy(isLoading = true) }
                 delay(1000)
-                repository.getGroceryFromRemote(state.value.id!!.toInt())
+                repository.getGroceryFromRemote(state.value.id!!)
                     .onSuccess { result ->
                         _state.update {
                             it.copy(
@@ -224,7 +224,8 @@ class FormViewModel(
                         name = state.value.name,
                         unit = state.value.unit,
                         pricePerUnit = it,
-                        image = state.value.bitmap!!.toMultipartBody()
+                        image = state.value.bitmap!!.toMultipartBody(),
+                        storeId = state.value.storeId
                     )
                     repository.saveGroceryToRemote(request)
                         .onSuccess { result ->
