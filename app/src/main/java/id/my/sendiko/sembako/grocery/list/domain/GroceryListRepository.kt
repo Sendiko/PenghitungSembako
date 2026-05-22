@@ -4,10 +4,10 @@ import id.my.sendiko.sembako.user.core.domain.User
 import id.my.sendiko.sembako.core.preferences.UiMode
 import id.my.sendiko.sembako.grocery.core.domain.Grocery
 import id.my.sendiko.sembako.grocery.list.data.dto.SaveTransactionRequest
-import id.my.sendiko.sembako.store.domain.Store
+import id.my.sendiko.sembako.store.core.domain.Store
 import kotlinx.coroutines.flow.Flow
 
-interface ListRepository {
+interface GroceryListRepository {
     fun getUser(): Flow<User>
 
     suspend fun getRemoteGroceries(userId: String): Result<List<Grocery>>

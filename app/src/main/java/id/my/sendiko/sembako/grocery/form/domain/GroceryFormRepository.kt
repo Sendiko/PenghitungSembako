@@ -7,7 +7,7 @@ import id.my.sendiko.sembako.grocery.form.data.dto.PostGroceryRequest
 import id.my.sendiko.sembako.grocery.form.data.dto.UpdateGroceryRequest
 import kotlinx.coroutines.flow.Flow
 
-interface FormRepository {
+interface GroceryFormRepository {
 
     suspend fun saveGroceryToRemote(request: PostGroceryRequest): Result<Int>
 

@@ -11,7 +11,7 @@ import id.my.sendiko.sembako.grocery.form.data.dto.PostGroceryRequest
 import id.my.sendiko.sembako.grocery.form.data.dto.PostGroceryResponse
 import id.my.sendiko.sembako.grocery.form.data.dto.UpdateGroceryRequest
 import id.my.sendiko.sembako.grocery.form.data.dto.UpdateGroceryResponse
-import id.my.sendiko.sembako.grocery.form.domain.FormRepository
+import id.my.sendiko.sembako.grocery.form.domain.GroceryFormRepository
 import id.my.sendiko.sembako.user.core.domain.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -21,11 +21,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import kotlin.coroutines.resume
 
-class FormRepositoryImpl(
+class GroceryFormRepositoryImpl(
     private val localDataSource: GroceryDao,
     private val remoteDataSource: GroceryRemoteDataSource,
     private val userPreferences: UserPreferences
-) : FormRepository {
+) : GroceryFormRepository {
     override suspend fun saveGroceryToRemote(request: PostGroceryRequest): Result<Int> {
         return suspendCancellableCoroutine { continuation ->
             remoteDataSource.saveGrocery(

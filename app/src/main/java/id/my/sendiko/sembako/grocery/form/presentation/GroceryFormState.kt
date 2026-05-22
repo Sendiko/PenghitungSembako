@@ -3,7 +3,7 @@ package id.my.sendiko.sembako.grocery.form.presentation
 import android.graphics.Bitmap
 import id.my.sendiko.sembako.user.core.domain.User
 
-data class FormState(
+data class GroceryFormState(
     val id: Int? = null,
     val name: String = "",
     val nameMessage: String = "",

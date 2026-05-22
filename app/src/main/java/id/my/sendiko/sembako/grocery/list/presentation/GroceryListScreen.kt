@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -50,9 +51,9 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListScreen(
-    state: ListState,
-    onEvent: (ListEvent) -> Unit,
+fun GroceryListScreen(
+    state: GroceryListState,
+    onEvent: (GroceryListEvent) -> Unit,
     onNavigate: (Any?) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -61,13 +62,13 @@ fun ListScreen(
     LaunchedEffect(state.message) {
         if (state.message.isNotBlank()) {
             delay(2000)
-            onEvent(ListEvent.ClearState)
+            onEvent(GroceryListEvent.ClearState)
         }
     }
 
     LaunchedEffect(state.user) {
         if (state.user != null) {
-            onEvent(ListEvent.LoadData)
+            onEvent(GroceryListEvent.LoadData)
         }
     }
 
@@ -92,6 +93,16 @@ fun ListScreen(
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Default.ArrowBack,
                                     contentDescription = stringResource(R.string.back)
+                                )
+                            }
+                        },
+                        actions = {
+                            IconButton(
+                                onClick = { onEvent(GroceryListEvent.LoadData) }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Rounded.Refresh,
+                                    contentDescription = stringResource(R.string.refersh)
                                 )
                             }
                         }
@@ -135,7 +146,7 @@ fun ListScreen(
                     )
                 }
                 AnimatedVisibility(
-                    visible = state.groceries.isNotEmpty(),
+                    visible = true,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
@@ -158,7 +169,7 @@ fun ListScreen(
                                 selectedStore = state.selectedStore,
                                 stores = state.stores,
                                 onStoreChange = {
-                                    onEvent(ListEvent.OnStoreChange(it))
+                                    onEvent(GroceryListEvent.OnStoreChange(it))
                                 }
                             )
                         }
@@ -172,7 +183,7 @@ fun ListScreen(
                                     modifier = Modifier.wrapContentSize(),
                                     selectedUiMode = state.uiMode,
                                     onUiModeChange = {
-                                        onEvent(ListEvent.SetPreference(it))
+                                        onEvent(GroceryListEvent.SetPreference(it))
                                     }
                                 )
                             }
@@ -188,7 +199,7 @@ fun ListScreen(
                             GroceryCard(
                                 grocery = sembako,
                                 onClick = {
-                                    onEvent(ListEvent.OnGroceryChange(sembako))
+                                    onEvent(GroceryListEvent.OnGroceryChange(sembako))
                                 },
                                 onEdit = {
                                     onNavigate(FormDestination(sembako.id, state.selectedStore?.id))

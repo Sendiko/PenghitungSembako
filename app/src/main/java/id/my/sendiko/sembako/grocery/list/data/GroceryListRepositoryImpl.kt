@@ -9,10 +9,10 @@ import id.my.sendiko.sembako.grocery.core.domain.Grocery
 import id.my.sendiko.sembako.grocery.list.data.dto.GetGroceriesResponse
 import id.my.sendiko.sembako.grocery.list.data.dto.SaveTransactionRequest
 import id.my.sendiko.sembako.grocery.list.data.dto.SaveTransactionResponse
-import id.my.sendiko.sembako.grocery.list.domain.ListRepository
-import id.my.sendiko.sembako.store.data.datasource.StoreDataSource
-import id.my.sendiko.sembako.store.data.dto.GetStoresResponse
-import id.my.sendiko.sembako.store.domain.Store
+import id.my.sendiko.sembako.grocery.list.domain.GroceryListRepository
+import id.my.sendiko.sembako.store.core.data.datasource.StoreDataSource
+import id.my.sendiko.sembako.store.core.data.dto.GetStoresResponse
+import id.my.sendiko.sembako.store.core.domain.Store
 import id.my.sendiko.sembako.user.core.domain.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -22,12 +22,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import kotlin.coroutines.resume
 
-class ListRepositoryImpl(
+class GroceryListRepositoryImpl(
     private val userLocalDataSource: UserPreferences,
     private val groceryLocalDataSource: GroceryDao,
     private val groceryRemoteDataSource: GroceryRemoteDataSource,
     private val storeRemoteDataSource: StoreDataSource
-) : ListRepository {
+) : GroceryListRepository {
 
     override fun getUser(): Flow<User> {
         return userLocalDataSource.getUser()

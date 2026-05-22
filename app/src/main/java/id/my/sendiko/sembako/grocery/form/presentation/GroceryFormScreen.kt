@@ -55,16 +55,16 @@ import kotlin.Unit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormScreen(
-    state: FormState,
-    onEvent: (FormEvent) -> Unit,
+fun GroceryFormScreen(
+    state: GroceryFormState,
+    onEvent: (GroceryFormEvent) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val context = LocalContext.current
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(key1 = state.isSaved, key2 = state.isDeleted) {
-        if (state.isSaved || state.isDeleted){
+        if (state.isSaved || state.isDeleted) {
             delay(1000)
             onNavigateBack()
         }
@@ -72,7 +72,7 @@ fun FormScreen(
 
     val launcher = rememberLauncherForActivityResult(CropImageContract()) {
         onEvent(
-            FormEvent.OnImageChosen(
+            GroceryFormEvent.OnImageChosen(
                 bitmap = getCroppedImage(context.contentResolver, it)
             )
         )
@@ -119,11 +119,11 @@ fun FormScreen(
                         title = stringResource(R.string.delete_title),
                         message = stringResource(R.string.delete_message),
                         onConfirm = {
-                            onEvent(FormEvent.OnDelete)
-                            onEvent(FormEvent.OnDeleteClicked(!state.isDeleting))
+                            onEvent(GroceryFormEvent.OnDelete)
+                            onEvent(GroceryFormEvent.OnDeleteClicked(!state.isDeleting))
                         },
                         onDismiss = {
-                            onEvent(FormEvent.OnDeleteClicked(!state.isDeleting))
+                            onEvent(GroceryFormEvent.OnDeleteClicked(!state.isDeleting))
                         }
                     )
                 }
@@ -153,7 +153,7 @@ fun FormScreen(
                     item {
                         CustomTextField(
                             value = state.name,
-                            onValueChange = { onEvent(FormEvent.OnNameChanged(it)) },
+                            onValueChange = { onEvent(GroceryFormEvent.OnNameChanged(it)) },
                             label = stringResource(R.string.name),
                             isError = state.nameMessage.isNotBlank(),
                             message = state.nameMessage,
@@ -168,13 +168,13 @@ fun FormScreen(
                     item {
                         ExposedDropdownMenuBox(
                             expanded = state.isExpanding,
-                            onExpandedChange = { onEvent(FormEvent.OnDropDownChanged(it)) }
+                            onExpandedChange = { onEvent(GroceryFormEvent.OnDropDownChanged(it)) }
                         ) {
                             CustomTextField(
                                 modifier =
                                     Modifier.menuAnchor(MenuAnchorType.PrimaryEditable),
                                 value = state.unit,
-                                onValueChange = { onEvent(FormEvent.OnUnitChanged(it)) },
+                                onValueChange = { onEvent(GroceryFormEvent.OnUnitChanged(it)) },
                                 label = stringResource(R.string.unit),
                                 isError = state.unitMessage.isNotBlank(),
                                 message = state.unitMessage,
@@ -194,13 +194,19 @@ fun FormScreen(
                             )
                             ExposedDropdownMenu(
                                 expanded = state.isExpanding,
-                                onDismissRequest = { onEvent(FormEvent.OnDropDownChanged(false)) }
+                                onDismissRequest = {
+                                    onEvent(
+                                        GroceryFormEvent.OnDropDownChanged(
+                                            false
+                                        )
+                                    )
+                                }
                             ) {
                                 id.my.sendiko.sembako.grocery.form.presentation.Unit.entries.forEach {
                                     DropdownMenuItem(
                                         text = { Text(it.name) },
                                         onClick = {
-                                            onEvent(FormEvent.OnUnitChanged(it.name))
+                                            onEvent(GroceryFormEvent.OnUnitChanged(it.name))
                                         },
                                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                                     )
@@ -211,7 +217,7 @@ fun FormScreen(
                     item {
                         CustomTextField(
                             value = state.pricePerUnit,
-                            onValueChange = { onEvent(FormEvent.OnPricePerUnitChanged(it)) },
+                            onValueChange = { onEvent(GroceryFormEvent.OnPricePerUnitChanged(it)) },
                             label = stringResource(R.string.price_per_unit),
                             isError = state.pricePerUnitMessage.isNotBlank(),
                             message = state.pricePerUnitMessage,
@@ -245,7 +251,7 @@ fun FormScreen(
                                         contentColor = MaterialTheme.colorScheme.errorContainer,
                                     ),
                                     onClick = {
-                                        onEvent(FormEvent.OnDeleteClicked(!state.isDeleting))
+                                        onEvent(GroceryFormEvent.OnDeleteClicked(!state.isDeleting))
                                     }
                                 ) {
                                     Text(text = stringResource(R.string.delete))
@@ -254,7 +260,7 @@ fun FormScreen(
                             Button(
                                 modifier = Modifier.weight(1f),
                                 onClick = {
-                                    onEvent(FormEvent.OnSave)
+                                    onEvent(GroceryFormEvent.OnSave)
                                 },
                                 contentPadding = PaddingValues(vertical = 12.dp),
                                 shape = RoundedCornerShape(16.dp),
@@ -275,10 +281,10 @@ fun FormScreen(
 
 @Preview(showSystemUi = true)
 @Composable
-private fun FormScreenPrev() {
+private fun GroceryFormScreenPrev() {
     MaterialTheme {
-        FormScreen(
-            state = FormState(),
+        GroceryFormScreen(
+            state = GroceryFormState(),
             onEvent = { },
             onNavigateBack = { }
         )

@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.my.sendiko.sembako.core.preferences.UiMode
 import id.my.sendiko.sembako.grocery.core.domain.Grocery
-import id.my.sendiko.sembako.grocery.list.data.ListRepositoryImpl
+import id.my.sendiko.sembako.grocery.list.data.GroceryListRepositoryImpl
 import id.my.sendiko.sembako.grocery.list.data.dto.SaveTransactionRequest
-import id.my.sendiko.sembako.store.domain.Store
+import id.my.sendiko.sembako.store.core.domain.Store
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,29 +15,29 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ListViewModel(
-    val repository: ListRepositoryImpl
+class GroceryListViewModel(
+    val repository: GroceryListRepositoryImpl
 ) : ViewModel() {
 
     private val _uiMode = repository.getUiMode()
     private val _user = repository.getUser()
-    private val _state = MutableStateFlow(ListState())
+    private val _state = MutableStateFlow(GroceryListState())
     val state = combine(_user, _uiMode, _state) { user, uiMode, state ->
         state.copy(user = user, uiMode = uiMode)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ListState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), GroceryListState())
 
-    fun onEvent(event: ListEvent) {
+    fun onEvent(event: GroceryListEvent) {
         when (event) {
-            is ListEvent.OnQuantityChange -> changeQuantity(event.quantity)
-            is ListEvent.OnGroceryChange -> onSembakoClick(event.sembako)
-            ListEvent.OnCalculateClick -> onCalculateClick()
-            ListEvent.OnDismiss -> dismissBottomSheet()
-            is ListEvent.OnUnitChange -> changeUnit(event.unit)
-            is ListEvent.SetPreference -> setPreference(event.uiMode)
-            ListEvent.ClearState -> clearState()
-            ListEvent.LoadData -> loadData()
-            ListEvent.OnSaveTransaction -> saveTransaction()
-            is ListEvent.OnStoreChange -> onStoreChange(event.store)
+            is GroceryListEvent.OnQuantityChange -> changeQuantity(event.quantity)
+            is GroceryListEvent.OnGroceryChange -> onSembakoClick(event.sembako)
+            GroceryListEvent.OnCalculateClick -> onCalculateClick()
+            GroceryListEvent.OnDismiss -> dismissBottomSheet()
+            is GroceryListEvent.OnUnitChange -> changeUnit(event.unit)
+            is GroceryListEvent.SetPreference -> setPreference(event.uiMode)
+            GroceryListEvent.ClearState -> clearState()
+            GroceryListEvent.LoadData -> loadData()
+            GroceryListEvent.OnSaveTransaction -> saveTransaction()
+            is GroceryListEvent.OnStoreChange -> onStoreChange(event.store)
         }
     }
 

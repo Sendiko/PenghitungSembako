@@ -3,7 +3,7 @@ package id.my.sendiko.sembako.grocery.form.presentation
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import id.my.sendiko.sembako.grocery.form.data.FormRepositoryImpl
+import id.my.sendiko.sembako.grocery.form.data.GroceryFormRepositoryImpl
 import id.my.sendiko.sembako.grocery.form.data.dto.PostGroceryRequest
 import id.my.sendiko.sembako.grocery.form.data.dto.UpdateGroceryRequest
 import kotlinx.coroutines.delay
@@ -18,26 +18,26 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 
-class FormViewModel(
-    private val repository: FormRepositoryImpl
+class GroceryFormViewModel(
+    private val repository: GroceryFormRepositoryImpl
 ) : ViewModel() {
 
     private val _user = repository.getUser()
-    private val _state = MutableStateFlow(FormState())
+    private val _state = MutableStateFlow(GroceryFormState())
     val state = combine(_user, _state) { user, state ->
         state.copy(user = user)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), FormState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), GroceryFormState())
 
-    fun onEvent(event: FormEvent) {
+    fun onEvent(event: GroceryFormEvent) {
         when (event) {
-            is FormEvent.OnNameChanged -> updateName(event.name)
-            is FormEvent.OnPricePerUnitChanged -> updatePricePerUnit(event.pricePerUnit)
-            is FormEvent.OnUnitChanged -> updateUnit(event.unit)
-            is FormEvent.OnDeleteClicked -> updateDeleting(event.isDeleting)
-            FormEvent.OnSave -> saveGrocery()
-            FormEvent.OnDelete -> deleteGrocery()
-            is FormEvent.OnDropDownChanged -> updateDropdown(event.isExpanding)
-            is FormEvent.OnImageChosen -> handleImage(event.bitmap)
+            is GroceryFormEvent.OnNameChanged -> updateName(event.name)
+            is GroceryFormEvent.OnPricePerUnitChanged -> updatePricePerUnit(event.pricePerUnit)
+            is GroceryFormEvent.OnUnitChanged -> updateUnit(event.unit)
+            is GroceryFormEvent.OnDeleteClicked -> updateDeleting(event.isDeleting)
+            GroceryFormEvent.OnSave -> saveGrocery()
+            GroceryFormEvent.OnDelete -> deleteGrocery()
+            is GroceryFormEvent.OnDropDownChanged -> updateDropdown(event.isExpanding)
+            is GroceryFormEvent.OnImageChosen -> handleImage(event.bitmap)
         }
     }
 

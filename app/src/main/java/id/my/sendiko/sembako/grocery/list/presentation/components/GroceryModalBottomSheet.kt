@@ -28,21 +28,21 @@ import androidx.compose.ui.unit.dp
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.component.CustomTextField
 import id.my.sendiko.sembako.core.ui.util.toRupiah
-import id.my.sendiko.sembako.grocery.list.presentation.ListEvent
-import id.my.sendiko.sembako.grocery.list.presentation.ListState
+import id.my.sendiko.sembako.grocery.list.presentation.GroceryListEvent
+import id.my.sendiko.sembako.grocery.list.presentation.GroceryListState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GroceryModalBottomSheet(
-    state: ListState,
-    onEvent: (ListEvent) -> Unit,
+    state: GroceryListState,
+    onEvent: (GroceryListEvent) -> Unit,
     onShareClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ModalBottomSheet(
         modifier = modifier,
         onDismissRequest = {
-            onEvent(ListEvent.OnDismiss)
+            onEvent(GroceryListEvent.OnDismiss)
         }
     ) {
         Column(
@@ -80,7 +80,7 @@ fun GroceryModalBottomSheet(
                     .padding(horizontal = 16.dp),
                 value = state.quantity,
                 onValueChange = {
-                    onEvent(ListEvent.OnQuantityChange(it))
+                    onEvent(GroceryListEvent.OnQuantityChange(it))
                 },
                 label = stringResource(R.string.quantity),
                 trailingIcon = {
@@ -124,7 +124,7 @@ fun GroceryModalBottomSheet(
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(16.dp),
                         onClick = {
-                            onEvent(ListEvent.OnSaveTransaction)
+                            onEvent(GroceryListEvent.OnSaveTransaction)
                         },
                         contentPadding = PaddingValues(vertical = 16.dp)
                     ) {
@@ -139,7 +139,7 @@ fun GroceryModalBottomSheet(
                         .weight(1f),
                     shape = RoundedCornerShape(16.dp),
                     onClick = {
-                        onEvent(ListEvent.OnCalculateClick)
+                        onEvent(GroceryListEvent.OnCalculateClick)
                     },
                     contentPadding = PaddingValues(vertical = 16.dp)
                 ) {
