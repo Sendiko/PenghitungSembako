@@ -6,13 +6,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import id.my.sendiko.sembako.about.presentation.AboutScreenRoot
 import id.my.sendiko.sembako.core.di.SembakoApplication
-import id.my.sendiko.sembako.core.di.viewModelFactory
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.core.preferences.dataStore
 import id.my.sendiko.sembako.dashboard.data.DashboardRepositoryImpl
@@ -27,12 +28,15 @@ import id.my.sendiko.sembako.grocery.list.presentation.ListViewModel
 import id.my.sendiko.sembako.history.data.HistoryRepositoryImpl
 import id.my.sendiko.sembako.history.presentation.HistoryScreen
 import id.my.sendiko.sembako.history.presentation.HistoryViewModel
-import id.my.sendiko.sembako.user.profile.data.ProfileRepositoryImpl
-import id.my.sendiko.sembako.user.profile.presentation.ProfileScreen
-import id.my.sendiko.sembako.user.profile.presentation.ProfileViewModel
 import id.my.sendiko.sembako.statistics.data.StatisticsRepositoryImpl
 import id.my.sendiko.sembako.statistics.presentation.StatisticsScreen
 import id.my.sendiko.sembako.statistics.presentation.StatisticsViewModel
+import id.my.sendiko.sembako.store.data.StoreRepositoryImpl
+import id.my.sendiko.sembako.store.presentation.StoreScreen
+import id.my.sendiko.sembako.store.presentation.StoreViewModel
+import id.my.sendiko.sembako.user.profile.data.ProfileRepositoryImpl
+import id.my.sendiko.sembako.user.profile.presentation.ProfileScreen
+import id.my.sendiko.sembako.user.profile.presentation.ProfileViewModel
 
 @Composable
 fun NavGraph(
@@ -45,12 +49,14 @@ fun NavGraph(
             composable<DashboardDestination> {
                 val viewModel = viewModel<DashboardViewModel>(
                     factory = viewModelFactory {
-                        val repository = DashboardRepositoryImpl(
-                            userRemoteDataSource = SembakoApplication.module.userRemoteDataSource,
-                            userLocalDataSource = SembakoApplication.module.userPreferences,
-                            storeRemoteDataSource = SembakoApplication.module.storeDataSource
-                        )
-                        DashboardViewModel(repository)
+                        initializer {
+                            val repository = DashboardRepositoryImpl(
+                                userRemoteDataSource = SembakoApplication.module.userRemoteDataSource,
+                                userLocalDataSource = SembakoApplication.module.userPreferences,
+                                storeRemoteDataSource = SembakoApplication.module.storeDataSource
+                            )
+                            DashboardViewModel(repository)
+                        }
                     }
                 )
                 val state by viewModel.state.collectAsStateWithLifecycle()
@@ -67,12 +73,14 @@ fun NavGraph(
             composable<ListDestination> {
                 val viewModel = viewModel<ListViewModel>(
                     factory = viewModelFactory {
-                        val repository = ListRepositoryImpl(
-                            remoteDataSource = SembakoApplication.module.apiService,
-                            localDataSource = SembakoApplication.module.sembakoDao,
-                            prefs = SembakoApplication.module.userPreferences
-                        )
-                        ListViewModel(repository)
+                        initializer {
+                            val repository = ListRepositoryImpl(
+                                remoteDataSource = SembakoApplication.module.apiService,
+                                localDataSource = SembakoApplication.module.sembakoDao,
+                                prefs = SembakoApplication.module.userPreferences
+                            )
+                            ListViewModel(repository)
+                        }
                     }
                 )
                 val state by viewModel.state.collectAsStateWithLifecycle()
@@ -93,11 +101,13 @@ fun NavGraph(
                 val context = LocalContext.current
                 val viewModel = viewModel<ProfileViewModel>(
                     factory = viewModelFactory {
-                        val profileRepository = ProfileRepositoryImpl(
-                            context = context,
-                            userLocalDataSource = UserPreferences(SembakoApplication.module.application.dataStore),
-                        )
-                        ProfileViewModel(profileRepository)
+                        initializer {
+                            val profileRepository = ProfileRepositoryImpl(
+                                context = context,
+                                userLocalDataSource = UserPreferences(SembakoApplication.module.application.dataStore),
+                            )
+                            ProfileViewModel(profileRepository)
+                        }
                     }
                 )
 
@@ -107,11 +117,12 @@ fun NavGraph(
                     state = state,
                     onEvent = viewModel::onEvent,
                     onNavigate = {
-                        when(it) {
+                        when (it) {
                             null -> navController.navigateUp()
                             is DashboardDestination -> navController.navigate(DashboardDestination) {
                                 popUpTo(DashboardDestination) { inclusive = true }
                             }
+
                             else -> navController.navigate(it)
                         }
                     }
@@ -120,12 +131,14 @@ fun NavGraph(
             composable<StatisticsDestination> {
                 val viewModel = viewModel<StatisticsViewModel>(
                     factory = viewModelFactory {
-                        val repository = StatisticsRepositoryImpl(
-                            remoteDataSource = SembakoApplication.module.apiService,
-                            userPreferences = SembakoApplication.module.userPreferences,
-                            localDataSource = SembakoApplication.module.statisticsPreferences
-                        )
-                        StatisticsViewModel(repository)
+                        initializer {
+                            val repository = StatisticsRepositoryImpl(
+                                remoteDataSource = SembakoApplication.module.apiService,
+                                userPreferences = SembakoApplication.module.userPreferences,
+                                localDataSource = SembakoApplication.module.statisticsPreferences
+                            )
+                            StatisticsViewModel(repository)
+                        }
                     }
                 )
                 val state by viewModel.state.collectAsStateWithLifecycle()
@@ -139,12 +152,14 @@ fun NavGraph(
             composable<HistoryDestination> {
                 val viewModel = viewModel<HistoryViewModel>(
                     factory = viewModelFactory {
-                        val repository = HistoryRepositoryImpl(
-                            userPreferences = SembakoApplication.module.userPreferences,
-                            remoteDataSource = SembakoApplication.module.apiService,
-                            localDataSource = SembakoApplication.module.historyDao
-                        )
-                        HistoryViewModel(repository)
+                        initializer {
+                            val repository = HistoryRepositoryImpl(
+                                userPreferences = SembakoApplication.module.userPreferences,
+                                remoteDataSource = SembakoApplication.module.apiService,
+                                localDataSource = SembakoApplication.module.historyDao
+                            )
+                            HistoryViewModel(repository)
+                        }
                     }
                 )
                 val state by viewModel.state.collectAsStateWithLifecycle()
@@ -163,12 +178,14 @@ fun NavGraph(
 
                 val viewModel = viewModel<FormViewModel>(
                     factory = viewModelFactory {
-                        val repository = FormRepositoryImpl(
-                            localDataSource = SembakoApplication.module.sembakoDao,
-                            remoteDataSource = SembakoApplication.module.apiService,
-                            userPreferences = SembakoApplication.module.userPreferences
-                        )
-                        FormViewModel(repository)
+                        initializer {
+                            val repository = FormRepositoryImpl(
+                                localDataSource = SembakoApplication.module.sembakoDao,
+                                remoteDataSource = SembakoApplication.module.apiService,
+                                userPreferences = SembakoApplication.module.userPreferences
+                            )
+                            FormViewModel(repository)
+                        }
                     }
                 )
                 LaunchedEffect(true) {
@@ -177,6 +194,25 @@ fun NavGraph(
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
                 FormScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    onNavigateBack = { navController.navigateUp() }
+                )
+            }
+            composable<StoreDestination> {
+                val viewModel = viewModel<StoreViewModel>(
+                    factory = viewModelFactory {
+                        initializer {
+                            val repository = StoreRepositoryImpl(
+                                dataSource = SembakoApplication.module.storeDataSource,
+                                userLocalDataSource = SembakoApplication.module.userPreferences
+                            )
+                            StoreViewModel(repository)
+                        }
+                    }
+                )
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                StoreScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
                     onNavigateBack = { navController.navigateUp() }

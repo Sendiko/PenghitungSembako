@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         userPreferences = UserPreferences(this.dataStore)
         setContent {
-            val dynamicTheme by userPreferences.getDynamicTheme().collectAsStateWithLifecycle(true)
+            val dynamicTheme by userPreferences.getDynamicTheme().collectAsStateWithLifecycle(false)
             AppTheme(
                 dynamicColor = dynamicTheme
             ) {
