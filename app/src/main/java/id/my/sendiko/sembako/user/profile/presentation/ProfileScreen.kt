@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.outlined.Info
@@ -88,7 +89,7 @@ fun ProfileScreen(
                                 }
                             ) {
                                 Icon(
-                                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                                     contentDescription = stringResource(R.string.back)
                                 )
                             }

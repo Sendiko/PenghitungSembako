@@ -147,7 +147,8 @@ fun DashboardScreen(
                         item(span = StaggeredGridItemSpan.FullLine) {
                             LongMenuCard(
                                 modifier = Modifier.fillMaxWidth(),
-                                onClick = { onEvent(DashboardEvent.OnStoreSheetVisible(true)) }
+                                onClick = { onEvent(DashboardEvent.OnStoreSheetVisible(true)) },
+                                enabled = state.user.id != 0
                             )
                         }
                     }
@@ -162,7 +163,8 @@ fun DashboardScreen(
                                     contentDescription = stringResource(R.string.your_grocery)
                                 )
                             },
-                            text = stringResource(R.string.your_grocery)
+                            text = stringResource(R.string.your_grocery),
+                            enabled = state.user.id != 0
                         )
                     }
 
@@ -177,7 +179,8 @@ fun DashboardScreen(
                                         contentDescription = stringResource(R.string.store_info)
                                     )
                                 },
-                                text = stringResource(R.string.your_store)
+                                text = stringResource(R.string.your_store),
+                                enabled = state.user.id != 0
                             )
                         }
                     }
@@ -192,7 +195,8 @@ fun DashboardScreen(
                                     contentDescription = stringResource(R.string.statistics)
                                 )
                             },
-                            text = stringResource(R.string.statistics)
+                            text = stringResource(R.string.statistics),
+                            enabled = state.user.id != 0
                         )
                     }
 
@@ -209,7 +213,8 @@ fun DashboardScreen(
                                         contentDescription = stringResource(R.string.profile)
                                     )
                                 },
-                                text = stringResource(R.string.login_title)
+                                text = stringResource(R.string.login_title),
+                                enabled = state.user.id != 0
                             )
                         }
                     }
@@ -224,7 +229,8 @@ fun DashboardScreen(
                                     contentDescription = stringResource(R.string.transaction)
                                 )
                             },
-                            text = stringResource(R.string.transaction)
+                            text = stringResource(R.string.transaction),
+                            enabled = state.user.id != 0
                         )
                     }
 

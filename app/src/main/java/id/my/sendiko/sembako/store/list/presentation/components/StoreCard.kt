@@ -1,5 +1,6 @@
 package id.my.sendiko.sembako.store.list.presentation.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,9 +28,12 @@ import id.my.sendiko.sembako.store.core.domain.Store
 @Composable
 fun StoreCard(
     modifier: Modifier = Modifier,
-    store: Store
+    store: Store,
+    onClick: () -> Unit
 ) {
-    Card(modifier) {
+    Card(
+        modifier = modifier.clickable { onClick() }
+    ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -74,6 +78,7 @@ private fun StoreCardPreview() {
             address = "Bumi Cikoneng Indah B10, Jl. Cikoneng.",
             phone = "082241626760",
             email = "sembako@sendiko.my.id"
-        )
+        ),
+        onClick = { }
     )
 }

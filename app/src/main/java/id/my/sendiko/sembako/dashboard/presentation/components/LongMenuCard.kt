@@ -21,7 +21,8 @@ import id.my.sendiko.sembako.R
 @Composable
 fun LongMenuCard(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean = true,
 ) {
     Card(
         modifier = modifier,
@@ -29,7 +30,8 @@ fun LongMenuCard(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
-        onClick = onClick
+        onClick = onClick,
+        enabled = enabled
     ) {
         Row(
             modifier = Modifier.padding(16.dp),

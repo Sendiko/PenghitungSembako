@@ -14,5 +14,12 @@ data class StoreListState(
         email = "",
         profileUrl = "",
         hasStore = false
-    )
+    ),
+    val isStoreSheetVisible: Boolean = false,
+    val storeName: String = "",
+    val storeAddress: String = "",
+    val storePhone: String = "",
+    val storeEmail: String = "",
+    val selectedStoreId: Int? = null,
+    val isDeleteDialogOpen: Boolean = false
 )

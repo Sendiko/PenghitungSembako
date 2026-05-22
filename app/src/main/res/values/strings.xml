@@ -32,7 +32,9 @@
     <string name="delete">Hapus</string>
     <string name="cancel">Batal</string>
     <string name="delete_title">Hapus sembako ini?</string>
+    <string name="delete_store_title">Hapus toko ini?</string>
     <string name="delete_message">Data akan hilang selamanya.</string>
+    <string name="delete_store_message">Semua data terkait toko ini akan hilang selamanya.</string>
     <string name="hello">Halo</string>
     <string name="login_title">Masuk dengan Google</string>
     <string name="login">Masuk</string>

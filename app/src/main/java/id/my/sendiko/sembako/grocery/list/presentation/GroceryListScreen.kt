@@ -18,8 +18,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -47,6 +47,7 @@ import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.grocery.core.presentation.GroceryCard
 import id.my.sendiko.sembako.grocery.list.presentation.components.GroceryModalBottomSheet
 import id.my.sendiko.sembako.grocery.list.presentation.components.StoreSelector
+import id.my.sendiko.sembako.grocery.list.presentation.components.UiModeSelector
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,7 +92,7 @@ fun GroceryListScreen(
                                 onClick = { onNavigate(null) }
                             ) {
                                 Icon(
-                                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                                     contentDescription = stringResource(R.string.back)
                                 )
                             }
@@ -118,7 +119,7 @@ fun GroceryListScreen(
                         },
                         icon = {
                             Icon(
-                                imageVector = Icons.Default.Add,
+                                imageVector = Icons.Rounded.Add,
                                 contentDescription = stringResource(R.string.create_title)
                             )
                         }

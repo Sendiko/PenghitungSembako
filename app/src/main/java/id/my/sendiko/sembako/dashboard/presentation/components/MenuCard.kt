@@ -17,7 +17,8 @@ fun MenuCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     icon: (@Composable () -> Unit),
-    text: String
+    text: String,
+    enabled: Boolean = true,
 ) {
     val containerColors = listOf(
         MaterialTheme.colorScheme.primaryContainer,
@@ -36,7 +37,8 @@ fun MenuCard(
             containerColor = containerColors[random],
             contentColor = contentColors[random]
         ),
-        onClick = onClick
+        onClick = onClick,
+        enabled = enabled
     ) {
         Column(
             modifier = Modifier.padding(16.dp)

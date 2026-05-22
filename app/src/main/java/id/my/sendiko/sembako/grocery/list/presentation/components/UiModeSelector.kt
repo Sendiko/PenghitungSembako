@@ -1,4 +1,4 @@
-package id.my.sendiko.sembako.grocery.list.presentation
+package id.my.sendiko.sembako.grocery.list.presentation.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ViewList
-import androidx.compose.material.icons.filled.GridView
+import androidx.compose.material.icons.automirrored.rounded.ViewList
+import androidx.compose.material.icons.rounded.GridView
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -50,8 +50,8 @@ fun UiModeSelector(
                 ) {
                     Icon(
                         imageVector = if (uiMode == UiMode.LIST)
-                            Icons.AutoMirrored.Default.ViewList
-                        else Icons.Default.GridView,
+                            Icons.AutoMirrored.Rounded.ViewList
+                        else Icons.Rounded.GridView,
                         contentDescription = if (uiMode == UiMode.LIST)
                             stringResource(R.string.list)
                         else stringResource(R.string.grid)
