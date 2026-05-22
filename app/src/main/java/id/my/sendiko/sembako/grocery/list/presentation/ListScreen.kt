@@ -2,6 +2,7 @@ package id.my.sendiko.sembako.grocery.list.presentation
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -70,13 +71,16 @@ fun ListScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val context = LocalContext.current
 
-    LaunchedEffect(state.groceries) {
-        onEvent(ListEvent.LoadData)
-    }
     LaunchedEffect(state.message) {
         if(state.message.isNotBlank()) {
             delay(2000)
             onEvent(ListEvent.ClearState)
+        }
+    }
+
+    LaunchedEffect(state.user) {
+        if (state.user != null) {
+            onEvent(ListEvent.LoadData)
         }
     }
 
@@ -108,7 +112,7 @@ fun ListScreen(
                 },
                 floatingActionButton = {
                     ExtendedFloatingActionButton(
-                        onClick = { onNavigate(FormDestination(null)) },
+                        onClick = { onNavigate(FormDestination(null, state.selectedStore?.id)) },
                         text = {
                             Text(
                                 text = stringResource(R.string.create_title)
@@ -294,7 +298,7 @@ fun ListScreen(
                                     onEvent(ListEvent.OnGroceryChange(sembako))
                                 },
                                 onEdit = {
-                                    onNavigate(FormDestination(sembako.id))
+                                    onNavigate(FormDestination(sembako.id, state.selectedStore?.id))
                                 }
                             )
                         }

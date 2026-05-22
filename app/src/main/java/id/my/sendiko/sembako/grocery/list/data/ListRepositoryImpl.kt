@@ -1,38 +1,41 @@
 package id.my.sendiko.sembako.grocery.list.data
 
-import id.my.sendiko.sembako.user.core.domain.User
-import id.my.sendiko.sembako.core.network.ApiService
 import id.my.sendiko.sembako.core.preferences.UiMode
 import id.my.sendiko.sembako.core.preferences.UserPreferences
 import id.my.sendiko.sembako.grocery.core.data.GroceryDao
 import id.my.sendiko.sembako.grocery.core.data.GroceryEntity
+import id.my.sendiko.sembako.grocery.core.data.GroceryRemoteDataSource
 import id.my.sendiko.sembako.grocery.core.domain.Grocery
 import id.my.sendiko.sembako.grocery.list.data.dto.GetGroceriesResponse
 import id.my.sendiko.sembako.grocery.list.data.dto.SaveTransactionRequest
 import id.my.sendiko.sembako.grocery.list.data.dto.SaveTransactionResponse
 import id.my.sendiko.sembako.grocery.list.domain.ListRepository
+import id.my.sendiko.sembako.store.data.datasource.StoreDataSource
+import id.my.sendiko.sembako.store.data.dto.GetStoresResponse
+import id.my.sendiko.sembako.store.domain.Store
+import id.my.sendiko.sembako.user.core.domain.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.collections.forEach
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class ListRepositoryImpl(
-    private val prefs: UserPreferences,
-    private val localDataSource: GroceryDao,
-    private val remoteDataSource: ApiService
+    private val userLocalDataSource: UserPreferences,
+    private val groceryLocalDataSource: GroceryDao,
+    private val groceryRemoteDataSource: GroceryRemoteDataSource,
+    private val storeRemoteDataSource: StoreDataSource
 ) : ListRepository {
 
     override fun getUser(): Flow<User> {
-        return prefs.getUser()
+        return userLocalDataSource.getUser()
     }
 
     override suspend fun getRemoteGroceries(userId: String): Result<List<Grocery>> {
-        return suspendCoroutine { continuation ->
-            remoteDataSource.getGroceries(userId)
+        return suspendCancellableCoroutine { continuation ->
+            groceryRemoteDataSource.getGroceries(userId)
                 .enqueue(
                     object : Callback<GetGroceriesResponse> {
                         override fun onResponse(
@@ -70,7 +73,7 @@ class ListRepositoryImpl(
     }
 
     override suspend fun getLocalGroceries(): Flow<List<Grocery>> {
-        val result = localDataSource.getAll().map {
+        val result = groceryLocalDataSource.getAll().map {
             it.map {
                 Grocery(
                     id = it.id,
@@ -86,7 +89,7 @@ class ListRepositoryImpl(
 
     override suspend fun saveGroceries(groceries: List<Grocery>): Result<Boolean> {
         return try {
-            localDataSource.deleteAll()
+            groceryLocalDataSource.deleteAll()
 
             groceries.forEach { grocery ->
                 val item = GroceryEntity(
@@ -96,7 +99,7 @@ class ListRepositoryImpl(
                     imageUrl = grocery.imageUrl,
                     remoteId = grocery.id.toString()
                 )
-                localDataSource.insert(item)
+                groceryLocalDataSource.insert(item)
             }
             Result.success(true)
         } catch (e: Exception) {
@@ -105,16 +108,16 @@ class ListRepositoryImpl(
     }
 
     override suspend fun setUiMode(uiMode: UiMode) {
-        prefs.setUiMode(uiMode)
+        userLocalDataSource.setUiMode(uiMode)
     }
 
     override fun getUiMode(): Flow<UiMode> {
-        return prefs.getUiMode()
+        return userLocalDataSource.getUiMode()
     }
 
     override suspend fun saveTransaction(request: SaveTransactionRequest): Result<Int> {
-        return suspendCoroutine { continuation ->
-            remoteDataSource.saveHistory(request)
+        return suspendCancellableCoroutine { continuation ->
+            groceryRemoteDataSource.saveHistory(request)
                 .enqueue(
                     object : Callback<SaveTransactionResponse> {
                         override fun onResponse(
@@ -133,6 +136,33 @@ class ListRepositoryImpl(
                         ) {
                             continuation.resume(Result.failure(Exception("Server Error.")))
                         }
+                    }
+                )
+        }
+    }
+
+    override suspend fun getStores(userId: Int): Result<List<Store>> {
+        return suspendCancellableCoroutine { continuation ->
+            storeRemoteDataSource.getStores(userId)
+                .enqueue(
+                    object : Callback<GetStoresResponse> {
+                        override fun onResponse(
+                            call: Call<GetStoresResponse?>,
+                            response: Response<GetStoresResponse?>
+                        ) {
+                            when (response.code()) {
+                                200 -> continuation.resume(Result.success(response.body()!!.stores.map { it.toDomain() }))
+                                else -> continuation.resume(Result.failure(Exception("Server Error.")))
+                            }
+                        }
+
+                        override fun onFailure(
+                            call: Call<GetStoresResponse?>,
+                            t: Throwable
+                        ) {
+                            continuation.resume(Result.failure(Exception("Server Error.")))
+                        }
+
                     }
                 )
         }

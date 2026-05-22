@@ -3,6 +3,7 @@ package id.my.sendiko.sembako.grocery.list.presentation
 import id.my.sendiko.sembako.user.core.domain.User
 import id.my.sendiko.sembako.core.preferences.UiMode
 import id.my.sendiko.sembako.grocery.core.domain.Grocery
+import id.my.sendiko.sembako.store.domain.Store
 
 data class ListState(
     val groceries: List<Grocery> = emptyList(),
@@ -14,4 +15,7 @@ data class ListState(
     val uiMode: UiMode = UiMode.GRID,
     val user: User? = null,
     val isLoading: Boolean = false,
+    val isError: Boolean = true,
+    val stores: List<Store> = emptyList(),
+    val selectedStore: Store? = null,
 )

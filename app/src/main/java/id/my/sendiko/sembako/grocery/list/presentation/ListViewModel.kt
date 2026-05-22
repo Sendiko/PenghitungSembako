@@ -1,5 +1,6 @@
 package id.my.sendiko.sembako.grocery.list.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.my.sendiko.sembako.core.preferences.UiMode
@@ -99,14 +100,25 @@ class ListViewModel(
                 quantity = state.value.quantity,
                 totalPrice = state.value.totalPrice.toInt(),
                 userId = state.value.user!!.id,
-                groceryId = state.value.grocery!!.id
+                groceryId = state.value.grocery!!.id,
+                storeId = state.value.selectedStore?.id?:0
             )
             repository.saveTransaction(request)
                 .onSuccess {
-                    _state.update { it.copy(isLoading = false, message = "Transaksi berhasil disimpan") }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            message = "Transaksi berhasil disimpan"
+                        )
+                    }
                 }
                 .onFailure {
-                    _state.update { it.copy(isLoading = false, message = "Transaksi gagal disimpan") }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            message = "Transaksi gagal disimpan"
+                        )
+                    }
                 }
         }
     }
@@ -119,18 +131,43 @@ class ListViewModel(
     private fun loadData() {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            delay(1000)
             repository
-                .getRemoteGroceries(state.value.user!!.id.toString())
+                .getStores(state.value.user?.id ?: 0)
                 .onSuccess { result ->
-                    repository.saveGroceries(result)
-                    _state.update { it.copy(groceries = result, isLoading = false) }
+                    val selectedStore = result.firstOrNull()
+                    _state.update {
+                        it.copy(stores = result, selectedStore = selectedStore)
+                    }
+                    if (selectedStore != null) {
+                        repository
+                            .getRemoteGroceries(selectedStore.id.toString())
+                            .onSuccess { groceries ->
+                                repository.saveGroceries(groceries)
+                                _state.update {
+                                    it.copy(groceries = groceries, isLoading = false)
+                                }
+                            }
+                            .onFailure {
+                                repository
+                                    .getLocalGroceries()
+                                    .collect { localGroceries ->
+                                        _state.update {
+                                            it.copy(groceries = localGroceries, isLoading = false)
+                                        }
+                                    }
+                            }
+                    } else {
+                        _state.update { it.copy(isLoading = false) }
+                    }
                 }
-                .onFailure {
-                    repository.getLocalGroceries()
-                        .collect { result ->
-                            _state.update { it.copy(groceries = result, isLoading = false) }
-                        }
+                .onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            isError = true,
+                            message = error.message ?: "Error getting your store."
+                        )
+                    }
                 }
         }
     }
