@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.my.sendiko.sembako.history.data.HistoryRepositoryImpl
 import id.my.sendiko.sembako.store.core.domain.Store
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -53,7 +52,7 @@ class HistoryViewModel(
     }
 
     private fun clearState() {
-        _state.update { it.copy(message = "")}
+        _state.update { it.copy(message = "") }
     }
 
     private fun loadData() {
