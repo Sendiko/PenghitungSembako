@@ -33,6 +33,7 @@ import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.theme.bodyFontFamily
 import id.my.sendiko.sembako.core.ui.util.toRupiah
+import id.my.sendiko.sembako.grocery.list.presentation.components.StoreSelector
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
@@ -46,8 +47,10 @@ fun HistoryScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
-    LaunchedEffect(Unit) {
-        onEvent(HistoryEvent.LoadData)
+    LaunchedEffect(state.user) {
+        if (state.user != null) {
+            onEvent(HistoryEvent.LoadData)
+        }
     }
 
     LaunchedEffect(state.message) {
@@ -94,10 +97,20 @@ fun HistoryScreen(
                         contentPadding = PaddingValues(
                             top = paddingValues.calculateTopPadding(),
                             end = 16.dp,
-                            start = 16.dp
+                            start = 16.dp,
+                            bottom = 16.dp
                         ),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
+                        item {
+                            StoreSelector(
+                                selectedStore = state.selectedStore,
+                                stores = state.stores,
+                                onStoreChange = {
+                                    onEvent(HistoryEvent.OnStoreChange(it))
+                                }
+                            )
+                        }
                         items(state.histories.reversed()) { history ->
                             Column(
                                 modifier = Modifier.fillMaxWidth(),
