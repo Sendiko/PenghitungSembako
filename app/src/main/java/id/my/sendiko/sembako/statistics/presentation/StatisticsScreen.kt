@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.util.toRupiah
+import id.my.sendiko.sembako.grocery.list.presentation.components.StoreSelector
+import id.my.sendiko.sembako.history.presentation.HistoryEvent
 import id.my.sendiko.sembako.user.profile.presentation.component.StatsCard
 import kotlinx.coroutines.delay
 
@@ -91,6 +93,15 @@ fun StatisticsScreen(
                         item(
                             span = StaggeredGridItemSpan.FullLine
                         ) {
+                            StoreSelector(
+                                selectedStore = state.selectedStore,
+                                stores = state.stores,
+                                onStoreChange = {
+                                    onEvent(StatisticsEvent.OnStoreChange(it))
+                                }
+                            )
+                        }
+                        item {
                             StatsCard(
                                 label = stringResource(R.string.total_income),
                                 statistics = if (state.isLoading) stringResource(R.string.loading)
