@@ -3,7 +3,6 @@ package id.my.sendiko.sembako.core.di
 import android.app.Application
 import androidx.room.Room
 import id.my.sendiko.sembako.core.database.AppDatabase
-import id.my.sendiko.sembako.core.network.ApiService
 import id.my.sendiko.sembako.core.network.BASE_URL
 import id.my.sendiko.sembako.core.preferences.StatisticsPreferences
 import id.my.sendiko.sembako.core.preferences.UserPreferences
@@ -11,6 +10,8 @@ import id.my.sendiko.sembako.core.preferences.dataStore
 import id.my.sendiko.sembako.grocery.core.data.GroceryDao
 import id.my.sendiko.sembako.grocery.core.data.GroceryRemoteDataSource
 import id.my.sendiko.sembako.history.data.HistoryDao
+import id.my.sendiko.sembako.history.data.datasource.HistoryRemoteDataSource
+import id.my.sendiko.sembako.statistics.data.datasource.StatisticsRemoteDataSource
 import id.my.sendiko.sembako.store.core.data.datasource.StoreDataSource
 import id.my.sendiko.sembako.user.core.data.UserRemoteDataSource
 import okhttp3.OkHttpClient
@@ -61,9 +62,6 @@ class AppModuleImpl(
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-    override val apiService: ApiService
-        get() = retrofit.create(ApiService::class.java)
-
     override val application: Application
         get() = app
 
@@ -75,4 +73,10 @@ class AppModuleImpl(
 
     override val groceryDataSource: GroceryRemoteDataSource
         get() = retrofit.create(GroceryRemoteDataSource::class.java)
+
+    override val statisticsDataSource: StatisticsRemoteDataSource
+        get() = retrofit.create(StatisticsRemoteDataSource::class.java)
+
+    override val historyDataSource: HistoryRemoteDataSource
+        get() = retrofit.create(HistoryRemoteDataSource::class.java)
 }
