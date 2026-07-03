@@ -52,6 +52,7 @@ import id.my.sendiko.sembako.store.list.presentation.components.StoreModalBottom
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -75,14 +76,14 @@ fun DashboardScreen(
 
     LaunchedEffect(state.isSignInSuccessful) {
         if (state.isSignInSuccessful) {
-            delay(2000)
+            delay(2.seconds)
             onEvent(DashboardEvent.ClearState)
         }
     }
 
     LaunchedEffect(state.message) {
         if (state.message.isNotBlank()) {
-            delay(2000)
+            delay(2.seconds)
             onEvent(DashboardEvent.ClearState)
         }
     }

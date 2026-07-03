@@ -1,9 +1,8 @@
 package id.my.sendiko.sembako.statistics.presentation
 
-import id.my.sendiko.sembako.user.core.domain.User
-import id.my.sendiko.sembako.statistics.data.dto.StatisticsItem
 import id.my.sendiko.sembako.statistics.domain.Statistics
 import id.my.sendiko.sembako.store.core.domain.Store
+import id.my.sendiko.sembako.user.core.domain.User
 
 data class StatisticsState(
     val isLoading: Boolean = false,

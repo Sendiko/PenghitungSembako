@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 class StatisticsViewModel(
     private val repository: StatisticsRepositoryImpl
@@ -60,7 +61,7 @@ class StatisticsViewModel(
 
     private fun loadData() {
         viewModelScope.launch {
-            delay(1000)
+            delay(1.seconds)
             _state.update { it.copy(isLoading = true) }
             repository.getStores(state.value.user?.id ?: 0)
                 .onSuccess { result ->

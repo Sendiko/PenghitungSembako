@@ -27,9 +27,9 @@ import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import id.my.sendiko.sembako.R
 import id.my.sendiko.sembako.core.ui.util.toRupiah
 import id.my.sendiko.sembako.grocery.list.presentation.components.StoreSelector
-import id.my.sendiko.sembako.history.presentation.HistoryEvent
 import id.my.sendiko.sembako.user.profile.presentation.component.StatsCard
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -46,8 +46,8 @@ fun StatisticsScreen(
     }
 
     LaunchedEffect(state.message) {
-        if (state.message.isNotBlank()){
-            delay(2000)
+        if (state.message.isNotBlank()) {
+            delay(2.seconds)
             onEvent(StatisticsEvent.ClearState)
         }
     }
@@ -112,7 +112,7 @@ fun StatisticsScreen(
                                 )
                             )
                         }
-                        item{
+                        item {
                             StatsCard(
                                 label = stringResource(R.string.total_groceries),
                                 statistics = if (state.isLoading) stringResource(R.string.loading) else state.statistics?.groceryCount.toString(),
