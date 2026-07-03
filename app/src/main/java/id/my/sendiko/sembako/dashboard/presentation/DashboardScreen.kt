@@ -235,7 +235,7 @@ fun DashboardScreen(
                                     )
                                 },
                                 text = stringResource(R.string.login_title),
-                                enabled = state.user.id != 0
+                                enabled = true
                             )
                         }
                     }
