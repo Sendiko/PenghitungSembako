@@ -1,3 +1,5 @@
 package id.my.sendiko.sembako.core.network
 
-const val BASE_URL = "https://sembako.sendiko.my.id/"
+import id.my.sendiko.sembako.BuildConfig
+
+const val BASE_URL = BuildConfig.BASE_URL
